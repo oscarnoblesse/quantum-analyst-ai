@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Quantum-Ready ---
+# SI fictif généré par make (jamais commité)
+si/generated/
+# Filet de sécurité : secrets et clés
+*.key
+*.p12
+.env
+# Environnement de travail
+.DS_Store
+.vscode/
+.idea/
