@@ -96,9 +96,14 @@ Etape = Callable[[Contexte], None]
 
 def etapes() -> list[Etape]:
     """Les étapes du générateur, dans l'ordre. Chaque module ajoute la sienne."""
-    from quantum_ready.si_fictif import pki, ssh
+    from quantum_ready.si_fictif import configurations, pki, ssh
 
-    return [generer_secrets, pki.generer_pki, ssh.generer_ssh]
+    return [
+        generer_secrets,
+        pki.generer_pki,
+        ssh.generer_ssh,
+        configurations.generer_config_ssh,
+    ]
 
 
 def generer(

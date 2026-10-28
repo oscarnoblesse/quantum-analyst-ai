@@ -110,3 +110,37 @@ def test_known_hosts(si):
     hote = _cle_ssh(si, "ssh/server/ssh_host_ed25519_key")
     ligne = (si.racine_si / "clients/admin/.ssh/known_hosts").read_text(encoding="utf-8").strip()
     assert ligne == "ssh.lab.local " + _ligne_publique(hote)
+
+
+# --- Configuration SSH (QR-027 à QR-031, QR-033) ---
+
+
+def directives(chemin, separateur=None):
+    """Lit un fichier de configuration « nom valeur » (ou « nom = valeur ») en dictionnaire."""
+    resultat = {}
+    for ligne in chemin.read_text(encoding="utf-8").splitlines():
+        ligne = ligne.split("#", 1)[0].strip()
+        if not ligne:
+            continue
+        nom, _, valeur = ligne.partition(separateur) if separateur else ligne.partition(" ")
+        resultat.setdefault(nom.strip(), []).append(valeur.strip().strip(";").strip().strip("'"))
+    return resultat
+
+
+def test_sshd_config(si):
+    conf = directives(si.racine_si / "ssh/server/sshd_config")
+    assert conf["KexAlgorithms"] == ["curve25519-sha256,diffie-hellman-group14-sha256"]
+    assert conf["Ciphers"] == ["chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-ctr"]
+    assert conf["MACs"] == ["hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com"]
+    assert conf["HostKeyAlgorithms"] == ["ssh-ed25519,rsa-sha2-512,ecdsa-sha2-nistp256"]
+    # QR-031 : actif implicite, la directive ne doit pas être écrite.
+    assert "PubkeyAcceptedAlgorithms" not in conf and "PubkeyAcceptedKeyTypes" not in conf
+    # QR-026 : la vieille clé DSA n'est référencée nulle part.
+    assert all("ssh_host_dsa_key" not in cle for cle in conf["HostKey"])
+    assert len(conf["HostKey"]) == 3
+
+
+def test_dockerfile_ssh_fige_openssh_9_6(si):
+    texte = (si.racine_si / "ssh/Dockerfile").read_text(encoding="utf-8")
+    assert "openssh-server=1:9.6p1" in texte
+    assert "old/" not in texte

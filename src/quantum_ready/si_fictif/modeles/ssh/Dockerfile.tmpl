@@ -1,0 +1,18 @@
+# Image du serveur SSH du laboratoire
+FROM ubuntu:24.04
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssh-server=1:9.6p1-3ubuntu13.5 \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /run/sshd \
+    && useradd --create-home --shell /bin/bash admin \
+    && useradd --create-home --shell /bin/bash deploy
+
+COPY server/sshd_config /etc/ssh/sshd_config
+COPY server/ssh_host_ed25519_key server/ssh_host_ed25519_key.pub /etc/ssh/
+COPY server/ssh_host_rsa_key server/ssh_host_rsa_key.pub /etc/ssh/
+COPY server/ssh_host_ecdsa_key server/ssh_host_ecdsa_key.pub /etc/ssh/
+COPY --chown=admin:admin server/home/admin/.ssh/authorized_keys /home/admin/.ssh/authorized_keys
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D", "-e"]
