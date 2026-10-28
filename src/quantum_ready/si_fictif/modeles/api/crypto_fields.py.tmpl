@@ -1,0 +1,15 @@
+"""Chiffrement des colonnes sensibles (IBAN des clients) avant écriture en base."""
+
+import os
+
+from cryptography.fernet import Fernet
+
+_fernet = Fernet(os.environ["FIELD_ENCRYPTION_KEY"].encode())
+
+
+def chiffrer_iban(iban: str) -> bytes:
+    return _fernet.encrypt(iban.encode())
+
+
+def dechiffrer_iban(jeton: bytes) -> str:
+    return _fernet.decrypt(jeton).decode()

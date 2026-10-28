@@ -1,0 +1,10 @@
+"""Codes d'invitation des nouveaux utilisateurs."""
+
+import random
+import string
+
+_generateur = random.SystemRandom()
+
+
+def generer_code_invitation(longueur: int = 10) -> str:
+    return "".join(_generateur.choice(string.ascii_uppercase + string.digits) for _ in range(longueur))

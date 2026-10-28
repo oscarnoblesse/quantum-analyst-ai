@@ -1,0 +1,11 @@
+"""Réinitialisation des mots de passe oubliés."""
+
+import random
+import string
+
+_ALPHABET = string.ascii_letters + string.digits
+
+
+def generer_jeton_reinitialisation() -> str:
+    """Jeton envoyé par courriel pour réinitialiser le mot de passe."""
+    return "".join(random.choice(_ALPHABET) for _ in range(16))
