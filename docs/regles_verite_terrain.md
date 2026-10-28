@@ -4,7 +4,7 @@
 
 ## Objet
 
-Ce document fixe les règles utilisées pour remplir la vérité terrain du SI fictif de Quantum-Ready : 70 actifs cryptographiques, dont 16 cachés.
+Ce document fixe les règles utilisées pour remplir la vérité terrain du SI fictif de Quantum-Ready : 73 actifs cryptographiques, dont 16 cachés.
 
 La vérité terrain décrit ce qui a été **planté** dans le SI. Elle sert à **évaluer** les agents, en la comparant au CBOM CycloneDX 1.6 qu'ils produisent. Elle n'est pas le CBOM lui-même : elle contient des informations propres à l'évaluation (actif visible ou caché, risque attendu, liens entre actifs).
 
