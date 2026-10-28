@@ -108,6 +108,7 @@ def etapes() -> list[Etape]:
         code_applicatif.generer_api,
         code_applicatif.generer_factures,
         code_applicatif.generer_dependances,
+        code_applicatif.generer_sauvegardes,
     ]
 
 

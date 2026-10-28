@@ -5,6 +5,7 @@ Le code est copié depuis modeles/ ; seul le fichier .env reçoit des secrets.
 
 from __future__ import annotations
 
+import os
 import secrets
 
 from cryptography.fernet import Fernet
@@ -69,3 +70,31 @@ def generer_dependances(ctx: Contexte) -> None:
     ctx.ecrire_modele("api/pyproject.toml")
     ctx.ecrire_modele("api/uv.lock")
     ctx.ecrire_modele("scripts/deploy.py")
+
+
+IDENTITE_SAUVEGARDES = "Sauvegardes Lab <backup@lab.local>"
+
+
+def generer_sauvegardes(ctx: Contexte) -> None:
+    """Sauvegardes chiffrées de la base : QR-043 (script) et QR-044 (clé publique RSA-3072).
+
+    La clé privée correspondante reste hors du SI (stockée hors ligne dans une vraie
+    organisation) : elle est écrite dans le dossier hors_si.
+    """
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+
+    from quantum_ready.si_fictif.openpgp import cle_publique_rsa
+
+    cle = rsa.generate_private_key(65537, 3072)
+    ctx.ecrire("scripts/keys/backup_pub.asc", cle_publique_rsa(cle, IDENTITE_SAUVEGARDES))
+    ctx.ecrire_modele("scripts/backup.sh")
+    os.chmod(ctx.racine_si / "scripts/backup.sh", 0o755)
+    ctx.ecrire_hors_si(
+        "sauvegardes/backup_priv.pem",
+        cle.private_bytes(
+            serialization.Encoding.PEM,
+            serialization.PrivateFormat.PKCS8,
+            serialization.NoEncryption(),
+        ),
+    )
