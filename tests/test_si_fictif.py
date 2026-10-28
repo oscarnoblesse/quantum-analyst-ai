@@ -172,3 +172,22 @@ def test_dhparam_groupe_14(si):
     attendu = _entier_der(PREMIER_DH_GROUPE_14) + _entier_der(2)
     assert der[0] == 0x30 and der.endswith(attendu)
     assert PREMIER_DH_GROUPE_14.bit_length() == 2048
+
+
+# --- Configuration PostgreSQL (QR-036 à QR-039) ---
+
+
+def test_postgresql_conf(si):
+    conf = directives(si.racine_si / "db/postgresql.conf", separateur="=")
+    assert conf["ssl"] == ["on"]
+    assert conf["ssl_min_protocol_version"] == ["TLSv1.2"]
+    assert conf["ssl_ecdh_curve"] == ["prime256v1"]
+    assert conf["password_encryption"] == ["md5"]
+    # QR-037 : actif implicite, la directive ne doit pas être écrite.
+    assert "ssl_ciphers" not in conf
+
+
+def test_pg_hba_md5(si):
+    lignes = [l.split() for l in (si.racine_si / "db/pg_hba.conf").read_text(encoding="utf-8").splitlines()
+              if l.strip() and not l.startswith("#")]
+    assert ["hostssl", "lab_app", "lab_app", "10.0.0.0/8", "md5"] in lignes

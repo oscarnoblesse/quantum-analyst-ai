@@ -104,6 +104,7 @@ def etapes() -> list[Etape]:
         ssh.generer_ssh,
         configurations.generer_config_ssh,
         configurations.generer_config_nginx,
+        configurations.generer_config_postgresql,
     ]
 
 

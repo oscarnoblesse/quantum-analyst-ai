@@ -78,3 +78,17 @@ def generer_config_nginx(ctx: Contexte) -> None:
     """
     ctx.ecrire_modele("nginx/nginx.conf")
     ctx.ecrire("nginx/ssl/dhparam.pem", parametres_dh_groupe_14())
+
+
+def generer_config_postgresql(ctx: Contexte) -> None:
+    """Base PostgreSQL : QR-036 à QR-039.
+
+    - QR-037 (implicite) : ssl_ciphers n'est pas écrit, la valeur par défaut de
+      PostgreSQL (HIGH:MEDIUM:+3DES:!aNULL) s'applique ;
+    - QR-039 : méthode md5 dans pg_hba.conf ET password_encryption = md5, sans quoi
+      PostgreSQL stockerait des empreintes SCRAM et utiliserait SCRAM malgré « md5 ».
+    Les fichiers TLS référencés (tls/server.crt, server.key, root.crt) sont écrits
+    par l'étape PKI.
+    """
+    ctx.ecrire_modele("db/postgresql.conf")
+    ctx.ecrire_modele("db/pg_hba.conf")
