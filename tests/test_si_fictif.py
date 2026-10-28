@@ -53,3 +53,60 @@ def test_ligne_de_commande(tmp_path, capsys):
     assert main(["--sortie", str(sortie), "--hors-si", str(tmp_path / "h")]) == 0
     assert "SI v1 généré" in capsys.readouterr().out
     assert main(["--sortie", str(sortie), "--hors-si", str(tmp_path / "h")]) == 1
+
+
+# --- Clés SSH (QR-023 à QR-026, QR-032, QR-034, QR-035) ---
+
+from cryptography.hazmat.primitives import serialization  # noqa: E402
+from cryptography.hazmat.primitives.asymmetric import dsa, ec, ed25519, rsa  # noqa: E402
+
+from quantum_ready.si_fictif.ssh import publique_dsa_openssh  # noqa: E402
+
+
+def _cle_ssh(si, chemin):
+    return serialization.load_ssh_private_key((si.racine_si / chemin).read_bytes(), password=None)
+
+
+def _ligne_publique(cle):
+    return cle.public_key().public_bytes(
+        serialization.Encoding.OpenSSH, serialization.PublicFormat.OpenSSH
+    ).decode()
+
+
+@pytest.mark.parametrize(
+    "nom, type_attendu, taille",
+    [("ed25519", ed25519.Ed25519PrivateKey, None),
+     ("rsa", rsa.RSAPrivateKey, 3072),
+     ("ecdsa", ec.EllipticCurvePrivateKey, 256)],
+)
+def test_cles_hote(si, nom, type_attendu, taille):
+    chemin = f"ssh/server/ssh_host_{nom}_key"
+    cle = _cle_ssh(si, chemin)
+    assert isinstance(cle, type_attendu)
+    if taille:
+        assert cle.key_size == taille
+    assert stat.S_IMODE((si.racine_si / chemin).stat().st_mode) == 0o600
+    publique = (si.racine_si / (chemin + ".pub")).read_text(encoding="utf-8")
+    assert publique.startswith(_ligne_publique(cle))
+
+
+def test_ancienne_cle_dsa(si):
+    privee = (si.racine_si / "ssh/server/old/ssh_host_dsa_key").read_bytes()
+    assert privee.startswith(b"-----BEGIN DSA PRIVATE KEY-----")
+    cle = serialization.load_pem_private_key(privee, password=None)
+    assert isinstance(cle, dsa.DSAPrivateKey) and cle.key_size == 1024
+    publique = (si.racine_si / "ssh/server/old/ssh_host_dsa_key.pub").read_text(encoding="utf-8")
+    assert publique == publique_dsa_openssh(cle, "root@ssh-lab")
+
+
+def test_cle_admin_et_authorized_keys(si):
+    cle = _cle_ssh(si, "clients/admin/.ssh/id_ed25519")  # chargée sans mot de passe : non chiffrée
+    assert isinstance(cle, ed25519.Ed25519PrivateKey)
+    autorisees = (si.racine_si / "ssh/server/home/admin/.ssh/authorized_keys").read_text(encoding="utf-8")
+    assert autorisees.startswith(_ligne_publique(cle))
+
+
+def test_known_hosts(si):
+    hote = _cle_ssh(si, "ssh/server/ssh_host_ed25519_key")
+    ligne = (si.racine_si / "clients/admin/.ssh/known_hosts").read_text(encoding="utf-8").strip()
+    assert ligne == "ssh.lab.local " + _ligne_publique(hote)
