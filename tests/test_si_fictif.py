@@ -339,3 +339,52 @@ def test_script_sauvegarde(si):
 def test_cle_privee_des_sauvegardes_hors_si(si):
     assert (si.racine_hors_si / "sauvegardes/backup_priv.pem").exists()
     assert not list(si.racine_si.rglob("backup_priv*"))
+
+
+# --- Cohérence SI ↔ vérité terrain (controles.py) ---
+
+import shutil  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+from quantum_ready.si_fictif import controles  # noqa: E402
+from quantum_ready.verite_terrain import charger_csv  # noqa: E402
+
+CSV_V1 = Path(__file__).resolve().parents[1] / "data" / "ground_truth" / "verite_terrain_v1.csv"
+ACTIFS = charger_csv(CSV_V1)
+IDS = [a.id for a in ACTIFS]
+
+
+def test_chaque_actif_a_un_controle():
+    assert set(IDS) == set(controles.CONTROLES), "chaque ligne de la vérité terrain doit avoir un contrôle"
+
+
+@pytest.mark.parametrize("identifiant", IDS)
+def test_actif_present_dans_le_si(si, identifiant):
+    if identifiant in controles.IDS_PKI and not (si.racine_si / "certs/ca/racine.crt").exists():
+        pytest.xfail("étape PKI pas encore écrite")
+    assert controles.verifier(si.racine_si, [identifiant]) == {identifiant: None}
+
+
+def test_aucun_fichier_cryptographique_hors_verite_terrain(si):
+    assert controles.fichiers_non_inventories(si.racine_si, [a.fichier for a in ACTIFS]) == []
+
+
+def test_un_ecart_est_detecte(si, tmp_path):
+    """Si le SI s'écarte du tableau, le contrôle doit le voir."""
+    copie = tmp_path / "si"
+    shutil.copytree(si.racine_si, copie)
+    conf = copie / "ssh/server/sshd_config"
+    conf.write_text(conf.read_text(encoding="utf-8").replace("curve25519-sha256,", ""), encoding="utf-8")
+    (copie / "api/cache.py").unlink()
+    (copie / "notes.txt").write_text("-----BEGIN PRIVATE KEY-----\n", encoding="utf-8")
+    resultats = controles.verifier(copie, ["QR-027", "QR-059", "QR-999"])
+    assert all(resultats.values())
+    assert controles.fichiers_non_inventories(copie, [a.fichier for a in ACTIFS]) == ["notes.txt"]
+
+
+def test_rapport_en_ligne_de_commande(si, capsys):
+    code = controles.main([str(si.racine_si), str(CSV_V1)])
+    sortie = capsys.readouterr().out
+    assert "actifs conformes" in sortie
+    pki_ecrite = (si.racine_si / "certs/ca/racine.crt").exists()
+    assert code == (0 if pki_ecrite else 1)

@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si reproduce reproduce-small
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -17,6 +17,9 @@ verite-terrain: ## Valide le CSV de la vérité terrain et produit le JSON
 
 si: ## Génère le SI fictif dans si/generated/v1 (jamais commité)
 	uv run python -m quantum_ready.si_fictif --variante v1 --ecraser
+
+verifier-si: ## Compare le SI généré à la vérité terrain, actif par actif
+	uv run python -m quantum_ready.si_fictif.controles si/generated/v1 $(GT_CSV)
 
 reproduce: install verite-terrain si test ## Reproduction complète (sera complétée au fil du projet)
 
