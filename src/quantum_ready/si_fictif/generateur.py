@@ -106,6 +106,7 @@ def etapes() -> list[Etape]:
         configurations.generer_config_nginx,
         configurations.generer_config_postgresql,
         code_applicatif.generer_api,
+        code_applicatif.generer_factures,
     ]
 
 

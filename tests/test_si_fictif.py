@@ -272,3 +272,15 @@ def test_pieges_du_code(si, chemin, attendu, interdit):
     assert attendu in texte
     if interdit:
         assert interdit not in texte
+
+
+# --- Module de factures (QR-022 côté code, algorithme de signature) ---
+
+
+def test_module_factures(si):
+    texte = (si.racine_si / "factures/signer.py").read_text(encoding="utf-8")
+    ast.parse(texte)
+    assert "ec.ECDSA(hashes.SHA256())" in texte
+    assert 'os.environ["KEYSTORE_PASS"]' in texte
+    assert '"keys" / "factures.p12"' in texte
+    assert "factures.signer" in imports(si, "api/app.py")
