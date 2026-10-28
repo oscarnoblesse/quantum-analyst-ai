@@ -144,3 +144,31 @@ def test_dockerfile_ssh_fige_openssh_9_6(si):
     texte = (si.racine_si / "ssh/Dockerfile").read_text(encoding="utf-8")
     assert "openssh-server=1:9.6p1" in texte
     assert "old/" not in texte
+
+
+# --- Configuration nginx (QR-013 à QR-019) ---
+
+
+def test_nginx_conf(si):
+    conf = directives(si.racine_si / "nginx/nginx.conf")
+    assert conf["ssl_protocols"] == ["TLSv1.2 TLSv1.3"]
+    assert conf["ssl_ciphers"] == ["HIGH:!aNULL:!MD5"]  # QR-014, et QR-015 via HIGH
+    assert conf["ssl_ecdh_curve"] == ["X25519:secp256r1"]
+    assert conf["ssl_dhparam"] == ["ssl/dhparam.pem"]
+    assert conf["ssl_session_tickets"] == ["on"]
+    # QR-019 : actif implicite, rien ne fixe les suites TLS 1.3.
+    assert "ssl_conf_command" not in conf
+
+
+def test_dhparam_groupe_14(si):
+    import base64
+
+    from quantum_ready.si_fictif.configurations import PREMIER_DH_GROUPE_14, _entier_der
+
+    pem = (si.racine_si / "nginx/ssl/dhparam.pem").read_text(encoding="utf-8").splitlines()
+    assert pem[0] == "-----BEGIN DH PARAMETERS-----" and pem[-1] == "-----END DH PARAMETERS-----"
+    assert all(len(ligne) <= 64 for ligne in pem)
+    der = base64.b64decode("".join(pem[1:-1]))
+    attendu = _entier_der(PREMIER_DH_GROUPE_14) + _entier_der(2)
+    assert der[0] == 0x30 and der.endswith(attendu)
+    assert PREMIER_DH_GROUPE_14.bit_length() == 2048
