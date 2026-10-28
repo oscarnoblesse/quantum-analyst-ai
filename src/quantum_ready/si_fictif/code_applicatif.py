@@ -55,3 +55,17 @@ def generer_factures(ctx: Contexte) -> None:
     """
     ctx.ecrire_modele("factures/__init__.py")
     ctx.ecrire_modele("factures/signer.py")
+
+
+def generer_dependances(ctx: Contexte) -> None:
+    """Dépendances Python de l'API : QR-060 à QR-064, et bibliothèque paramiko.
+
+    - pyproject.toml déclare cryptography, pyjwt, argon2-cffi, paramiko et un vieux
+      pycryptodome que plus aucun fichier n'importe (QR-063, dépendance morte) ;
+    - uv.lock est un vrai fichier résolu depuis PyPI : il contient en plus pynacl et
+      bcrypt, tirés par paramiko (QR-064, dépendances transitives) ;
+    - scripts/deploy.py est le seul utilisateur de paramiko.
+    """
+    ctx.ecrire_modele("api/pyproject.toml")
+    ctx.ecrire_modele("api/uv.lock")
+    ctx.ecrire_modele("scripts/deploy.py")

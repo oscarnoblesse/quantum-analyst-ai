@@ -284,3 +284,31 @@ def test_module_factures(si):
     assert 'os.environ["KEYSTORE_PASS"]' in texte
     assert '"keys" / "factures.p12"' in texte
     assert "factures.signer" in imports(si, "api/app.py")
+
+
+# --- Dépendances (QR-060 à QR-064) ---
+
+import tomllib  # noqa: E402
+
+
+def test_dependances(si):
+    projet = tomllib.loads((si.racine_si / "api/pyproject.toml").read_text(encoding="utf-8"))
+    declarees = {re.split(r"[<>=]", d)[0] for d in projet["project"]["dependencies"]}
+    assert declarees == {"argon2-cffi", "cryptography", "paramiko", "pycryptodome", "pyjwt"}
+    assert "pycryptodome==3.9.9" in projet["project"]["dependencies"]
+    verrou = tomllib.loads((si.racine_si / "api/uv.lock").read_text(encoding="utf-8"))
+    verrouillees = {p["name"] for p in verrou["package"]}
+    # QR-064 : pynacl et bcrypt n'apparaissent que dans le verrou, tirés par paramiko.
+    assert {"pynacl", "bcrypt"} <= verrouillees and not {"pynacl", "bcrypt"} & declarees
+    assert declarees <= verrouillees
+
+
+def test_pycryptodome_jamais_importe(si):
+    """QR-063 : aucune source Python du SI n'importe pycryptodome (Crypto ou Cryptodome)."""
+    for fichier in si.racine_si.rglob("*.py"):
+        noms = imports(si, fichier.relative_to(si.racine_si))
+        assert not any(n.split(".")[0] in {"Crypto", "Cryptodome"} for n in noms), fichier
+
+
+def test_paramiko_utilise_par_deploy(si):
+    assert "paramiko" in imports(si, "scripts/deploy.py")
