@@ -45,3 +45,13 @@ def generer_api(ctx: Contexte) -> None:
         CLE_CHIFFREMENT_COLONNES=ctx.valeurs["CLE_CHIFFREMENT_COLONNES"],
         MOT_DE_PASSE_CONTENEUR_FACTURES=ctx.valeurs["MOT_DE_PASSE_CONTENEUR_FACTURES"],
     )
+
+
+def generer_factures(ctx: Contexte) -> None:
+    """Module de signature des factures : algorithme ECDSA P-256 avec SHA-256.
+
+    Le module lit sa clé dans factures/keys/factures.p12 (QR-020, QR-021, écrit par
+    l'étape PKI) avec le mot de passe KEYSTORE_PASS du .env de l'API (QR-022).
+    """
+    ctx.ecrire_modele("factures/__init__.py")
+    ctx.ecrire_modele("factures/signer.py")
