@@ -312,3 +312,30 @@ def test_pycryptodome_jamais_importe(si):
 
 def test_paramiko_utilise_par_deploy(si):
     assert "paramiko" in imports(si, "scripts/deploy.py")
+
+
+# --- Sauvegardes chiffrées (QR-043, QR-044) ---
+
+from quantum_ready.si_fictif.openpgp import _crc24, lire_cle_publique  # noqa: E402
+
+
+def test_crc24_vecteur_connu():
+    assert _crc24(b"") == 0xB704CE
+
+
+def test_cle_publique_gpg(si):
+    infos = lire_cle_publique((si.racine_si / "scripts/keys/backup_pub.asc").read_text(encoding="utf-8"))
+    assert infos == {"algorithme": "RSA", "taille": 3072, "identite": "Sauvegardes Lab <backup@lab.local>"}
+
+
+def test_script_sauvegarde(si):
+    script = si.racine_si / "scripts/backup.sh"
+    texte = script.read_text(encoding="utf-8")
+    assert "--encrypt --recipient backup@lab.local" in texte
+    assert "keys/backup_pub.asc" in texte.replace('$CLES/', "keys/")
+    assert stat.S_IMODE(script.stat().st_mode) & stat.S_IXUSR
+
+
+def test_cle_privee_des_sauvegardes_hors_si(si):
+    assert (si.racine_hors_si / "sauvegardes/backup_priv.pem").exists()
+    assert not list(si.racine_si.rglob("backup_priv*"))

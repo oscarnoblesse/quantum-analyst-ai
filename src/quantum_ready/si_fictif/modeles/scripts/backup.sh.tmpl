@@ -1,0 +1,17 @@
+#!/bin/sh
+# Sauvegarde nocturne de la base applicative (cron : 0 2 * * *)
+# Les sauvegardes sont conservées 10 ans (obligation de conservation des factures).
+set -eu
+
+DATE=$(date +%Y%m%d)
+DESTINATION=/var/backups/lab
+CLES=$(dirname "$0")/keys
+
+gpg --batch --import "$CLES/backup_pub.asc"
+
+pg_dump --host db.lab.local --username lab_app lab_app \
+  | gzip \
+  | gpg --batch --yes --trust-model always --encrypt --recipient backup@lab.local \
+  > "$DESTINATION/lab_app_$DATE.sql.gz.gpg"
+
+find "$DESTINATION" -name '*.gpg' -mtime +3650 -delete
