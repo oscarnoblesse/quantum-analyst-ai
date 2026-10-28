@@ -1,0 +1,13 @@
+"""Cache des traitements de documents (évite de retraiter un fichier déjà reçu)."""
+
+import hashlib
+
+_cache: dict[str, dict] = {}
+
+
+def cle_de_cache(contenu: bytes) -> str:
+    return hashlib.md5(contenu).hexdigest()
+
+
+def resultat_en_cache(contenu: bytes) -> dict | None:
+    return _cache.get(cle_de_cache(contenu))

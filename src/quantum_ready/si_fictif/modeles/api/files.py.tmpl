@@ -1,0 +1,8 @@
+"""Dépôt de documents par les clients."""
+
+import hashlib
+
+
+def checksum_document(contenu: bytes) -> str:
+    """Empreinte stockée en base à côté du document, pour détecter une corruption."""
+    return hashlib.sha256(contenu).hexdigest()

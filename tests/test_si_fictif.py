@@ -191,3 +191,84 @@ def test_pg_hba_md5(si):
     lignes = [l.split() for l in (si.racine_si / "db/pg_hba.conf").read_text(encoding="utf-8").splitlines()
               if l.strip() and not l.startswith("#")]
     assert ["hostssl", "lab_app", "lab_app", "10.0.0.0/8", "md5"] in lignes
+
+
+# --- API et .env (QR-040 à QR-042, QR-050 à QR-059) ---
+
+import ast  # noqa: E402
+import re  # noqa: E402
+
+from quantum_ready.si_fictif.code_applicatif import FICHIERS_API  # noqa: E402
+
+
+def lire_env(si):
+    env = {}
+    for ligne in (si.racine_si / "api/.env").read_text(encoding="utf-8").splitlines():
+        if ligne and not ligne.startswith("#"):
+            nom, _, valeur = ligne.partition("=")
+            env[nom] = valeur
+    return env
+
+
+def imports(si, chemin):
+    arbre = ast.parse((si.racine_si / chemin).read_text(encoding="utf-8"))
+    noms = set()
+    for noeud in ast.walk(arbre):
+        if isinstance(noeud, ast.Import):
+            noms.update(a.name for a in noeud.names)
+        elif isinstance(noeud, ast.ImportFrom):
+            noms.add(noeud.module or "")
+            noms.update(f"{noeud.module}.{a.name}" for a in noeud.names)
+    return noms
+
+
+def test_code_api_est_du_python_valide(si):
+    for chemin in FICHIERS_API:
+        ast.parse((si.racine_si / chemin).read_text(encoding="utf-8"), filename=chemin)
+
+
+def test_env(si):
+    env = lire_env(si)
+    assert set(env) == {"DATABASE_URL", "JWT_ALGORITHM", "JWT_SECRET", "WEBHOOK_SECRET",
+                        "FIELD_ENCRYPTION_KEY", "KEYSTORE_PASS"}
+    url = env["DATABASE_URL"]
+    assert "sslmode=require" in url and "sslrootcert=config/ca_bundle.pem" in url  # QR-040
+    assert re.match(r"postgresql://lab_app:[^@]+@db\.lab\.local", url)  # mot de passe de la base
+    assert env["JWT_ALGORITHM"] == "HS256" and env["JWT_SECRET"] == "dev-secret-2024"  # QR-052, QR-053
+    assert re.fullmatch(r"[0-9a-f]{64}", env["WEBHOOK_SECRET"])  # QR-057 : 256 bits
+    from cryptography.fernet import Fernet
+
+    Fernet(env["FIELD_ENCRYPTION_KEY"].encode())  # QR-042 : clé Fernet valide
+    assert "FACTURE" not in "".join(env).upper()  # QR-022 : le nom ne trahit pas son usage
+
+
+def test_algorithme_jwt_absent_du_code(si):
+    """QR-052 est caché : l'algorithme n'est écrit que dans le .env."""
+    assert "HS256" not in (si.racine_si / "api/tokens.py").read_text(encoding="utf-8")
+
+
+def test_code_mort_jamais_importe(si):
+    """QR-051 : legacy_auth n'est importé par aucun autre fichier."""
+    for chemin in FICHIERS_API:
+        if chemin != "api/legacy_auth.py":
+            assert not any("legacy_auth" in nom for nom in imports(si, chemin)), chemin
+
+
+@pytest.mark.parametrize(
+    "chemin, attendu, interdit",
+    [
+        ("api/auth.py", "PasswordHasher(time_cost=2, memory_cost=19456, parallelism=1)", None),
+        ("api/legacy_auth.py", "hashlib.sha256(", "salt"),
+        ("api/reset.py", "random.choice(", "secrets"),
+        ("api/utils/codes.py", "random.SystemRandom()", None),
+        ("api/webhooks.py", "== signature_recue", "compare_digest"),
+        ("api/files.py", "hashlib.sha256(", None),
+        ("api/cache.py", "hashlib.md5(", None),
+        ("api/crypto_fields.py", "Fernet(", None),
+    ],
+)
+def test_pieges_du_code(si, chemin, attendu, interdit):
+    texte = (si.racine_si / chemin).read_text(encoding="utf-8")
+    assert attendu in texte
+    if interdit:
+        assert interdit not in texte
