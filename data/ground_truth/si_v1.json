@@ -1,28 +1,28 @@
 {
   "version": "si_v1",
   "resume": {
-    "total": 70,
+    "total": 73,
     "caches": 16,
     "par_composant": {
       "Certificats": 20,
       "nginx": 9,
-      "Factures": 3,
+      "Factures": 4,
       "SSH": 13,
-      "Base de données": 10,
+      "Base de données": 11,
       "API": 10,
-      "Dépendances": 5
+      "Dépendances": 6
     },
     "par_vulnerabilite": {
-      "Oui (Shor)": 42,
-      "Indirect": 7,
+      "Oui (Shor)": 43,
+      "Indirect": 8,
       "Partiellement (Grover)": 7,
-      "Non": 14
+      "Non": 15
     },
     "par_type_cyclonedx": {
-      "related-crypto-material": 24,
-      "algorithm": 25,
+      "related-crypto-material": 25,
+      "algorithm": 26,
       "protocol": 8,
-      "library": 6,
+      "library": 7,
       "certificate": 7
     },
     "par_categorie_cachee": {
@@ -313,7 +313,7 @@
     {
       "id": "QR-022",
       "composant": "Factures",
-      "fichier": "api/.env (FACTURES_P12_PASSWORD=...)",
+      "fichier": "api/.env (KEYSTORE_PASS=...)",
       "actif": "Mot de passe du conteneur PKCS#12",
       "algorithme": "Secret en clair dans un fichier de variables d’environnement",
       "visibilite": "Caché",
@@ -534,7 +534,7 @@
     {
       "id": "QR-039",
       "composant": "Base de données",
-      "fichier": "db/pg_hba.conf",
+      "fichier": "db/pg_hba.conf (+ db/postgresql.conf : password_encryption = md5)",
       "actif": "Méthode d’authentification des connexions",
       "algorithme": "md5",
       "visibilite": "Visible",
@@ -807,7 +807,7 @@
     {
       "id": "QR-060",
       "composant": "Dépendances",
-      "fichier": "api/pyproject.toml + uv.lock",
+      "fichier": "api/pyproject.toml + api/uv.lock",
       "actif": "Bibliothèque cryptography",
       "algorithme": "Version figée dans uv.lock ; embarque sa propre copie d’OpenSSL",
       "visibilite": "Visible",
@@ -820,7 +820,7 @@
     {
       "id": "QR-061",
       "composant": "Dépendances",
-      "fichier": "api/pyproject.toml + uv.lock",
+      "fichier": "api/pyproject.toml + api/uv.lock",
       "actif": "Bibliothèque pyjwt",
       "algorithme": "Version figée",
       "visibilite": "Visible",
@@ -833,13 +833,13 @@
     {
       "id": "QR-062",
       "composant": "Dépendances",
-      "fichier": "api/pyproject.toml + uv.lock",
+      "fichier": "api/pyproject.toml + api/uv.lock",
       "actif": "Bibliothèque argon2-cffi",
       "algorithme": "Version figée",
       "visibilite": "Visible",
       "vulnerabilite": "Non",
       "type_risque": "Faible : fournit Argon2id (QR-050)",
-      "notes": "",
+      "notes": "Tire argon2-cffi-bindings (implémentation C d’Argon2), visible dans api/uv.lock",
       "type_cyclonedx": "library",
       "categorie_cachee": null
     },
@@ -859,7 +859,7 @@
     {
       "id": "QR-064",
       "composant": "Dépendances",
-      "fichier": "uv.lock uniquement (tirée par paramiko, utilisé dans scripts/deploy.py)",
+      "fichier": "api/uv.lock uniquement (tirée par paramiko, utilisé dans scripts/deploy.py)",
       "actif": "Bibliothèques crypto transitives : pynacl, bcrypt",
       "algorithme": "Versions figées dans uv.lock",
       "visibilite": "Caché",
@@ -945,6 +945,45 @@
       "type_risque": "Authenticité : usurpation de l’admin auprès de nginx après le Q-day",
       "notes": "Composant parent de QR-011 et QR-012. Émis par QR-066. Vérifié par nginx via ca_clients.crt",
       "type_cyclonedx": "certificate",
+      "categorie_cachee": null
+    },
+    {
+      "id": "QR-071",
+      "composant": "Base de données",
+      "fichier": "api/.env (DATABASE_URL=postgresql://lab_app:...@db.lab.local)",
+      "actif": "Mot de passe de la base de données utilisé par l’API",
+      "algorithme": "Secret aléatoire en clair dans l’URL de connexion",
+      "visibilite": "Visible",
+      "vulnerabilite": "Non",
+      "type_risque": "Classique : quiconque lit le .env se connecte à la base (dans la limite de pg_hba.conf, QR-039)",
+      "notes": "Même règle que QR-053 : nom de variable explicite. Faux mot de passe généré par script",
+      "type_cyclonedx": "related-crypto-material",
+      "categorie_cachee": null
+    },
+    {
+      "id": "QR-072",
+      "composant": "Dépendances",
+      "fichier": "api/pyproject.toml + api/uv.lock (utilisée par scripts/deploy.py)",
+      "actif": "Bibliothèque paramiko",
+      "algorithme": "Version figée dans api/uv.lock",
+      "visibilite": "Visible",
+      "vulnerabilite": "Indirect",
+      "type_risque": "Indirect : implémente son propre client SSH (échanges de clés et signatures classiques), hors de la configuration OpenSSH de QR-027 ; tire pynacl et bcrypt (QR-064)",
+      "notes": "Actif « fournisseur » : relier à scripts/deploy.py",
+      "type_cyclonedx": "library",
+      "categorie_cachee": null
+    },
+    {
+      "id": "QR-073",
+      "composant": "Factures",
+      "fichier": "factures/signer.py",
+      "actif": "Algorithme de signature des factures",
+      "algorithme": "ECDSA P-256 avec SHA-256 (ec.ECDSA(hashes.SHA256()))",
+      "visibilite": "Visible",
+      "vulnerabilite": "Oui (Shor)",
+      "type_risque": "Authenticité / intégrité : signatures falsifiables après le Q-day alors que les factures sont conservées 10 ans (Mosca)",
+      "notes": "Utilise la clé QR-020. Cible : ML-DSA (FIPS 204), éventuellement en signature hybride",
+      "type_cyclonedx": "algorithm",
       "categorie_cachee": null
     }
   ]

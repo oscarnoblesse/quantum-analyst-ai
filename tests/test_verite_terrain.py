@@ -61,7 +61,7 @@ def test_seuils_du_sujet(actifs):
 
 
 def test_compte_actuel(actifs):
-    assert len(actifs) == 70
+    assert len(actifs) == 73
     assert sum(a.est_cache for a in actifs) == 16
 
 
@@ -180,7 +180,7 @@ def test_conversion_json(tmp_path):
     convertir(CSV_V1, sortie)
     document = json.loads(sortie.read_text(encoding="utf-8"))
     assert document["version"] == "si_v1"
-    assert document["resume"]["total"] == 70
+    assert document["resume"]["total"] == 73
     assert document["resume"]["caches"] == 16
     assert document["actifs"][0]["id"] == "QR-001"
     assert document["actifs"][14]["categorie_cachee"] == "croisement de fichiers"
@@ -188,7 +188,7 @@ def test_conversion_json(tmp_path):
 
 def test_main_succes(tmp_path, capsys):
     assert main([str(CSV_V1), str(tmp_path / "si_v1.json")]) == 0
-    assert "70 actifs" in capsys.readouterr().out
+    assert "73 actifs" in capsys.readouterr().out
 
 
 def test_main_mauvais_arguments(capsys):
