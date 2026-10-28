@@ -103,6 +103,7 @@ def etapes() -> list[Etape]:
         pki.generer_pki,
         ssh.generer_ssh,
         configurations.generer_config_ssh,
+        configurations.generer_config_nginx,
     ]
 
 

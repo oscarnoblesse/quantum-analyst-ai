@@ -1,0 +1,62 @@
+# Frontal web du laboratoire : application (front) et API
+user  nginx;
+worker_processes  auto;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile      on;
+
+    upstream api_backend {
+        server api.lab.internal:8000;
+    }
+
+    server {
+        listen       80;
+        server_name  app.lab.local api.lab.local;
+        return       301 https://$host$request_uri;
+    }
+
+    server {
+        listen       443 ssl;
+        server_name  app.lab.local api.lab.local;
+
+        ssl_certificate      ssl/fullchain.pem;
+        ssl_certificate_key  ssl/server.key;
+
+        ssl_protocols        TLSv1.2 TLSv1.3;
+        ssl_ciphers          HIGH:!aNULL:!MD5;
+        ssl_ecdh_curve       X25519:secp256r1;
+        ssl_dhparam          ssl/dhparam.pem;
+        ssl_session_cache    shared:SSL:10m;
+        ssl_session_tickets  on;
+
+        # Espace d'administration : certificat client exigé sur /admin/
+        ssl_client_certificate  ssl/ca_clients.crt;
+        ssl_verify_client       optional;
+
+        root   /usr/share/nginx/html;
+
+        location / {
+            try_files $uri /index.html;
+        }
+
+        location /api/ {
+            proxy_pass        http://api_backend;
+            proxy_set_header  Host $host;
+            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        location /admin/ {
+            if ($ssl_client_verify != SUCCESS) {
+                return 403;
+            }
+            proxy_pass        http://api_backend;
+            proxy_set_header  X-Client-DN $ssl_client_s_dn;
+        }
+    }
+}
