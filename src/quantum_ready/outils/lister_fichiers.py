@@ -60,7 +60,8 @@ SANS_INTERET = {"vide", "binaire", "binaire_der"}
 _SSH_PUBLIQUE = re.compile(r"^(\S+\s+)?(ssh-(rsa|dss|ed25519)|ecdsa-sha2-nistp\d+|sk-\S+)\s+AAAA", re.M)
 _DIRECTIVE_SSHD = re.compile(
     r"^\s*(KexAlgorithms|HostKey|HostKeyAlgorithms|PermitRootLogin|PasswordAuthentication|Ciphers|MACs|"
-    r"PubkeyAuthentication|PubkeyAcceptedAlgorithms|UsePAM|ListenAddress|AuthorizedKeysFile)\s", re.M | re.I)
+    r"PubkeyAuthentication|PubkeyAcceptedAlgorithms|UsePAM|ListenAddress|AuthorizedKeysFile|Port|Protocol|X11Forwarding|"
+    r"MaxAuthTries|ClientAliveInterval|ChallengeResponseAuthentication|KbdInteractiveAuthentication|Subsystem|AllowUsers)\s", re.M | re.I)
 _DIRECTIVE_PG = re.compile(r"^\s*(listen_addresses|password_encryption|ssl_cert_file|shared_buffers|ssl_min_protocol_version|max_connections)\s*=", re.M)
 _LIGNE_HBA = re.compile(r"^\s*(local|host|hostssl|hostnossl|hostgssenc)\s+\S+\s+\S+", re.M)
 _LIGNE_ENV = re.compile(r"^(export\s+)?[A-Za-z_][A-Za-z0-9_]*=", re.M)

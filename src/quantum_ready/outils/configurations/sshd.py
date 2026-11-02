@@ -12,6 +12,8 @@ from __future__ import annotations
 import fnmatch
 import re
 
+from pathlib import Path
+
 from quantum_ready.outils.classification import exposition, exposition_la_pire
 from quantum_ready.outils.commun import Piste, Trouvaille
 from quantum_ready.outils.configurations import defauts
@@ -61,11 +63,39 @@ def appliquer(valeur: str, defaut: list[str]) -> list[str]:
     return valeur.split(",")
 
 
-def analyser(texte: str, fichier: str) -> tuple[list[Trouvaille], list[Piste]]:
+def version_dans_le_si(racine: Path) -> tuple[tuple[int, int] | None, str]:
+    """Version d'OpenSSH figée dans un Dockerfile du SI, si elle est unique."""
+    from quantum_ready.outils.configurations import dockerfile
+
+    versions = {}
+    for chemin in sorted(racine.rglob("*")):
+        if chemin.is_file() and chemin.name.lower().startswith(("dockerfile", "containerfile")):
+            trouvailles, _ = dockerfile.analyser(chemin.read_text(encoding="utf-8", errors="replace"), chemin.relative_to(racine).as_posix())
+            for t in trouvailles:
+                if t.nom.startswith("OpenSSH ") and (m := re.match(r"(\d+)\.(\d+)", str(t.proprietes.get("version", "")))):
+                    versions[(int(m.group(1)), int(m.group(2)))] = t.fichier
+    if len(versions) == 1:
+        version, source = next(iter(versions.items()))
+        return version, source
+    return None, "plusieurs versions dans le SI" if versions else "aucune version trouvée dans le SI"
+
+
+def lire_version(texte: str) -> tuple[int, int] | None:
+    m = re.match(r"\D*(\d+)\.(\d+)", texte or "")
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def analyser(texte: str, fichier: str, contexte=None) -> tuple[list[Trouvaille], list[Piste]]:
     d = directives(texte)
     trouvailles, pistes = [], []
+    options = getattr(contexte, "options", {}) or {}
+    version, origine = lire_version(str(options.get("version_openssh", ""))), "indiquée par l'agent"
+    if version is None and contexte is not None:
+        version, origine = version_dans_le_si(contexte.racine)
+        origine = f"lue dans {origine}" if version else origine
+    listes, source = defauts.openssh(version)
     for directive, role in ROLES.items():
-        defaut = defauts.OPENSSH_9_6[directive]
+        defaut = listes[directive]
         if directive in d:
             ligne, valeur = d[directive][0]  # sshd retient la PREMIÈRE occurrence
             effective = appliquer(valeur, defaut)
@@ -86,7 +116,7 @@ def analyser(texte: str, fichier: str) -> tuple[list[Trouvaille], list[Piste]]:
                 outil=NOM, fichier="", type_actif="algorithm", nom=",".join(a for a in defaut if "cert-v01" not in a),
                 description=f"{role} : directive absente, OpenSSH applique sa liste par défaut",
                 exposition=exposition_la_pire(defaut), implicite=True,
-                proprietes={"algorithmes": defaut, "source": defauts.SOURCE_OPENSSH},
+                proprietes={"algorithmes": defaut, "source": source},
                 preuve=f"{directive} absente de {fichier}",
             ))
         else:
@@ -94,11 +124,14 @@ def analyser(texte: str, fichier: str) -> tuple[list[Trouvaille], list[Piste]]:
                 outil=NOM, fichier="", type_actif=TYPES[directive], nom=",".join(defaut),
                 description=f"{role} : directive absente, OpenSSH applique sa liste par défaut",
                 exposition=exposition_la_pire(defaut), implicite=True,
-                proprietes={"algorithmes": defaut, "source": defauts.SOURCE_OPENSSH},
+                proprietes={"algorithmes": defaut, "source": source},
                 preuve=f"{directive} absente de {fichier}",
             ))
     for ligne, chemin in d.get("HostKey", []):
         pistes.append(Piste(vers=chemin, raison=f"clé d'hôte du serveur (HostKey, ligne {ligne})"))
-    if any(t.implicite for t in trouvailles):
-        pistes.append(Piste(vers="version d'OpenSSH", raison="les valeurs par défaut utilisées sont celles d'OpenSSH 9.6 : confirmer la version installée (Dockerfile, image)"))
+    for trouvaille in trouvailles:
+        trouvaille.proprietes["version_openssh"] = f"{version[0]}.{version[1]} ({origine})" if version else f"inconnue ({origine})"
+    if version is None:
+        pistes.append(Piste(vers="version d'OpenSSH", raison="version inconnue : les valeurs par défaut sont une HYPOTHÈSE (OpenSSH 9.6) ; "
+                            "trouver la version installée, puis rappeler l'outil avec version_openssh"))
     return trouvailles, pistes

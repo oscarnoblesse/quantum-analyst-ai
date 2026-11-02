@@ -26,7 +26,7 @@ ANALYSEURS = {
     "script_shell": shell.analyser,
 }
 
-AVEC_CONTEXTE = {nginx.analyser}
+AVEC_CONTEXTE = {nginx.analyser, sshd.analyser}
 
 
 def _situer(piste: Piste, dossier: Path, racine: Path) -> Piste:
