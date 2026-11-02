@@ -12,13 +12,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from quantum_ready.outils.commun import ErreurOutil, Piste, Resultat, outil, relatif, resoudre
-from quantum_ready.outils.configurations import dockerfile, env, nginx, postgresql, shell, sshd
+from quantum_ready.outils.configurations import apache, dockerfile, env, nginx, postgresql, shell, sshd, structure
 from quantum_ready.outils.lister_fichiers import reconnaitre
 
 NOM = "analyser_configuration"
 ANALYSEURS = {
     "config_nginx": nginx.analyser,
     "config_sshd": sshd.analyser,
+    "config_apache": apache.analyser,
+    "yaml": structure.analyser_yaml,
+    "json": structure.analyser_json,
     "config_postgresql": postgresql.analyser_conf,
     "config_pg_hba": postgresql.analyser_hba,
     "variables_env": env.analyser,
@@ -26,7 +29,7 @@ ANALYSEURS = {
     "script_shell": shell.analyser,
 }
 
-AVEC_CONTEXTE = {nginx.analyser, sshd.analyser}
+AVEC_CONTEXTE = {nginx.analyser, sshd.analyser, apache.analyser}
 
 
 def _situer(piste: Piste, dossier: Path, racine: Path) -> Piste:
