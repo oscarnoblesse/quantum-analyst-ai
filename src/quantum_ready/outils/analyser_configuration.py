@@ -11,13 +11,16 @@ from __future__ import annotations
 from pathlib import Path
 
 from quantum_ready.outils.commun import ErreurOutil, Piste, Resultat, outil, relatif, resoudre
-from quantum_ready.outils.configurations import nginx, sshd
+from quantum_ready.outils.configurations import env, nginx, postgresql, sshd
 from quantum_ready.outils.lister_fichiers import reconnaitre
 
 NOM = "analyser_configuration"
 ANALYSEURS = {
     "config_nginx": nginx.analyser,
     "config_sshd": sshd.analyser,
+    "config_postgresql": postgresql.analyser_conf,
+    "config_pg_hba": postgresql.analyser_hba,
+    "variables_env": env.analyser,
 }
 
 
