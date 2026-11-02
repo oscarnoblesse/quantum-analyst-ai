@@ -85,6 +85,8 @@ def test_decrire_secret_ne_revele_pas_la_valeur():
         ("Argon2id", "grover"),
         ("RS256", "shor"),
         ("HS256", "grover"),
+        ("ES384", "shor"),
+        ("aes256-gcm@openssh.com", "grover"),
         ("PermitRootLogin", "inconnue"),
     ],
 )
