@@ -78,6 +78,7 @@ class FichierSI(BaseModel):
     droits: str = Field(description="Droits Unix en octal, par exemple « 600 »")
     nature: str = Field(description="Nature reconnue d'après le contenu, pas d'après le nom")
     outil_conseille: str | None = None
+    remarque: str | None = Field(None, description="Limite connue de l'analyse de ce fichier")
 
 
 class Resultat(BaseModel):
