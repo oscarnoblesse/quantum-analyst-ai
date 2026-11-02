@@ -36,6 +36,7 @@ OUTILS = {
     "config_nginx": "analyser_configuration",
     "config_apache": "analyser_configuration",
     "config_sshd": "analyser_configuration",
+    "config_ssh_client": "analyser_configuration",
     "config_postgresql": "analyser_configuration",
     "config_pg_hba": "analyser_configuration",
     "variables_env": "analyser_configuration",
@@ -62,6 +63,9 @@ _DIRECTIVE_SSHD = re.compile(
     r"^\s*(KexAlgorithms|HostKey|HostKeyAlgorithms|PermitRootLogin|PasswordAuthentication|Ciphers|MACs|"
     r"PubkeyAuthentication|PubkeyAcceptedAlgorithms|UsePAM|ListenAddress|AuthorizedKeysFile|Port|Protocol|X11Forwarding|"
     r"MaxAuthTries|ClientAliveInterval|ChallengeResponseAuthentication|KbdInteractiveAuthentication|Subsystem|AllowUsers)\s", re.M | re.I)
+# Directives propres au serveur : leur présence exclut une configuration client.
+_DIRECTIVE_SSHD_SERVEUR = re.compile(r"^\s*(HostKey|PermitRootLogin|AuthorizedKeysFile|AllowUsers|UsePAM|Subsystem|ListenAddress|PasswordAuthentication)\s", re.M | re.I)
+_DIRECTIVE_SSH_CLIENT = re.compile(r"^\s*(HostName|IdentityFile|User|Port|ProxyJump|StrictHostKeyChecking|ForwardAgent|KexAlgorithms|Ciphers|MACs|HostKeyAlgorithms)\s", re.M | re.I)
 _DIRECTIVE_PG = re.compile(r"^\s*(listen_addresses|password_encryption|ssl_cert_file|shared_buffers|ssl_min_protocol_version|max_connections)\s*=", re.M)
 _LIGNE_HBA = re.compile(r"^\s*(local|host|hostssl|hostnossl|hostgssenc)\s+\S+\s+\S+", re.M)
 _LIGNE_ENV = re.compile(r"^(export\s+)?[A-Za-z_][A-Za-z0-9_]*=", re.M)
@@ -120,6 +124,9 @@ def _texte(texte: str) -> str:
         return "config_apache"
     if re.search(r"\b(server|http|stream)\s*\{", texte) or len(_DIRECTIVE_NGINX.findall(texte)) >= 2 or re.search(r"^\s*ssl_\w+\s+[^;]+;", texte, re.M):
         return "config_nginx"
+    if (re.search(r"^\s*Host\s+\S", texte, re.M) and _DIRECTIVE_SSH_CLIENT.search(texte)
+            and not _DIRECTIVE_SSHD_SERVEUR.search(texte)):
+        return "config_ssh_client"
     if len(_DIRECTIVE_SSHD.findall(texte)) >= 2 or re.search(r"^\s*(KexAlgorithms|HostKey)\s", texte, re.M):
         return "config_sshd"
     if _DIRECTIVE_PG.search(texte):

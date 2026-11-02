@@ -19,6 +19,7 @@ NOM = "analyser_configuration"
 ANALYSEURS = {
     "config_nginx": nginx.analyser,
     "config_sshd": sshd.analyser,
+    "config_ssh_client": sshd.analyser_client,
     "config_apache": apache.analyser,
     "yaml": structure.analyser_yaml,
     "json": structure.analyser_json,
@@ -29,7 +30,7 @@ ANALYSEURS = {
     "script_shell": shell.analyser,
 }
 
-AVEC_CONTEXTE = {nginx.analyser, sshd.analyser, apache.analyser}
+AVEC_CONTEXTE = {nginx.analyser, sshd.analyser, sshd.analyser_client, apache.analyser}
 
 
 def _situer(piste: Piste, dossier: Path, racine: Path) -> Piste:

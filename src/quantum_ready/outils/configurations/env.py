@@ -19,7 +19,22 @@ from quantum_ready.outils.classification import exposition
 from quantum_ready.outils.commun import Piste, Trouvaille, decrire_secret, lire_env
 
 NOM = "analyser_configuration"
-_NOM_SECRET = re.compile(r"(SECRET|KEY|PASS|PWD|TOKEN|SALT|PRIVATE)", re.I)
+MOTS_SECRETS = {"secret", "secrets", "key", "pass", "password", "passwd", "passphrase", "pwd", "token", "salt", "private", "credential", "credentials", "apikey"}
+LISTES_DE_DEPENDANCES = {"dependencies", "devdependencies", "peerdependencies", "optionaldependencies", "require", "require-dev", "packages"}
+
+
+def mots(nom: str) -> list[str]:
+    """« FIELD_ENCRYPTION_KEY » -> field, encryption, key ; « privateKey » -> private, key ; « jsonwebtoken » -> jsonwebtoken."""
+    return [m.lower() for m in re.findall(r"[A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+", nom)]
+
+
+def est_nom_de_secret(chemin: str) -> bool:
+    """Le dernier élément du nom contient-il un MOT de secret ? Jamais sous une liste de dépendances."""
+    elements = [e for e in re.split(r"[.\[\]]", chemin) if e]
+    if not elements or any(e.lower() in LISTES_DE_DEPENDANCES for e in elements[:-1]):
+        return False
+    morceaux = mots(elements[-1])
+    return "public" not in morceaux and any(m in MOTS_SECRETS for m in morceaux)
 MOTS_PREVISIBLES = ("secret", "password", "motdepasse", "changeme", "admin", "test", "dev", "demo", "1234", "azerty", "qwerty", "default")
 SSLMODES = {
     "disable": "aucun chiffrement",
@@ -100,7 +115,7 @@ def analyser_variables(variables, fichier: str, lieu: str) -> tuple[list[Trouvai
                 ))
                 if "sslrootcert" in options:
                     pistes.append(Piste(vers=options["sslrootcert"], raison=f"magasin d'AC de la connexion {nom} (sslrootcert)"))
-        elif _NOM_SECRET.search(nom.split(".")[-1]) and valeur and not valeur.startswith(("${", "$(")):
+        elif est_nom_de_secret(nom) and valeur and not valeur.startswith(("${", "$(")):
             nom_secret, props = forme_du_secret(valeur)
             props["variable"] = nom
             trouvailles.append(Trouvaille(
