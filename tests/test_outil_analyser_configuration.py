@@ -233,3 +233,60 @@ def test_script_autres_commandes(tmp_path):
         "openssl req (rsa:2048)", "Génération de clé SSH RSA-1024", "MD5",
         "Chiffrement OpenPGP symétrique (AES256)", "Signature OpenPGP",
     ]
+
+
+# --- nginx : grammaire, héritage, include ---
+
+def _site(tmp_path, fichiers):
+    for nom, contenu in fichiers.items():
+        (tmp_path / nom).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / nom).write_text(contenu)
+
+
+def test_nginx_deux_serveurs_ne_sont_pas_melanges(tmp_path):
+    _site(tmp_path, {"nginx.conf": (
+        "http {\n  ssl_protocols TLSv1.2 TLSv1.3;  # pour tous\n"
+        "  server { listen 443 ssl; server_name a.test; }\n"
+        "  server { listen 8443 ssl; server_name b.test; ssl_protocols TLSv1 TLSv1.2; }\n"
+        "  server { listen 80; server_name clair.test; }\n}\n")})
+    noms = _par_nom(analyser_configuration("nginx.conf", racine=tmp_path))
+    assert noms["TLSv1.2 TLSv1.3"].proprietes["serveurs"] == ["a.test"]
+    assert noms["TLSv1 TLSv1.2"].proprietes["serveurs"] == ["b.test"]
+    assert "faiblesse_classique" in noms["TLSv1 TLSv1.2"].proprietes
+    assert all("clair.test" not in t.proprietes.get("serveurs", []) for t in noms.values())
+
+
+def test_nginx_include_relatif_motif_et_absolu(tmp_path):
+    _site(tmp_path, {
+        "etc/nginx/nginx.conf": "http { include conf.d/*.conf; }\n",
+        "etc/nginx/conf.d/site.conf": "server { listen 443 ssl; include /etc/nginx/snippets/tls.conf; }\n",
+        "etc/nginx/snippets/tls.conf": "ssl_protocols TLSv1.3;\nssl_ecdh_curve 'X25519MLKEM768:X25519';\n",
+    })
+    resultat = analyser_configuration("etc/nginx/nginx.conf", racine=tmp_path)
+    groupes = _par_nom(resultat)["X25519MLKEM768:X25519"]
+    assert groupes.fichier == "etc/nginx/snippets/tls.conf" and groupes.ligne == 2
+    assert groupes.proprietes["hybride_post_quantique"] is True
+
+
+def test_nginx_include_en_boucle_et_introuvable(tmp_path):
+    _site(tmp_path, {
+        "a.conf": "include b.conf;\ninclude absent.conf;\nserver { listen 443 ssl; }\n",
+        "b.conf": "include a.conf;\nssl_session_tickets off;\n",
+    })
+    resultat = analyser_configuration("a.conf", racine=tmp_path)
+    assert "Clé des tickets de session TLS" not in _par_nom(resultat)
+    assert any("introuvable" in p.raison and p.vers == "absent.conf" for p in resultat.pistes)
+
+
+def test_nginx_valeurs_par_defaut_et_guillemets(tmp_path):
+    _site(tmp_path, {"site.conf": "server {\n  listen 443 ssl;\n  ssl_ciphers \"ECDHE-RSA-AES128-SHA:DES-CBC3-SHA\";  # ancien\n}\n"})
+    noms = _par_nom(analyser_configuration("site.conf", racine=tmp_path))
+    versions = noms["TLSv1 TLSv1.1 TLSv1.2 TLSv1.3"]
+    assert versions.implicite and "1.23.4" in versions.proprietes["source"]
+    assert "ECDHE-RSA-AES128-SHA:DES-CBC3-SHA" in noms
+
+
+def test_nginx_fragment_seul(tmp_path):
+    _site(tmp_path, {"ssl-params.conf": "ssl_protocols TLSv1.3;\n"})
+    resultat = analyser_configuration("ssl-params.conf", racine=tmp_path)
+    assert _par_nom(resultat)["TLSv1.3"].proprietes["serveurs"] == ["fragment ssl-params.conf"]

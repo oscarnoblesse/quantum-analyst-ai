@@ -58,3 +58,10 @@ KEX_POST_QUANTIQUE_OPENSSH = [
     ((10, 0), "mlkem768x25519-sha256"),
     ((9, 0), "sntrup761x25519-sha512@openssh.com"),
 ]
+
+# nginx, module ngx_http_ssl_module : valeurs par défaut documentées.
+NGINX_SSL_PROTOCOLS = ["TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3"]
+SOURCE_NGINX_SSL_PROTOCOLS = "valeur par défaut de nginx depuis 1.23.4 (TLSv1 TLSv1.1 TLSv1.2 avant) ; OpenSSL 3 peut refuser TLS 1.0/1.1 à son niveau de sécurité par défaut"
+NGINX_SSL_CIPHERS = "HIGH:!aNULL:!MD5"
+SOURCE_NGINX = "valeur par défaut de nginx (ngx_http_ssl_module)"
+SOURCE_GROUPES_OPENSSL = "valeur par défaut d'OpenSSL 3.0 à 3.4 ; OpenSSL 3.5 et plus propose X25519MLKEM768 en tête"
