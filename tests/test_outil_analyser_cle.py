@@ -123,3 +123,9 @@ def test_fichier_sans_cle(racine_si):
 def test_certificat_dans_un_fichier_de_cle(racine_si):
     resultat = analyser_cle("nginx/ssl/server.crt", racine=racine_si)
     assert "analyser_x509" in resultat.pistes[0].raison
+
+
+def test_la_cle_dsa_pem_a_la_meme_empreinte_que_son_pub(racine_si):
+    privee = _unique(analyser_cle("ssh/server/old/ssh_host_dsa_key", racine=racine_si))
+    publique = _unique(analyser_cle("ssh/server/old/ssh_host_dsa_key.pub", racine=racine_si))
+    assert privee.proprietes["empreinte"] == publique.proprietes["empreinte"]
