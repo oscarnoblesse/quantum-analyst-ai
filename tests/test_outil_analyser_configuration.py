@@ -184,3 +184,52 @@ def test_env_verify_full_sans_faiblesse(tmp_path):
     noms = _par_nom(analyser_configuration(".env", racine=tmp_path))
     assert "faiblesse_classique" not in noms["sslmode=verify-full"].proprietes
     assert "Secret en clair (API_TOKEN)" in noms
+
+
+# --- Dockerfile ---
+
+def test_dockerfile_version_d_openssh(racine_si):
+    resultat = _analyser(racine_si, "ssh/Dockerfile")
+    openssh = resultat.trouvailles[0]
+    assert (openssh.type_actif, openssh.nom) == ("library", "OpenSSH 9.6p1")
+    assert openssh.proprietes["kex_post_quantique_par_defaut"] == "sntrup761x25519-sha512@openssh.com"
+    assert openssh.proprietes["image_de_base"] == "ubuntu:24.04"
+    assert "ssh/server/sshd_config" in {p.vers for p in resultat.pistes}
+
+
+def test_dockerfile_paquet_non_fige_et_openssh_10(tmp_path):
+    (tmp_path / "Dockerfile").write_text(
+        "FROM debian:13\nRUN apt-get update && apt-get install -y \\\n    openssl openssh-server=1:10.0p1-5\nCMD [\"sh\"]\n"
+    )
+    resultat = analyser_configuration("Dockerfile", racine=tmp_path)
+    noms = _par_nom(resultat)
+    assert noms["OpenSSL (version de l'image debian:13)"].proprietes["version"].startswith("non figée")
+    assert noms["OpenSSH 10.0p1"].proprietes["kex_post_quantique_par_defaut"] == "mlkem768x25519-sha256"
+
+
+# --- scripts shell ---
+
+def test_script_de_sauvegarde(racine_si):
+    resultat = _analyser(racine_si, "scripts/backup.sh")
+    gpg = resultat.trouvailles[0]
+    assert gpg.nom == "Chiffrement OpenPGP à clé publique" and gpg.exposition == "shor"
+    assert gpg.proprietes["destinataire"] == "backup@lab.local"
+    assert gpg.proprietes["duree_conservation_jours"] == 3650
+    pistes = {p.vers: p.raison for p in resultat.pistes}
+    assert pistes["scripts/keys/backup_pub.asc"].startswith("clé importée")
+    assert "Mosca" in pistes["scripts/backup.sh"]
+
+
+def test_script_autres_commandes(tmp_path):
+    (tmp_path / "outils.sh").write_text(
+        "#!/bin/bash\n"
+        "openssl req -new -newkey rsa:2048 -nodes -keyout k.pem\n"
+        "ssh-keygen -t rsa -b 1024 -f id\n"
+        "md5sum fichier > somme.txt; gpg -c --cipher-algo AES256 secret.txt\n"
+        "gpg --detach-sign doc.pdf\n"
+    )
+    noms = [t.nom for t in analyser_configuration("outils.sh", racine=tmp_path).trouvailles]
+    assert noms == [
+        "openssl req (rsa:2048)", "Génération de clé SSH RSA-1024", "MD5",
+        "Chiffrement OpenPGP symétrique (AES256)", "Signature OpenPGP",
+    ]
