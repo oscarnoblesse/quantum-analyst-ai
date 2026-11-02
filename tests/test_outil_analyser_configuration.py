@@ -114,3 +114,73 @@ def test_sans_openssl(monkeypatch):
     monkeypatch.setattr(shutil, "which", lambda _: None)
     props, rsa = resume_suites("HIGH")
     assert rsa == [] and "openssl absent" in props["developpement"]
+
+
+# --- PostgreSQL ---
+
+def test_postgresql_conf(racine_si):
+    resultat = _analyser(racine_si, "db/postgresql.conf")
+    noms = _par_nom(resultat)
+    assert noms["TLSv1.2"].ligne is not None and noms["prime256v1"].exposition == "shor"
+    implicite = noms["HIGH:MEDIUM:+3DES:!aNULL"]
+    assert implicite.implicite and "faiblesse_classique" in implicite.proprietes
+    pistes = {p.vers: p.raison for p in resultat.pistes}
+    assert "password_encryption = md5" in pistes["db/pg_hba.conf"]
+    assert "db/tls/server.key" in pistes
+
+
+def test_postgresql_sans_ssl(tmp_path):
+    (tmp_path / "postgresql.conf").write_text("listen_addresses = '*'\nssl = off\n")
+    resultat = analyser_configuration("postgresql.conf", racine=tmp_path)
+    assert resultat.trouvailles == [] and "pas chiffrées" in resultat.pistes[0].raison
+
+
+def test_pg_hba(racine_si):
+    resultat = _analyser(racine_si, "db/pg_hba.conf")
+    assert [t.nom for t in resultat.trouvailles] == ["md5"]
+    assert any("password_encryption" in p.raison for p in resultat.pistes)
+
+
+def test_pg_hba_methodes_et_connexions_sans_tls(tmp_path):
+    (tmp_path / "pg_hba.conf").write_text(
+        "local all all scram-sha-256\nhost all all 0.0.0.0/0 password  # à corriger\nhostssl all all ::/0 cert\n"
+    )
+    resultat = analyser_configuration("pg_hba.conf", racine=tmp_path)
+    assert [t.nom for t in resultat.trouvailles] == ["scram-sha-256", "password", "cert"]
+    assert "sans TLS" in resultat.pistes[0].raison
+
+
+# --- .env ---
+
+def test_env_secrets_decrits_jamais_recopies(racine_si):
+    from quantum_ready.outils.commun import lire_env
+
+    resultat = _analyser(racine_si, "api/.env")
+    texte = resultat.model_dump_json()
+    for _, nom, valeur in lire_env((racine_si / "api/.env").read_text()):
+        if nom != "JWT_ALGORITHM":
+            assert valeur not in texte, f"{nom} recopié dans le résultat"
+    noms = [t.nom for t in resultat.trouvailles]
+    assert "Secret faible (JWT_SECRET)" in noms
+    assert "Clé Fernet 256 bits (FIELD_ENCRYPTION_KEY)" in noms
+    assert "Secret aléatoire de 256 bits (WEBHOOK_SECRET)" in noms
+    assert "Secret en clair (KEYSTORE_PASS)" in noms
+
+
+def test_env_url_de_connexion(racine_si):
+    noms = _par_nom(_analyser(racine_si, "api/.env"))
+    assert noms["sslmode=require"].proprietes["faiblesse_classique"].startswith("certificat du serveur non vérifié")
+    assert noms["Mot de passe de connexion (secret en clair)"].proprietes["utilisateur"] == "lab_app"
+
+
+def test_env_nom_d_algorithme_devient_une_piste(racine_si):
+    pistes = {p.vers: p.raison for p in _analyser(racine_si, "api/.env").pistes}
+    assert "HS256" in pistes["JWT_ALGORITHM"]
+    assert pistes["api/config/ca_bundle.pem"].startswith("magasin d'AC")
+
+
+def test_env_verify_full_sans_faiblesse(tmp_path):
+    (tmp_path / ".env").write_text("DB=postgresql://u@h/db?sslmode=verify-full\nAPI_TOKEN=Zq8!rT2#pL9@xW4$\n")
+    noms = _par_nom(analyser_configuration(".env", racine=tmp_path))
+    assert "faiblesse_classique" not in noms["sslmode=verify-full"].proprietes
+    assert "Secret en clair (API_TOKEN)" in noms
