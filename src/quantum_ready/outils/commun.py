@@ -157,3 +157,27 @@ def decrire_secret(valeur: str) -> str:
     if any(not c.isalnum() for c in valeur):
         alphabets.append("symboles")
     return f"{len(valeur)} caractères ({', '.join(alphabets) or 'vide'})"
+
+
+def lire_env(texte: str) -> list[tuple[int, str, str]]:
+    """Lignes « NOM=valeur » d'un fichier .env : (numéro de ligne, nom, valeur sans guillemets)."""
+    variables = []
+    for numero, ligne in enumerate(texte.splitlines(), start=1):
+        ligne = ligne.strip()
+        if not ligne or ligne.startswith("#") or "=" not in ligne:
+            continue
+        nom, valeur = ligne.removeprefix("export ").split("=", 1)
+        valeur = valeur.strip()
+        if len(valeur) >= 2 and valeur[0] == valeur[-1] and valeur[0] in "\"'":
+            valeur = valeur[1:-1]
+        variables.append((numero, nom.strip(), valeur))
+    return variables
+
+
+def secret_depuis_env(fichier_env: str, variable: str, racine: Path) -> str:
+    """Valeur d'une variable d'un .env du SI. Réservé aux outils : ne jamais la renvoyer à l'agent."""
+    texte = resoudre(fichier_env, racine).read_text(encoding="utf-8")
+    for _, nom, valeur in lire_env(texte):
+        if nom == variable:
+            return valeur
+    raise ErreurOutil(f"Variable {variable} absente de {fichier_env}")
