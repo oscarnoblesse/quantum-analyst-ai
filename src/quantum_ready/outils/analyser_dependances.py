@@ -84,17 +84,38 @@ def analyser_dependances(cible: str, racine: Path) -> Resultat:
     chemin = resoudre(cible or ".", racine)
     dossier = chemin if chemin.is_dir() else chemin.parent
     pyproject, verrou = dossier / "pyproject.toml", dossier / "uv.lock"
-    if not pyproject.is_file() and not verrou.is_file():
-        raise ErreurOutil(f"Ni pyproject.toml ni uv.lock dans {relatif(dossier, racine) or '.'}")
+    if not verrou.is_file() and (dossier / "poetry.lock").is_file():
+        verrou = dossier / "poetry.lock"
+    exigences = sorted(dossier.glob("requirements*.txt")) if chemin.is_dir() or chemin.name == "pyproject.toml" else ([chemin] if chemin.name.startswith("requirements") or chemin.suffix == ".txt" else [])
+    if not pyproject.is_file() and not verrou.is_file() and not exigences:
+        raise ErreurOutil(f"Aucun fichier de dépendances Python (pyproject.toml, uv.lock, poetry.lock, requirements*.txt) dans {relatif(dossier, racine) or '.'}")
     resultat = Resultat(outil=NOM, cible=relatif(dossier, racine) or ".")
 
     declarees: dict[str, str] = {}
+    source_declaree: dict[str, str] = {}
+    epinglees: dict[str, str] = {}
+    for fichier_exigences in exigences:
+        for ligne in fichier_exigences.read_text(encoding="utf-8", errors="replace").splitlines():
+            ligne = ligne.split("#")[0].split(";")[0].strip()
+            if not ligne or ligne.startswith(("-", "git+", "http")):
+                continue
+            if (exigence := re.match(r"([A-Za-z0-9_.\-]+)(\[[^\]]*\])?\s*(.*)", ligne)):
+                nom = normaliser(exigence.group(1))
+                declarees[nom] = exigence.group(3).strip() or "toute version"
+                source_declaree[nom] = relatif(fichier_exigences, racine)
+                if (fige := re.match(r"===?\s*([\w.]+)$", exigence.group(3).strip())):
+                    epinglees[nom] = fige.group(1)
     if pyproject.is_file():
-        projet = tomllib.loads(pyproject.read_text(encoding="utf-8")).get("project", {})
-        for exigence in projet.get("dependencies", []):
+        donnees = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+        for exigence in donnees.get("project", {}).get("dependencies", []):
             nom = re.match(r"[A-Za-z0-9_.\-]+", exigence).group(0)
             declarees[normaliser(nom)] = exigence[len(nom):].strip() or "toute version"
-    else:
+            source_declaree[normaliser(nom)] = relatif(pyproject, racine)
+        for nom, contrainte in donnees.get("tool", {}).get("poetry", {}).get("dependencies", {}).items():
+            if nom.lower() != "python":
+                declarees[normaliser(nom)] = contrainte if isinstance(contrainte, str) else str(contrainte.get("version", "toute version"))
+                source_declaree[normaliser(nom)] = relatif(pyproject, racine)
+    elif not exigences:
         resultat.pistes.append(Piste(vers=relatif(dossier, racine), raison="pas de pyproject.toml : impossible de savoir ce qui est déclaré"))
 
     verrouillees: dict[str, str] = {}
@@ -103,13 +124,17 @@ def analyser_dependances(cible: str, racine: Path) -> Resultat:
         for paquet in tomllib.loads(verrou.read_text(encoding="utf-8")).get("package", []):
             nom = normaliser(paquet["name"])
             verrouillees[nom] = paquet.get("version", "?")
-            for dependance in paquet.get("dependencies", []):
-                tirees_par.setdefault(normaliser(dependance["name"]), []).append(nom)
+            dependances = paquet.get("dependencies", [])
+            noms = [d["name"] for d in dependances] if isinstance(dependances, list) else list(dependances)  # uv : liste ; poetry : table
+            for dependance in noms:
+                tirees_par.setdefault(normaliser(dependance), []).append(nom)
+    elif epinglees:
+        verrouillees.update(epinglees)
     else:
-        resultat.pistes.append(Piste(vers=relatif(dossier, racine), raison="pas de uv.lock : versions installées inconnues (non reproductible)"))
+        resultat.pistes.append(Piste(vers=relatif(dossier, racine), raison="pas de fichier verrou (uv.lock, poetry.lock) ni de versions figées : versions installées inconnues"))
 
     imports = imports_du_si(racine)
-    fichier_source = relatif(verrou if verrou.is_file() else pyproject, racine)
+    fichier_source = relatif(verrou if verrou.is_file() else (pyproject if pyproject.is_file() else exigences[0]), racine)
     for nom in sorted(set(declarees) | set(verrouillees)):
         if nom not in BIBLIOTHEQUES:
             continue
@@ -135,7 +160,7 @@ def analyser_dependances(cible: str, racine: Path) -> Resultat:
             props["faiblesse_classique"] = " ; ".join(faiblesses)
         origine = "déclarée" if declaree else f"transitive, tirée par {', '.join(props['tiree_par']) or '?'}"
         resultat.trouvailles.append(Trouvaille(
-            outil=NOM, fichier=relatif(pyproject, racine) if declaree and pyproject.is_file() else fichier_source,
+            outil=NOM, fichier=source_declaree.get(nom, fichier_source) if declaree else fichier_source,
             type_actif="library", nom=f"{nom} {version or declarees.get(nom, '')}".strip(),
             description=f"Bibliothèque {nom} ({role}), {origine}", exposition="aucune", proprietes=props,
             preuve=f"{nom}{declarees.get(nom, '')}" + (f" ; uv.lock : {version}" if version else ""),
