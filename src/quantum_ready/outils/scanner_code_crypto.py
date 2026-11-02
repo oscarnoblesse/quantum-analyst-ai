@@ -62,6 +62,14 @@ REGLES: dict[str, Regle] = {
     "nacl.public.Box": Regle("algorithm", "Curve25519 + XSalsa20-Poly1305 (PyNaCl)", "Chiffrement à clé publique PyNaCl", "shor"),
     "bcrypt.hashpw": Regle("algorithm", "bcrypt", "Hachage de mot de passe bcrypt", "grover"),
 }
+CHIFFREMENTS_PYCRYPTODOME = {"AES": "AES", "DES": "DES", "DES3": "3DES", "ARC4": "RC4", "ARC2": "RC2", "Blowfish": "Blowfish", "CAST": "CAST5",
+                             "ChaCha20": "ChaCha20", "ChaCha20_Poly1305": "ChaCha20-Poly1305", "Salsa20": "Salsa20"}
+FAIBLESSES_CHIFFREMENT = {"DES": "DES : clé de 56 bits, cassable par force brute", "3DES": "3DES : blocs de 64 bits (attaque Sweet32), retiré par le NIST",
+                          "RC4": "RC4 : biais statistiques, interdit en TLS", "RC2": "RC2 : obsolète", "Blowfish": "Blowfish : blocs de 64 bits (Sweet32)",
+                          "CAST5": "CAST5 : blocs de 64 bits"}
+AEAD = {"AESGCM": "AES-GCM", "AESCCM": "AES-CCM", "AESOCB3": "AES-OCB3", "AESSIV": "AES-SIV", "ChaCha20Poly1305": "ChaCha20-Poly1305"}
+VERSIONS_SSL_FAIBLES = {"ssl.PROTOCOL_SSLv2": "SSLv2", "ssl.PROTOCOL_SSLv3": "SSLv3", "ssl.PROTOCOL_TLSv1": "TLSv1.0", "ssl.PROTOCOL_TLSv1_1": "TLSv1.1",
+                        "ssl.TLSVersion.SSLv3": "SSLv3", "ssl.TLSVersion.TLSv1": "TLSv1.0", "ssl.TLSVersion.TLSv1_1": "TLSv1.1"}
 COURBES = {"SECP256R1": "P-256", "SECP384R1": "P-384", "SECP521R1": "P-521", "SECP256K1": "secp256k1"}
 MOTS_MOT_DE_PASSE = ("password", "passwd", "mot_de_passe", "motdepasse", "pwd")
 # Valeurs par défaut d'argon2-cffi (profil RFC 9106 « basse mémoire »)
@@ -206,7 +214,34 @@ class Analyse(ast.NodeVisitor):
         preuve = ast.unparse(noeud)
         if nom in ("os.getenv", "os.environ.get") and noeud.args and (variable := _constante(noeud.args[0])):
             self.variables_env.setdefault(variable, noeud.lineno)
-        if nom in REGLES:
+        if any(k.arg == "verify" and _constante(k.value) is False for k in noeud.keywords):
+            self.ajouter(Regle("protocol", "TLS sans vérification du certificat", "Connexion TLS dont le certificat du serveur n'est pas vérifié (verify=False)",
+                               "shor", "homme du milieu possible : n'importe quel certificat est accepté"), noeud.lineno, preuve, {"appel": nom})
+        if nom.startswith(("Crypto.", "Cryptodome.")):
+            self._pycryptodome(nom.split(".", 1)[1], noeud, preuve)
+        elif nom.endswith("ciphers.Cipher") and len(noeud.args) >= 2:
+            self._cipher_cryptography(noeud, preuve)
+        elif nom.split(".")[-1] in AEAD and "cryptography" in nom:
+            regle_aead = AEAD[nom.split(".")[-1]]
+            self.ajouter(Regle("algorithm", regle_aead, f"Chiffrement authentifié {regle_aead} (cryptography)", "grover"), noeud.lineno, preuve)
+            if noeud.args:
+                self._cle_en_dur(noeud.args[0], regle_aead, noeud.lineno)
+        elif nom.endswith("primitives.hashes.Hash") and noeud.args:
+            nom_hachage = (self.qualifie(noeud.args[0]) or "").removesuffix("()").split(".")[-1]
+            base, faible = HACHAGES.get(nom_hachage.lower().replace("_", ""), (nom_hachage, None))
+            self._hachage(Regle("algorithm", base, f"Empreinte {base} (cryptography)", "grover", faible), noeud, preuve)
+        elif nom in ("ssl._create_unverified_context", "ssl._create_stdlib_context"):
+            self.ajouter(Regle("protocol", "TLS sans vérification du certificat", "Contexte TLS qui ne vérifie pas le certificat du serveur",
+                               "shor", "homme du milieu possible : n'importe quel certificat est accepté"), noeud.lineno, preuve, {"appel": nom})
+        elif nom.endswith("set_missing_host_key_policy") and noeud.args and "AutoAddPolicy" in (self.qualifie(noeud.args[0]) or ""):
+            self.ajouter(Regle("protocol", "SSH sans vérification de la clé d'hôte", "Client SSH qui accepte toute clé d'hôte inconnue (AutoAddPolicy)",
+                               "shor", "homme du milieu possible à la première connexion"), noeud.lineno, preuve)
+        elif nom.endswith(("dsa.generate_private_key", "dh.generate_parameters")):
+            taille = self.constante(next((k.value for k in noeud.keywords if k.arg == "key_size"), noeud.args[-1] if noeud.args else None))
+            algorithme = "DSA" if "dsa" in nom else "DH"
+            self.ajouter(Regle("related-crypto-material" if algorithme == "DSA" else "algorithm", f"{algorithme}-{taille}", f"Génération {algorithme}", "shor",
+                               "DSA est obsolète" if algorithme == "DSA" else None), noeud.lineno, preuve)
+        elif nom in REGLES:
             self._regle_simple(nom, noeud, preuve)
         elif nom == "hashlib.new" and noeud.args:
             algo = str(self.constante(noeud.args[0]) or "?").lower().replace("-", "")
@@ -247,6 +282,8 @@ class Analyse(ast.NodeVisitor):
             self._hachage(regle, noeud, preuve)
             return
         props = {}
+        if nom.startswith("cryptography.fernet") and noeud.args:
+            self._cle_en_dur(noeud.args[0], "Fernet", noeud.lineno)
         if nom.startswith("cryptography.fernet") and noeud.args and (variable := self.variable_env(noeud.args[0])):
             props["cle_lue_dans"] = f"variable d'environnement {variable}"
             self.pistes.append(Piste(vers=variable, raison=f"clé de {regle.nom.split(' ')[0]} lue dans {variable} (ligne {noeud.lineno})"))
@@ -271,6 +308,8 @@ class Analyse(ast.NodeVisitor):
         if noeud.args and (variable := self.variable_env(noeud.args[0])):
             props["cle_lue_dans"] = f"variable d'environnement {variable}"
             self.pistes.append(Piste(vers=variable, raison=f"clé HMAC lue dans {variable} (ligne {noeud.lineno})"))
+        elif noeud.args:
+            self._cle_en_dur(noeud.args[0], "HMAC", noeud.lineno)
         trouvaille = self.ajouter(Regle("algorithm", nom, f"Code d'authentification {nom}", "grover"), noeud.lineno, preuve, props)
         fonction = self.fonctions[-1] if self.fonctions else None
         if fonction and "comparaison" not in trouvaille.proprietes:
@@ -297,6 +336,7 @@ class Analyse(ast.NodeVisitor):
         elif nom == "jwt.encode":
             props["algorithme"] = "HS256 (défaut de pyjwt)"
         secret = noeud.args[1] if len(noeud.args) > 1 else None
+        self._cle_en_dur(secret, "signature des JWT", noeud.lineno)
         if (variable_secret := self.variable_env(secret)):
             props["secret_lu_dans"] = f"variable d'environnement {variable_secret}"
             self.pistes.append(Piste(vers=variable_secret, raison=f"secret de signature des JWT lu dans {variable_secret}"))
@@ -304,6 +344,81 @@ class Analyse(ast.NodeVisitor):
         nom_trouvaille = f"JWT {valeur}" if valeur else "JWT (algorithme à déterminer)"
         regle = Regle("algorithm", nom_trouvaille, "Signature des jetons JWT (pyjwt)", expo if expo != "inconnue" or not valeur else "inconnue")
         self.ajouter(regle, noeud.lineno, preuve, props)
+
+    def _cle_en_dur(self, noeud: ast.expr | None, usage: str, ligne: int) -> None:
+        """Une clé passée sous forme de littéral (ou d'une constante du module) est écrite dans le code source."""
+        valeur = self.constante(noeud)
+        if not isinstance(valeur, (str, bytes)) or len(valeur) < 4:
+            return
+        nom = noeud.id if isinstance(noeud, ast.Name) else "littéral"
+        self.ajouter(Regle("related-crypto-material", f"Clé écrite en dur ({usage})", f"Clé ou secret de {usage} écrit dans le code source",
+                           "grover", "secret dans le code source : visible par quiconque lit le dépôt, impossible à renouveler sans redéployer"),
+                     ligne, f"{nom} = <masqué> ({len(valeur)} octets)", {"variable": nom, "longueur": len(valeur), "usage": usage})
+
+    def _mode(self, noeud: ast.expr | None) -> str:
+        nom = (self.qualifie(noeud) or str(self.constante(noeud) or "")) if noeud is not None else ""
+        return nom.removesuffix("()").split(".")[-1].replace("MODE_", "").upper()
+
+    def _pycryptodome(self, nom: str, noeud: ast.Call, preuve: str) -> None:
+        """pycryptodome (« Crypto ») et pycryptodomex (« Cryptodome ») : mêmes modules, deux espaces de noms."""
+        morceaux = nom.split(".")
+        if morceaux[0] == "Cipher" and len(morceaux) >= 3 and morceaux[-1] == "new":
+            algorithme = morceaux[1]
+            if algorithme in ("PKCS1_OAEP", "PKCS1_v1_5"):
+                faible = "chiffrement RSA PKCS#1 v1.5 : attaque de Bleichenbacher" if algorithme == "PKCS1_v1_5" else None
+                self.ajouter(Regle("algorithm", "RSA-OAEP" if algorithme == "PKCS1_OAEP" else "RSA PKCS#1 v1.5 (chiffrement)",
+                                   "Chiffrement RSA (pycryptodome)", "shor", faible), noeud.lineno, preuve)
+                return
+            mode = self._mode(noeud.args[1] if len(noeud.args) > 1 else next((k.value for k in noeud.keywords if k.arg == "mode"), None))
+            nom_algo = CHIFFREMENTS_PYCRYPTODOME.get(algorithme, algorithme)
+            nom_complet = f"{nom_algo}-{mode}" if mode else nom_algo
+            faiblesses = [f for f in (FAIBLESSES_CHIFFREMENT.get(nom_algo), "mode ECB : les blocs identiques donnent des chiffrés identiques" if mode == "ECB" else None) if f]
+            self.ajouter(Regle("algorithm", nom_complet, f"Chiffrement {nom_complet} (pycryptodome)", "grover", " ; ".join(faiblesses) or None), noeud.lineno, preuve)
+            if noeud.args:
+                self._cle_en_dur(noeud.args[0], nom_complet, noeud.lineno)
+        elif morceaux[0] == "Hash" and len(morceaux) >= 2:
+            base, faible = HACHAGES.get(morceaux[1].lower().replace("_", ""), (morceaux[1], None))
+            if morceaux[1] == "HMAC":
+                self.ajouter(Regle("algorithm", "HMAC", "Code d'authentification HMAC (pycryptodome)", "grover"), noeud.lineno, preuve)
+            else:
+                self._hachage(Regle("algorithm", base, f"Empreinte {base} (pycryptodome)", "grover", faible), noeud, preuve)
+        elif morceaux[0] == "PublicKey" and len(morceaux) >= 3 and morceaux[-1] == "generate":
+            if morceaux[1] in ("RSA", "DSA"):
+                taille = self.constante(noeud.args[0]) if noeud.args else self.constante(next((k.value for k in noeud.keywords if k.arg == "bits"), None))
+                faible = "taille insuffisante aujourd'hui" if isinstance(taille, int) and taille < 2048 else ("DSA est obsolète" if morceaux[1] == "DSA" else None)
+                self.ajouter(Regle("related-crypto-material", f"{morceaux[1]}-{taille}", f"Génération d'une clé {morceaux[1]} (pycryptodome)", "shor", faible), noeud.lineno, preuve)
+            elif morceaux[1] == "ECC":
+                courbe = self.constante(next((k.value for k in noeud.keywords if k.arg == "curve"), None)) or "?"
+                self.ajouter(Regle("related-crypto-material", f"ECC {courbe}", "Génération d'une clé sur courbe elliptique (pycryptodome)", "shor"), noeud.lineno, preuve)
+        elif morceaux[0] == "Signature" and morceaux[-1] == "new":
+            noms = {"pkcs1_15": "RSA PKCS#1 v1.5 (signature)", "pss": "RSA-PSS", "DSS": "DSA/ECDSA (DSS)", "eddsa": "EdDSA"}
+            self.ajouter(Regle("algorithm", noms.get(morceaux[1], morceaux[1]), "Signature (pycryptodome)", "shor"), noeud.lineno, preuve)
+        elif morceaux[0] == "Protocol" and morceaux[-1] in ("PBKDF2", "scrypt", "bcrypt", "HKDF"):
+            self.ajouter(Regle("algorithm", morceaux[-1], f"Dérivation de clé {morceaux[-1]} (pycryptodome)", "grover"), noeud.lineno, preuve)
+        elif morceaux[0] == "Random" and morceaux[-1] == "get_random_bytes":
+            self.ajouter(Regle("algorithm", "Crypto.Random (os.urandom)", "Aléa cryptographique (pycryptodome)", "aucune"), noeud.lineno, preuve)
+
+    def _cipher_cryptography(self, noeud: ast.Call, preuve: str) -> None:
+        """cryptography, couche basse : Cipher(algorithms.AES(cle), modes.CBC(iv))."""
+        algorithme = noeud.args[0]
+        nom_algo = (self.qualifie(algorithme.func if isinstance(algorithme, ast.Call) else algorithme) or "?").removesuffix("()").split(".")[-1]
+        nom_algo = {"TripleDES": "3DES", "ARC4": "RC4", "ChaCha20": "ChaCha20"}.get(nom_algo, nom_algo)
+        mode = self._mode(noeud.args[1].func if isinstance(noeud.args[1], ast.Call) else noeud.args[1])
+        nom_complet = f"{nom_algo}-{mode}" if mode and mode != "NONE" else nom_algo
+        faiblesses = [f for f in (FAIBLESSES_CHIFFREMENT.get(nom_algo), "mode ECB : les blocs identiques donnent des chiffrés identiques" if mode == "ECB" else None) if f]
+        self.ajouter(Regle("algorithm", nom_complet, f"Chiffrement {nom_complet} (cryptography)", "grover", " ; ".join(faiblesses) or None), noeud.lineno, preuve)
+        if isinstance(algorithme, ast.Call) and algorithme.args:
+            self._cle_en_dur(algorithme.args[0], nom_complet, noeud.lineno)
+
+    def visit_Attribute(self, noeud: ast.Attribute) -> None:
+        nom = self.qualifie(noeud) or ""
+        if nom == "ssl.CERT_NONE":
+            self.ajouter(Regle("protocol", "TLS sans vérification du certificat", "Contexte TLS configuré avec CERT_NONE",
+                               "shor", "homme du milieu possible : n'importe quel certificat est accepté"), noeud.lineno, ast.unparse(noeud))
+        elif nom in VERSIONS_SSL_FAIBLES:
+            self.ajouter(Regle("protocol", VERSIONS_SSL_FAIBLES[nom], f"Version de protocole imposée par le code ({nom})", "shor",
+                               "version de TLS/SSL obsolète"), noeud.lineno, ast.unparse(noeud))
+        self.generic_visit(noeud)
 
     def _ecdsa(self, noeud: ast.Call, preuve: str) -> None:
         hachage = (self.qualifie(noeud.args[0]) or "?").removesuffix("()").split(".")[-1] if noeud.args else "?"
