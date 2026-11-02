@@ -86,13 +86,16 @@ def analyser_certificat(cert: x509.Certificate, fichier: str, rang: int, total: 
         "autorite": est_ac,
         "usages": _usages(cert),
         "empreinte_sha256": cert.fingerprint(hashes.SHA256()).hex(),
+        "certificat_sha256": cert.fingerprint(hashes.SHA256()).hex(),
         "rang_dans_fichier": rang,
         "cle_publique": nom_cle,
         "algorithme_signature": algo_signature,
     }
     if sans is not None:
         props_cert["noms_alternatifs"] = [str(n.value) for n in sans]
-    props_signature: dict = {"signe_par": emetteur, "auto_signature": auto_signe}
+    empreinte = cert.fingerprint(hashes.SHA256()).hex()
+    props_cle["certificat_sha256"] = empreinte
+    props_signature: dict = {"signe_par": emetteur, "auto_signature": auto_signe, "certificat_sha256": empreinte}
     if any(faible in algo_signature.lower() for faible in SIGNATURES_FAIBLES):
         props_signature["faiblesse_classique"] = "fonction de hachage cassée (collisions)"
 

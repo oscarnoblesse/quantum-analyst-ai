@@ -80,6 +80,29 @@ def decrire_blob_ssh(blob: bytes) -> tuple[str, dict]:
     return type_cle, props
 
 
+def _mpint(nombre: int) -> bytes:
+    octets = nombre.to_bytes((nombre.bit_length() + 7) // 8 + 1, "big").lstrip(b"\x00")
+    octets = b"\x00" + octets if octets and octets[0] & 0x80 else octets
+    return struct.pack(">I", len(octets)) + octets
+
+
+def blob_ssh(cle) -> bytes | None:
+    """Blob SSH de la clé publique d'une clé privée PEM : permet de calculer son empreinte ssh-keygen."""
+    from cryptography.hazmat.primitives.asymmetric import dsa
+
+    publique = cle.public_key()
+    if isinstance(publique, dsa.DSAPublicKey):  # sérialisation OpenSSH dépréciée pour DSA : blob construit à la main
+        nombres = publique.public_numbers()
+        parametres = nombres.parameter_numbers
+        type_cle = b"ssh-dss"
+        return struct.pack(">I", len(type_cle)) + type_cle + b"".join(_mpint(n) for n in (parametres.p, parametres.q, parametres.g, nombres.y))
+    try:
+        ligne = publique.public_bytes(serialization.Encoding.OpenSSH, serialization.PublicFormat.OpenSSH)
+    except ValueError:
+        return None
+    return base64.b64decode(ligne.split()[1])
+
+
 def lignes_ssh(texte: str, fichier: str) -> list[Trouvaille]:
     """Clés publiques SSH d'un fichier, une par ligne, avec leur préfixe (hôte ou options)."""
     trouvailles = []
@@ -179,6 +202,8 @@ def cle_pem(etiquette: str, bloc: str, fichier: str) -> Trouvaille:
         "chiffree": False,
         "empreinte_spki_sha256": empreinte_spki(cle),
     }
+    if (blob := blob_ssh(cle)) is not None:
+        props["empreinte"] = empreinte_ssh(blob)
     return Trouvaille(
         outil=NOM, fichier=fichier, type_actif="related-crypto-material", nom=nom,
         description=f"Clé privée {nom}, NON chiffrée ({props['format']})", exposition=exposition(nom),
