@@ -60,5 +60,40 @@ def test_cas_limites(contenu, nature):
     assert reconnaitre(contenu) == nature
 
 
+def test_certificat_der_n_est_pas_un_pkcs12(racine_si):
+    from cryptography import x509
+    from cryptography.hazmat.primitives import serialization
+
+    pem = (racine_si / "certs/ca/racine.crt").read_bytes()
+    der = x509.load_pem_x509_certificate(pem).public_bytes(serialization.Encoding.DER)
+    assert reconnaitre(der, "a.cer") == "certificat_der"
+    assert reconnaitre((racine_si / "factures/keys/factures.p12").read_bytes()) == "pkcs12"
+
+
+@pytest.mark.parametrize(
+    ("nom", "contenu", "nature"),
+    [
+        ("A.java", "import javax.crypto.Cipher;\npublic class A {}\n", "code_java"),
+        ("main.go", "package main\nimport \"crypto/md5\"\n", "code_go"),
+        ("outil", "import os\n\ndef f(x):\n    return x\n", "code_python"),
+        ("ssl-params.conf", "ssl_protocols TLSv1.3;\nssl_prefer_server_ciphers off;\n", "config_nginx"),
+        ("httpd.conf", "<VirtualHost *:443>\n  SSLEngine on\n</VirtualHost>\n", "config_apache"),
+        ("compose.yml", "services:\n  db:\n    image: mysql\n", "yaml"),
+        ("conf.json", '{"tls": {"enabled": true}}', "json"),
+        ("requirements.txt", "requests==2.31.0\ncryptography>=42\n", "requirements"),
+        ("sshd_config", "Port 2222\nCiphers aes128-ctr\nUsePAM yes\n", "config_sshd"),
+        ("main.cf", "smtpd_tls_security_level = may\nsmtpd_tls_protocols = !SSLv2\nmyhostname mail\n", "texte"),
+    ],
+)
+def test_formats_varies(nom, contenu, nature):
+    assert reconnaitre(contenu.encode(), nom) == nature
+
+
+def test_format_sans_analyseur_signale(tmp_path):
+    (tmp_path / "A.java").write_text("public class A {}\n")
+    (fichier,) = lister_fichiers(".", racine=tmp_path).fichiers
+    assert fichier.outil_conseille == "rechercher_algorithmes" and "java" in fichier.remarque
+
+
 def test_hors_perimetre(racine_si):
     assert "hors du périmètre" in lister_fichiers("../", racine=racine_si).erreurs[0]

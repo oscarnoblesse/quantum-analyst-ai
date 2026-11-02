@@ -16,6 +16,7 @@ LISTES_FERMEES: dict[str, tuple[str, ...]] = {
         "analyser_configuration",
         "scanner_code_crypto",    # rôle de « semgrep_crypto » dans le sujet
         "analyser_dependances",
+        "rechercher_algorithmes", # repli textuel pour les formats sans analyseur dédié
         # scan_tls_lab : avec le démonstrateur (il faut un serveur TLS du laboratoire en marche)
     ),
     "cartographe": ("construire_cbom", "valider_schema"),
