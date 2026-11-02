@@ -8,6 +8,7 @@ relatifs à la racine du SI quand ils y existent.
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from quantum_ready.outils.commun import ErreurOutil, Piste, Resultat, outil, relatif, resoudre
@@ -24,6 +25,8 @@ ANALYSEURS = {
     "dockerfile": dockerfile.analyser,
     "script_shell": shell.analyser,
 }
+
+AVEC_CONTEXTE = {nginx.analyser}
 
 
 def _situer(piste: Piste, dossier: Path, racine: Path) -> Piste:
@@ -46,8 +49,17 @@ def _situer(piste: Piste, dossier: Path, racine: Path) -> Piste:
     return piste
 
 
+@dataclass
+class Contexte:
+    """Ce qu'un analyseur peut connaître au-delà du texte : où est le fichier, et les options de l'agent."""
+
+    racine: Path
+    chemin: Path
+    options: dict = field(default_factory=dict)
+
+
 @outil(NOM)
-def analyser_configuration(cible: str, racine: Path) -> Resultat:
+def analyser_configuration(cible: str, racine: Path, **options) -> Resultat:
     """Analyse un fichier de configuration (nginx, sshd, PostgreSQL, .env, Dockerfile, script shell)."""
     chemin = resoudre(cible, racine)
     fichier = relatif(chemin, racine)
@@ -55,6 +67,10 @@ def analyser_configuration(cible: str, racine: Path) -> Resultat:
     nature = reconnaitre(texte.encode()[:8192])
     if nature not in ANALYSEURS:
         raise ErreurOutil(f"Format non pris en charge par cet outil (nature reconnue : {nature})")
-    trouvailles, pistes = ANALYSEURS[nature](texte, fichier)
+    analyseur = ANALYSEURS[nature]
+    if analyseur in AVEC_CONTEXTE:
+        trouvailles, pistes = analyseur(texte, fichier, Contexte(racine, chemin, options))
+    else:
+        trouvailles, pistes = analyseur(texte, fichier)
     pistes = [_situer(p, chemin.parent, racine) for p in pistes]
     return Resultat(outil=NOM, cible=fichier, trouvailles=trouvailles, pistes=pistes)
