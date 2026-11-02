@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from cryptography.hazmat.primitives.asymmetric import dh, dsa, ec, ed448, ed25519, rsa, x448, x25519
+from cryptography.hazmat.primitives.asymmetric import dsa, ec, ed448, ed25519, rsa, x448, x25519
 
 # Courbes : nom technique -> nom usuel (celui des RFC et de l'ANSSI)
 COURBES = {"secp256r1": "P-256", "secp384r1": "P-384", "secp521r1": "P-521", "secp256k1": "secp256k1"}
@@ -25,9 +25,6 @@ def decrire_cle(cle) -> tuple[str, dict[str, str | int | bool | list[str]]]:
     if isinstance(cle, (dsa.DSAPublicKey, dsa.DSAPrivateKey)):
         taille = cle.key_size
         return f"DSA-{taille}", _avec_faiblesse({"algorithme": "DSA", "taille": taille}, True, "DSA est obsolète")
-    if isinstance(cle, (dh.DHPublicKey, dh.DHPrivateKey)):
-        taille = cle.key_size
-        return f"DH-{taille}", _avec_faiblesse({"algorithme": "DH", "taille": taille}, taille < TAILLE_MIN_RSA)
     for classe, nom, taille in (
         ((ed25519.Ed25519PublicKey, ed25519.Ed25519PrivateKey), "Ed25519", 256),
         ((ed448.Ed448PublicKey, ed448.Ed448PrivateKey), "Ed448", 456),
@@ -37,6 +34,17 @@ def decrire_cle(cle) -> tuple[str, dict[str, str | int | bool | list[str]]]:
         if isinstance(cle, classe):
             return nom, {"algorithme": nom, "taille": taille}
     return type(cle).__name__, {"algorithme": "inconnu"}
+
+
+def empreinte_spki(cle) -> str:
+    """SHA-256 de la clé publique (SubjectPublicKeyInfo) : relie une clé privée à son certificat."""
+    from cryptography.hazmat.primitives import hashes, serialization
+
+    publique = cle.public_key() if hasattr(cle, "private_bytes") else cle
+    der = publique.public_bytes(serialization.Encoding.DER, serialization.PublicFormat.SubjectPublicKeyInfo)
+    calcul = hashes.Hash(hashes.SHA256())
+    calcul.update(der)
+    return calcul.finalize().hex()
 
 
 def _avec_faiblesse(props: dict, faible: bool, raison: str | None = None) -> dict:

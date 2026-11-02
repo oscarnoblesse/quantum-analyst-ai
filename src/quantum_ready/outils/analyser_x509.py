@@ -17,7 +17,7 @@ from cryptography import x509
 from cryptography.hazmat.primitives import hashes
 from cryptography.x509.oid import ExtensionOID, NameOID
 
-from quantum_ready.outils._cles import decrire_cle
+from quantum_ready.outils._cles import decrire_cle, empreinte_spki
 from quantum_ready.outils.classification import exposition
 from quantum_ready.outils.commun import ErreurOutil, Piste, Resultat, Trouvaille, outil, relatif, resoudre
 
@@ -69,6 +69,7 @@ def analyser_certificat(cert: x509.Certificate, fichier: str, rang: int, total: 
     est_ac = bool(contraintes and contraintes.ca)
     maintenant = datetime.now(timezone.utc)
     nom_cle, props_cle = decrire_cle(cert.public_key())
+    props_cle["empreinte_spki_sha256"] = empreinte_spki(cert.public_key())
     algo_signature = cert.signature_algorithm_oid._name
     position = f" (certificat {rang}/{total} du fichier)" if total > 1 else ""
     sans = _extension(cert, ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
