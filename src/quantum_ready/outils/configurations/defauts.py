@@ -65,3 +65,21 @@ SOURCE_NGINX_SSL_PROTOCOLS = "valeur par défaut de nginx depuis 1.23.4 (TLSv1 T
 NGINX_SSL_CIPHERS = "HIGH:!aNULL:!MD5"
 SOURCE_NGINX = "valeur par défaut de nginx (ngx_http_ssl_module)"
 SOURCE_GROUPES_OPENSSL = "valeur par défaut d'OpenSSL 3.0 à 3.4 ; OpenSSL 3.5 et plus propose X25519MLKEM768 en tête"
+
+
+def openssh(version: tuple[int, int] | None) -> tuple[dict[str, list[str]], str]:
+    """Listes par défaut d'OpenSSH pour une version (major, minor), et la phrase qui dit d'où elles viennent.
+
+    Seul l'échange de clés change entre ces versions pour ce qui nous intéresse :
+    8.x n'a pas d'hybride par défaut, 9.0 met sntrup761x25519 en tête, 10.0 met
+    mlkem768x25519 en tête.
+    """
+    listes = {nom: list(valeurs) for nom, valeurs in OPENSSH_9_6.items()}
+    classiques = [k for k in listes["KexAlgorithms"] if "sntrup" not in k]
+    if version is None:
+        return listes, "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)"
+    if version >= (10, 0):
+        listes["KexAlgorithms"] = ["mlkem768x25519-sha256", "sntrup761x25519-sha512", "sntrup761x25519-sha512@openssh.com", *classiques]
+    elif version < (9, 0):
+        listes["KexAlgorithms"] = classiques
+    return listes, f"valeur par défaut d'OpenSSH {version[0]}.{version[1]} (sshd_config(5))"

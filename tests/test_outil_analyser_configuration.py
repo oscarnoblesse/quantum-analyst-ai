@@ -72,7 +72,8 @@ def test_sshd_cles_acceptees_implicites(racine_si):
     resultat = _analyser(racine_si, "ssh/server/sshd_config")
     implicite = next(t for t in resultat.trouvailles if t.implicite)
     assert "PubkeyAcceptedAlgorithms" in implicite.description and "ssh-ed25519" in implicite.nom
-    assert any(p.vers == "version d'OpenSSH" for p in resultat.pistes)
+    assert implicite.proprietes["version_openssh"] == "9.6 (lue dans ssh/Dockerfile)"
+    assert not any(p.vers == "version d'OpenSSH" for p in resultat.pistes)
 
 
 def test_sshd_hostkey_retrouvee_a_cote(racine_si):
@@ -290,3 +291,27 @@ def test_nginx_fragment_seul(tmp_path):
     _site(tmp_path, {"ssl-params.conf": "ssl_protocols TLSv1.3;\n"})
     resultat = analyser_configuration("ssl-params.conf", racine=tmp_path)
     assert _par_nom(resultat)["TLSv1.3"].proprietes["serveurs"] == ["fragment ssl-params.conf"]
+
+
+# --- sshd : valeurs par défaut selon la version d'OpenSSH ---
+
+def test_sshd_version_inconnue_est_une_hypothese(tmp_path):
+    (tmp_path / "sshd_config").write_text("Port 22\nPermitRootLogin no\n")
+    resultat = analyser_configuration("sshd_config", racine=tmp_path)
+    kex = resultat.trouvailles[0]
+    assert "HYPOTHÈSE" in kex.proprietes["source"] and kex.proprietes["version_openssh"].startswith("inconnue")
+    assert any(p.vers == "version d'OpenSSH" for p in resultat.pistes)
+
+
+@pytest.mark.parametrize(("version", "premier"), [("10.0p2", "mlkem768x25519-sha256"), ("9.6", "sntrup761x25519-sha512@openssh.com"), ("8.9p1", "curve25519-sha256")])
+def test_sshd_version_donnee_par_l_agent(tmp_path, version, premier):
+    (tmp_path / "sshd_config").write_text("Port 22\nPermitRootLogin no\n")
+    kex = analyser_configuration("sshd_config", racine=tmp_path, version_openssh=version).trouvailles[0]
+    assert kex.nom.split(",")[0] == premier and "indiquée par l'agent" in kex.proprietes["version_openssh"]
+
+
+def test_sshd_regression_selon_la_version(tmp_path):
+    (tmp_path / "sshd_config").write_text("KexAlgorithms curve25519-sha256\nHostKey /etc/ssh/k\n")
+    (tmp_path / "Dockerfile").write_text("FROM debian:13\nRUN apt-get install -y openssh-server=1:10.0p1-5\n")
+    kex = analyser_configuration("sshd_config", racine=tmp_path).trouvailles[0]
+    assert "mlkem768x25519-sha256" in kex.proprietes["post_quantique_retire"]
