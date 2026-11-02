@@ -105,3 +105,52 @@ def test_erreurs(tmp_path):
     vide = tmp_path / "vide"
     vide.mkdir()
     assert "Aucun fichier Python" in scanner_code_crypto("vide", racine=tmp_path).erreurs[0]
+
+
+def _scanner(tmp_path, code):
+    (tmp_path / "m.py").write_text(code)
+    resultat = scanner_code_crypto("m.py", racine=tmp_path)
+    assert resultat.erreurs == []
+    return {t.nom: t for t in resultat.trouvailles}
+
+
+def test_pycryptodome_et_pycryptodomex(tmp_path):
+    noms = _scanner(tmp_path,
+        "from Crypto.Cipher import AES, DES3, PKCS1_v1_5\nfrom Cryptodome.PublicKey import RSA, ECC\n"
+        "from Crypto.Hash import SHA1\nfrom Crypto.Signature import pss\nfrom Crypto.Random import get_random_bytes\n"
+        "import os\nCLE = b'0123456789abcdef'\n"
+        "def f(iv):\n"
+        "    AES.new(CLE, AES.MODE_ECB)\n    AES.new(os.urandom(32), AES.MODE_GCM)\n    DES3.new(get_random_bytes(24), DES3.MODE_CBC, iv)\n"
+        "    PKCS1_v1_5.new(RSA.generate(1024))\n    ECC.generate(curve='P-256')\n    SHA1.new(b'x')\n    pss.new(None)\n")
+    assert "ECB" in noms["AES-ECB"].proprietes["faiblesse_classique"]
+    assert "faiblesse_classique" not in noms["AES-GCM"].proprietes
+    assert "Sweet32" in noms["3DES-CBC"].proprietes["faiblesse_classique"]
+    assert noms["Clé écrite en dur (AES-ECB)"].proprietes["variable"] == "CLE"
+    assert not any(n.startswith("Clé écrite en dur (AES-GCM") for n in noms)
+    assert {"RSA-1024", "ECC P-256", "SHA-1", "RSA-PSS", "RSA PKCS#1 v1.5 (chiffrement)", "Crypto.Random (os.urandom)"} <= set(noms)
+    assert "0123456789abcdef" not in str([t.model_dump() for t in noms.values()])
+
+
+def test_cryptography_couche_basse(tmp_path):
+    noms = _scanner(tmp_path,
+        "from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes\n"
+        "from cryptography.hazmat.primitives.ciphers.aead import AESGCM\nfrom cryptography.hazmat.primitives import hashes\n"
+        "def f(k, iv):\n    Cipher(algorithms.TripleDES(k), modes.CBC(iv))\n    Cipher(algorithms.AES(b'cle-en-dur-16oct'), modes.ECB())\n"
+        "    AESGCM(k)\n    hashes.Hash(hashes.SHA1())\n")
+    assert {"3DES-CBC", "AES-ECB", "AES-GCM", "SHA-1", "Clé écrite en dur (AES-ECB)"} <= set(noms)
+
+
+def test_verification_tls_et_ssh_desactivee(tmp_path):
+    noms = _scanner(tmp_path,
+        "import ssl, requests, paramiko\n"
+        "def f():\n    requests.get('https://x', verify=False)\n    ssl._create_unverified_context()\n"
+        "    ctx = ssl.create_default_context()\n    ctx.verify_mode = ssl.CERT_NONE\n    ctx.minimum_version = ssl.TLSVersion.TLSv1\n"
+        "    c = paramiko.SSHClient()\n    c.set_missing_host_key_policy(paramiko.AutoAddPolicy())\n")
+    assert noms["TLS sans vérification du certificat"].proprietes["lignes"] == ["3", "4", "6"]
+    assert "faiblesse_classique" in noms["TLSv1.0"].proprietes
+    assert "SSH sans vérification de la clé d'hôte" in noms
+
+
+def test_pas_de_cle_en_dur_quand_elle_vient_de_l_environnement(racine_si):
+    resultat = scanner_code_crypto(".", racine=racine_si)
+    assert not any(t.nom.startswith("Clé écrite en dur") for t in resultat.trouvailles)
