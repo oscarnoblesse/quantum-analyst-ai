@@ -34,6 +34,11 @@ Ce projet construit une équipe d'agents IA qui, sur un système d'information *
 | Architecte | Rédige le plan de migration priorisé |
 | Démonstrateur | Monte le serveur TLS hybride et mesure les performances |
 
+## Documentation
+
+- [Règles de la vérité terrain](docs/regles_verite_terrain.md)
+- [Périmètre technologique et validation des outils d'inventaire](docs/perimetre_et_validation_des_outils.md)
+
 ## Installation
 
 *À venir.*
