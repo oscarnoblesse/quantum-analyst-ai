@@ -17,6 +17,7 @@ POST_QUANTIQUES = ("ml-kem", "mlkem", "ml-dsa", "mldsa", "slh-dsa", "slhdsa", "s
 ASYMETRIQUES = (
     "rsa", "dsa", "dss", "diffie", "dh", "ecdh", "ecdsa", "ed25519", "ed448", "x25519", "x448",
     "curve25519", "secp", "nistp", "prime256", "p-256", "p-384", "p-521", "elgamal", "openpgp",
+    "rs256", "rs384", "rs512", "ps256", "ps384", "ps512", "es256", "es384", "es512", "eddsa",  # noms JOSE (JWT)
 )
 SYMETRIQUES = (
     "aes", "chacha", "3des", "des-", "tripledes", "camellia", "sha", "md5", "hmac", "poly1305",

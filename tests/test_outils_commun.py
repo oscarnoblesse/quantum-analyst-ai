@@ -83,6 +83,8 @@ def test_decrire_secret_ne_revele_pas_la_valeur():
         ("AES-256-GCM", "grover"),
         ("hmac-sha2-256-etm@openssh.com", "grover"),
         ("Argon2id", "grover"),
+        ("RS256", "shor"),
+        ("HS256", "grover"),
         ("PermitRootLogin", "inconnue"),
     ],
 )
