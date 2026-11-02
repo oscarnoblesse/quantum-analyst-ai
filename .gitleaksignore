@@ -3,3 +3,5 @@
 # (commit:fichier:règle:ligne), pour qu'une vraie clé ajoutée plus tard reste détectée.
 5cfa5ab6320045ca5808bd7c073fc1bf2cd6041e:src/quantum_ready/outils/analyser_cle.py:private-key:135
 3ece822abc8e93fb44d49536bf17d706b70b18a7:src/quantum_ready/outils/lister_fichiers.py:private-key:70
+# Faux secret volontaire d'un test : vérifie que rechercher_algorithmes masque les valeurs.
+44f9f9f1883fdeed0fcde8eaac6af15c21f4b296:tests/test_outil_rechercher_algorithmes.py:generic-api-key:37
