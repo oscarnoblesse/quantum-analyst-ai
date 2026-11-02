@@ -1,0 +1,5 @@
+# Faux positifs : marqueurs « BEGIN ... PRIVATE KEY » que les outils d'inventaire
+# RECHERCHENT dans les fichiers du SI (ce ne sont pas des clés). Empreintes exactes
+# (commit:fichier:règle:ligne), pour qu'une vraie clé ajoutée plus tard reste détectée.
+5cfa5ab6320045ca5808bd7c073fc1bf2cd6041e:src/quantum_ready/outils/analyser_cle.py:private-key:135
+3ece822abc8e93fb44d49536bf17d706b70b18a7:src/quantum_ready/outils/lister_fichiers.py:private-key:70
