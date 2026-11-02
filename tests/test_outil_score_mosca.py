@@ -1,14 +1,8 @@
-"""Tests de score_mosca, écrits AVANT l'implémentation (développement piloté par les tests).
-
-Retire le marqueur xfail ci-dessous quand ta fonction est prête.
-"""
+"""Tests de score_mosca, écrits AVANT l'implémentation (développement piloté par les tests)."""
 
 import pytest
 
 from quantum_ready.outils.score_mosca import score_mosca
-
-pytestmark = pytest.mark.xfail(raises=NotImplementedError, reason="score_mosca à implémenter par Oscar", strict=False)
-
 
 def test_factures_conservees_dix_ans():
     """Signature ECDSA des factures : x = 10, migration y = 3, menace z = 10."""
