@@ -381,3 +381,35 @@ def test_yaml_kubernetes_plusieurs_documents_et_json(tmp_path):
 def test_yaml_invalide(tmp_path):
     _site(tmp_path, {"casse.yml": "a: b\n  c: : d\n- x\n"})
     assert "YAML invalide" in analyser_configuration("casse.yml", racine=tmp_path).erreurs[0]
+
+
+# --- anomalies corrigées : faux secret, configuration client SSH ---
+
+@pytest.mark.parametrize(
+    ("nom", "secret"),
+    [("FIELD_ENCRYPTION_KEY", True), ("KEYSTORE_PASS", True), ("server.ssl.key-store-password", True), ("privateKey", True),
+     ("jwt.secret", True), ("jsonwebtoken", False), ("dependencies.secret-sauce", False), ("PUBLIC_KEY", False), ("KEYBOARD_LAYOUT", False)],
+)
+def test_nom_de_secret_par_mots(nom, secret):
+    from quantum_ready.outils.configurations.env import est_nom_de_secret
+
+    assert est_nom_de_secret(nom) is secret
+
+
+def test_package_json_sans_faux_secret(tmp_path):
+    _site(tmp_path, {"package.json": '{"name": "x", "dependencies": {"jsonwebtoken": "8.5.1", "bcrypt": "5.0.1"}}'})
+    assert analyser_configuration("package.json", racine=tmp_path).trouvailles == []
+
+
+def test_configuration_client_ssh(tmp_path):
+    _site(tmp_path, {".ssh/config": (
+        "Host vieux-routeur\n    HostName 10.0.0.254\n    KexAlgorithms +diffie-hellman-group1-sha1\n    Ciphers aes128-cbc\n"
+        "Host *\n    StrictHostKeyChecking no\n")})
+    resultat = analyser_configuration(".ssh/config", racine=tmp_path)
+    noms = {t.description: t for t in resultat.trouvailles}
+    kex = noms["Échange de clés (KexAlgorithms) du client SSH pour « vieux-routeur »"]
+    assert kex.proprietes["role"] == "client" and kex.nom.endswith("diffie-hellman-group1-sha1")
+    assert "group1" in kex.proprietes["faiblesse_classique"]
+    assert "aes128-cbc" in noms["Chiffrement de la session (Ciphers) du client SSH pour « vieux-routeur »"].proprietes["faiblesse_classique"]
+    assert any(t.nom == "StrictHostKeyChecking no" for t in resultat.trouvailles)
+    assert not any(t.implicite or "serveur" in t.description for t in resultat.trouvailles)

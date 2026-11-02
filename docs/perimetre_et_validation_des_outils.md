@@ -33,7 +33,7 @@ La question posée est donc : *un outil qui lit une configuration nginx lit-il n
 | Clés | PEM (PKCS#8, traditionnel, chiffré), OpenSSH, clés publiques SSH (`.pub`, `authorized_keys`, `known_hosts`), OpenPGP, paramètres DH | `analyser_cle` | Type, taille, chiffrement, empreinte identique à `ssh-keygen -l` |
 | PKCS#12 | `.p12`, `.pfx` | `analyser_pkcs12` | Algorithmes de chiffrement et MAC sans mot de passe ; contenu avec le mot de passe, lu par l'outil sans être renvoyé |
 | nginx | Configuration principale et fichiers inclus | `analyser_configuration` | Par bloc `server` : versions TLS, suites (macros développées par OpenSSL), groupes ECDHE, tickets, suites TLS 1.3 implicites |
-| OpenSSH (serveur) | `sshd_config` | `analyser_configuration` | Listes effectives (`+`, `-`, `^`), valeurs par défaut selon la version, retrait d'un échange post-quantique |
+| OpenSSH | `sshd_config` (serveur), `ssh_config` et `~/.ssh/config` (client) | `analyser_configuration` | Listes effectives (`+`, `-`, `^`), valeurs par défaut selon la version, retrait d'un échange post-quantique |
 | PostgreSQL | `postgresql.conf`, `pg_hba.conf` | `analyser_configuration` | Version TLS minimale, suites, groupe ECDHE, méthodes d'authentification |
 | Variables d'environnement | `.env` | `analyser_configuration` | Secrets décrits par leur forme (jamais recopiés), URL de connexion et `sslmode`, algorithmes configurés |
 | Image de conteneur | `Dockerfile` | `analyser_configuration` | Versions figées des logiciels cryptographiques, fichiers copiés dans l'image |
@@ -103,13 +103,13 @@ Sur les formats du périmètre, les outils se comportent sur le SI C comme sur l
 
 | Anomalie | Format | Statut |
 | --- | --- | --- |
-| Un nom de paquet contenant « token » (`jsonwebtoken`) est pris pour un secret | JSON (secondaire) | À corriger : faux positif dans un analyseur existant |
-| Une configuration client SSH est analysée comme une configuration serveur | OpenSSH | À corriger : mauvaise attribution dans le périmètre |
+| Un nom de paquet contenant « token » (`jsonwebtoken`) est pris pour un secret | JSON (secondaire) | Corrigé : un nom n'est un secret que si l'un de ses mots en est un, et jamais sous une liste de dépendances |
+| Une configuration client SSH est analysée comme une configuration serveur | OpenSSH | Corrigé : la configuration client est reconnue et analysée par bloc `Host`, sans valeurs par défaut de serveur |
 | La détection textuelle signale un protocole désactivé (`!SSLv2`, `no-sslv3`) comme une mention | Repli textuel | Accepté : limite propre à ce type d'outil, qui renvoie des indices à confirmer par l'agent |
 | Une constante de module non passée à une fonction cryptographique n'est pas vue | Python | Accepté pour la version 1.0, à reconsidérer |
 | Un bloc « OpenVPN Static key » est ignoré par le repli textuel | OpenVPN (hors périmètre) | Reporté |
 
-Seules les anomalies du périmètre marquées « À corriger » seront traitées avant la version 1.0, sous forme de corrections de bogues.
+Les deux anomalies du périmètre ont été corrigées après la mesure du SI C, comme corrections de bogues ; les résultats chiffrés ci-dessus restent ceux de la mesure, et le SI C est désormais un jeu de développement.
 
 ## Évolutions possibles
 

@@ -82,6 +82,7 @@ def test_certificat_der_n_est_pas_un_pkcs12(racine_si):
         ("conf.json", '{"tls": {"enabled": true}}', "json"),
         ("requirements.txt", "requests==2.31.0\ncryptography>=42\n", "requirements"),
         ("sshd_config", "Port 2222\nCiphers aes128-ctr\nUsePAM yes\n", "config_sshd"),
+        ("config", "Host routeur\n  HostName 10.0.0.1\n  User admin\n", "config_ssh_client"),
         ("main.cf", "smtpd_tls_security_level = may\nsmtpd_tls_protocols = !SSLv2\nmyhostname mail\n", "texte"),
     ],
 )

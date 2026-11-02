@@ -85,14 +85,66 @@ def lire_version(texte: str) -> tuple[int, int] | None:
     return (int(m.group(1)), int(m.group(2))) if m else None
 
 
-def analyser(texte: str, fichier: str, contexte=None) -> tuple[list[Trouvaille], list[Piste]]:
-    d = directives(texte)
-    trouvailles, pistes = [], []
+def est_obsolete(algorithme: str) -> bool:
+    """Algorithmes SSH retirés ou déconseillés : SHA-1, DSA, groupe DH 1024 bits, 3DES, modes CBC."""
+    return algorithme.startswith(("ssh-rsa", "ssh-dss", "hmac-sha1", "diffie-hellman-group1-", "diffie-hellman-group-exchange-sha1", "3des")) or algorithme.endswith("-cbc")
+
+
+def version_du_contexte(contexte) -> tuple[tuple[int, int] | None, str]:
     options = getattr(contexte, "options", {}) or {}
     version, origine = lire_version(str(options.get("version_openssh", ""))), "indiquée par l'agent"
     if version is None and contexte is not None:
         version, origine = version_dans_le_si(contexte.racine)
         origine = f"lue dans {origine}" if version else origine
+    return version, origine
+
+
+def analyser_client(texte: str, fichier: str, contexte=None) -> tuple[list[Trouvaille], list[Piste]]:
+    """Configuration du CLIENT SSH (ssh_config, ~/.ssh/config) : réglages par bloc « Host ».
+
+    Seules les directives écrites donnent une trouvaille : un bloc Host ne concerne
+    que les serveurs qu'il désigne, et ce qui n'est pas écrit reprend la valeur par
+    défaut du client, déjà inventoriée côté serveur.
+    """
+    version, origine = version_du_contexte(contexte)
+    listes, source = defauts.openssh(version)
+    noms = {nom.lower(): nom for nom in ROLES}
+    trouvailles, pistes, hote = [], [], "*"
+    for numero, ligne in enumerate(texte.splitlines(), start=1):
+        if not ligne.strip() or ligne.strip().startswith("#") or not (correspondance := _LIGNE.match(ligne)):
+            continue
+        directive, valeur = correspondance.group(1), correspondance.group(2)
+        if directive.lower() in ("host", "match"):
+            hote = valeur
+            continue
+        if directive.lower() == "stricthostkeychecking" and valeur.lower() in ("no", "off", "accept-new"):
+            trouvailles.append(Trouvaille(
+                outil=NOM, fichier=fichier, ligne=numero, type_actif="protocol", nom=f"StrictHostKeyChecking {valeur}",
+                description=f"Vérification de la clé d'hôte assouplie par le client SSH pour « {hote} »", exposition="shor",
+                proprietes={"hotes": hote.split(), "faiblesse_classique": "homme du milieu possible à la première connexion (ou toujours avec « no »)"},
+                preuve=ligne.strip(),
+            ))
+        if directive.lower() not in noms:
+            continue
+        directive = noms[directive.lower()]
+        effective = appliquer(valeur, listes[directive])
+        props: dict = {"algorithmes": effective, "hotes": hote.split(), "role": "client", "source_des_valeurs_par_defaut": source,
+                       "version_openssh": f"{version[0]}.{version[1]} ({origine})" if version else f"inconnue ({origine})"}
+        obsoletes = [a for a in effective if est_obsolete(a)]
+        if obsoletes:
+            props["faiblesse_classique"] = "algorithmes obsolètes réactivés pour ce client : " + ", ".join(obsoletes)
+        trouvailles.append(Trouvaille(
+            outil=NOM, fichier=fichier, ligne=numero, type_actif="algorithm", nom=",".join(effective),
+            description=f"{ROLES[directive]} du client SSH pour « {hote} »", exposition=exposition_la_pire(effective),
+            proprietes=props, preuve=ligne.strip(),
+        ))
+    return trouvailles, pistes
+
+
+def analyser(texte: str, fichier: str, contexte=None) -> tuple[list[Trouvaille], list[Piste]]:
+    d = directives(texte)
+    trouvailles, pistes = [], []
+    version, origine = version_du_contexte(contexte)
     listes, source = defauts.openssh(version)
     for directive, role in ROLES.items():
         defaut = listes[directive]
@@ -104,7 +156,7 @@ def analyser(texte: str, fichier: str, contexte=None) -> tuple[list[Trouvaille],
             if retires:
                 props["post_quantique_retire"] = retires
                 props["regression"] = "la liste écrite retire l'échange post-quantique hybride proposé par défaut par OpenSSH"
-            if any(a.startswith(("ssh-rsa", "ssh-dss", "hmac-sha1", "diffie-hellman-group1-", "3des")) for a in effective):
+            if any(est_obsolete(a) for a in effective):
                 props["faiblesse_classique"] = "algorithmes obsolètes dans la liste"
             trouvailles.append(Trouvaille(
                 outil=NOM, fichier=fichier, ligne=ligne, type_actif=TYPES[directive], nom=",".join(effective),
