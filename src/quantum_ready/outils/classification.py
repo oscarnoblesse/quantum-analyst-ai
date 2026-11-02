@@ -11,14 +11,17 @@ et lisible pour être relue et auditée. L'ordre des tests compte :
 
 from __future__ import annotations
 
+import re
+
 from quantum_ready.outils.commun import Exposition
 
 POST_QUANTIQUES = ("ml-kem", "mlkem", "ml-dsa", "mldsa", "slh-dsa", "slhdsa", "sntrup", "kyber", "dilithium", "sphincs", "falcon")
 ASYMETRIQUES = (
     "rsa", "dsa", "dss", "diffie", "dh", "ecdh", "ecdsa", "ed25519", "ed448", "x25519", "x448",
-    "curve25519", "secp", "nistp", "prime256", "p-256", "p-384", "p-521", "elgamal", "openpgp",
-    "rs256", "rs384", "rs512", "ps256", "ps384", "ps512", "es256", "es384", "es512", "eddsa",  # noms JOSE (JWT)
+    "curve25519", "secp", "nistp", "prime256", "p-256", "p-384", "p-521", "elgamal", "openpgp", "eddsa",
 )
+# Noms JOSE des JWT (RS256, ES384...) : cherchés comme mots entiers, sinon « es256 » se trouverait dans « aes256 ».
+_JOSE_ASYMETRIQUES = re.compile(r"(?<![a-z])(rs|ps|es)(256|384|512)(?![0-9])")
 SYMETRIQUES = (
     "aes", "chacha", "3des", "des-", "tripledes", "camellia", "sha", "md5", "hmac", "poly1305",
     "argon", "scrypt", "pbkdf", "bcrypt", "fernet", "blake", "hs256", "hs384", "hs512", "rc2", "rc4",
@@ -30,7 +33,7 @@ def exposition(nom: str) -> Exposition:
     texte = nom.lower().replace("_", "-")
     if any(motif in texte for motif in POST_QUANTIQUES):
         return "resistant"
-    if any(motif in texte for motif in ASYMETRIQUES):
+    if any(motif in texte for motif in ASYMETRIQUES) or _JOSE_ASYMETRIQUES.search(texte):
         return "shor"
     if any(motif in texte for motif in SYMETRIQUES):
         return "grover"
