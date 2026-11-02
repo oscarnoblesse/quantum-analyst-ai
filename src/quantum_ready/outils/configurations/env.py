@@ -51,9 +51,31 @@ def forme_du_secret(valeur: str) -> tuple[str, dict]:
     return "Secret en clair", props
 
 
+VALEURS_DESACTIVEES = {"disabled", "disable", "false", "off", "0", "no", "none", "never"}
+_NOM_TLS = re.compile(r"(SSL|TLS)", re.I)
+_FICHIER_DE_CLE = re.compile(r"\.(pem|key|crt|cer|p12|pfx|jks|keystore|asc|gpg)$", re.I)
+
+
 def analyser(texte: str, fichier: str) -> tuple[list[Trouvaille], list[Piste]]:
+    return analyser_variables(lire_env(texte), fichier, "un fichier de variables d'environnement")
+
+
+def analyser_variables(variables, fichier: str, lieu: str) -> tuple[list[Trouvaille], list[Piste]]:
+    """Cœur commun au .env, au YAML et au JSON : une liste de (ligne, nom, valeur)."""
     trouvailles, pistes = [], []
-    for ligne, nom, valeur in lire_env(texte):
+    for ligne, nom, valeur in variables:
+        valeur = str(valeur)
+        if _FICHIER_DE_CLE.search(valeur) and "://" not in valeur:
+            pistes.append(Piste(vers=valeur, raison=f"fichier de clé ou de certificat référencé par {nom}"))
+            continue
+        if _NOM_TLS.search(nom) and valeur.lower() in VALEURS_DESACTIVEES:
+            trouvailles.append(Trouvaille(
+                outil=NOM, fichier=fichier, ligne=ligne, type_actif="protocol", nom=f"{nom}={valeur}",
+                description=f"Réglage TLS de la configuration : {nom} vaut « {valeur} »", exposition="aucune",
+                proprietes={"variable": nom, "faiblesse_classique": "TLS désactivé ou vérification désactivée : échanges en clair ou sans authentification"},
+                preuve=f"{nom}={valeur}",
+            ))
+            continue
         if "://" in valeur:
             adresse = urlsplit(valeur)
             if adresse.password:
@@ -78,15 +100,21 @@ def analyser(texte: str, fichier: str) -> tuple[list[Trouvaille], list[Piste]]:
                 ))
                 if "sslrootcert" in options:
                     pistes.append(Piste(vers=options["sslrootcert"], raison=f"magasin d'AC de la connexion {nom} (sslrootcert)"))
-        elif _NOM_SECRET.search(nom) and valeur:
+        elif _NOM_SECRET.search(nom.split(".")[-1]) and valeur and not valeur.startswith(("${", "$(")):
             nom_secret, props = forme_du_secret(valeur)
             props["variable"] = nom
             trouvailles.append(Trouvaille(
                 outil=NOM, fichier=fichier, ligne=ligne, type_actif="related-crypto-material",
-                nom=f"{nom_secret} ({nom})", description=f"Secret {nom} stocké en clair dans un fichier de variables d'environnement",
+                nom=f"{nom_secret} ({nom})", description=f"Secret {nom} stocké en clair dans {lieu}",
                 exposition="grover", proprietes=props, preuve=f"{nom}=<masqué>",
             ))
             pistes.append(Piste(vers=nom, raison=f"chercher le code qui lit {nom} pour savoir ce que ce secret protège"))
-        elif exposition(valeur) != "inconnue" and len(valeur) <= 32:
-            pistes.append(Piste(vers=nom, raison=f"{nom}={valeur} est un nom d'algorithme : chercher le code qui lit {nom}"))
+        elif exposition(valeur) != "inconnue" and len(valeur) <= 40 and " " not in valeur:
+            trouvailles.append(Trouvaille(
+                outil=NOM, fichier=fichier, ligne=ligne, type_actif="algorithm", nom=valeur,
+                description=f"Algorithme choisi par configuration ({nom})", exposition=exposition(valeur),
+                proprietes={"variable": nom, "usage": "valeur lue par l'application : chercher le code qui l'utilise"},
+                preuve=f"{nom}={valeur}",
+            ))
+            pistes.append(Piste(vers=nom, raison=f"{nom}={valeur} : chercher le code qui lit {nom} pour savoir ce que cet algorithme protège"))
     return trouvailles, pistes

@@ -174,9 +174,11 @@ def test_env_url_de_connexion(racine_si):
     assert noms["Mot de passe de connexion (secret en clair)"].proprietes["utilisateur"] == "lab_app"
 
 
-def test_env_nom_d_algorithme_devient_une_piste(racine_si):
-    pistes = {p.vers: p.raison for p in _analyser(racine_si, "api/.env").pistes}
+def test_env_nom_d_algorithme_trouvaille_et_piste(racine_si):
+    resultat = _analyser(racine_si, "api/.env")
+    pistes = {p.vers: p.raison for p in resultat.pistes}
     assert "HS256" in pistes["JWT_ALGORITHM"]
+    assert _par_nom(resultat)["HS256"].proprietes["variable"] == "JWT_ALGORITHM"
     assert pistes["api/config/ca_bundle.pem"].startswith("magasin d'AC")
 
 
@@ -315,3 +317,67 @@ def test_sshd_regression_selon_la_version(tmp_path):
     (tmp_path / "Dockerfile").write_text("FROM debian:13\nRUN apt-get install -y openssh-server=1:10.0p1-5\n")
     kex = analyser_configuration("sshd_config", racine=tmp_path).trouvailles[0]
     assert "mlkem768x25519-sha256" in kex.proprietes["post_quantique_retire"]
+
+
+# --- Apache ---
+
+def test_apache_vhosts_heritage_et_include(tmp_path):
+    _site(tmp_path, {
+        "httpd.conf": "SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1\nInclude conf.d/*.conf\n",
+        "conf.d/a.conf": (
+            "<VirtualHost *:443>\n  ServerName a.test\n  SSLEngine on\n"
+            "  SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:AES256-SHA\n"
+            "  SSLOpenSSLConfCmd Groups X25519MLKEM768:X25519\n  SSLCertificateFile /etc/pki/a.crt\n</VirtualHost>\n"
+            "<VirtualHost *:8443>\n  ServerName b.test\n  SSLEngine on\n  SSLProtocol TLSv1.2 \\\n    +TLSv1.1\n  SSLSessionTickets off\n</VirtualHost>\n"
+            "<VirtualHost *:80>\n  ServerName clair.test\n</VirtualHost>\n"),
+    })
+    resultat = analyser_configuration("httpd.conf", racine=tmp_path)
+    noms = _par_nom(resultat)
+    assert noms["TLSv1.2 TLSv1.3"].proprietes["serveurs"] == ["a.test (*:443)"]
+    assert "faiblesse_classique" in noms["TLSv1.2 TLSv1.1"].proprietes
+    assert noms["X25519MLKEM768:X25519"].proprietes["hybride_post_quantique"] is True
+    assert any(n.startswith("Échange de clés RSA") for n in noms) or "developpement" in noms["ECDHE-RSA-AES128-GCM-SHA256:AES256-SHA"].proprietes
+    assert noms["Clé des tickets de session TLS"].proprietes["serveurs"] == ["a.test (*:443)"]
+    assert all("clair.test" not in str(t.proprietes.get("serveurs")) for t in resultat.trouvailles)
+    assert any(p.vers == "/etc/pki/a.crt" for p in resultat.pistes)
+
+
+def test_apache_par_defaut(tmp_path):
+    _site(tmp_path, {"ssl.conf": "<VirtualHost *:443>\n  SSLEngine on\n</VirtualHost>\n"})
+    versions = _par_nom(analyser_configuration("ssl.conf", racine=tmp_path))["TLSv1 TLSv1.1 TLSv1.2 TLSv1.3"]
+    assert versions.implicite and versions.proprietes["expression"] == "all -SSLv3"
+
+
+# --- YAML et JSON ---
+
+def test_docker_compose(tmp_path):
+    _site(tmp_path, {"docker-compose.yml": (
+        "services:\n  db:\n    image: mysql:8.0\n    environment:\n      MYSQL_ROOT_PASSWORD: root123\n      MYSQL_SSL_MODE: DISABLED\n"
+        "  app:\n    environment:\n      - DATABASE_URL=postgres://app:Zx9kP2qL7wR4@db/app?sslmode=prefer\n      - API_KEY=${API_KEY}\n"
+        "      - TLS_CERT=/run/secrets/app.pem\n")})
+    resultat = analyser_configuration("docker-compose.yml", racine=tmp_path)
+    noms = _par_nom(resultat)
+    assert noms["Secret faible (services.db.environment.MYSQL_ROOT_PASSWORD)"].ligne == 5
+    assert "TLS désactivé" in noms["services.db.environment.MYSQL_SSL_MODE=DISABLED"].proprietes["faiblesse_classique"]
+    assert "faiblesse_classique" in noms["sslmode=prefer"].proprietes
+    assert not any("API_KEY" in n for n in noms)  # ${API_KEY} : valeur injectée, pas un secret en clair
+    assert any(p.vers == "/run/secrets/app.pem" for p in resultat.pistes)
+    assert "root123" not in resultat.model_dump_json() and "Zx9kP2" not in resultat.model_dump_json()
+
+
+def test_yaml_kubernetes_plusieurs_documents_et_json(tmp_path):
+    _site(tmp_path, {
+        "k8s.yaml": "apiVersion: v1\nkind: Secret\ndata:\n  tls.key: LS0tLS1CRUdJTi1jbGVmYWN0aWNlLXRyZXNsb25ndWU=\n---\nkind: ConfigMap\ndata:\n  cipher: AES-256-GCM\n",
+        "config.json": '{"jwt": {"algorithm": "RS256", "private_key": "cles/jwt.key"}, "tls": {"verify": false}}',
+    })
+    noms = _par_nom(analyser_configuration("k8s.yaml", racine=tmp_path))
+    assert "AES-256-GCM" in noms and any(n.endswith("(data.tls.key)") for n in noms)
+    resultat = analyser_configuration("config.json", racine=tmp_path)
+    noms = _par_nom(resultat)
+    assert noms["RS256"].exposition == "shor" and "tls.verify=false" in noms
+    assert any(p.vers == "cles/jwt.key" for p in resultat.pistes)
+
+
+def test_yaml_invalide(tmp_path):
+    _site(tmp_path, {"casse.yml": "a: b\n  c: : d\n- x\n"})
+    assert "YAML invalide" in analyser_configuration("casse.yml", racine=tmp_path).erreurs[0]
