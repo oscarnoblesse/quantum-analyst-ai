@@ -89,10 +89,12 @@ class ModeleOllama:
     """Modèle local servi par Ollama, réglé pour être aussi reproductible que possible."""
 
     def __init__(self, nom: str, hote: str = "http://localhost:11434", contexte: int = 4096,
-                 temperature: float = 0, graine: int = 42, delai_secondes: float = 300, client: httpx.Client | None = None):
+                 temperature: float = 0, graine: int = 42, delai_secondes: float = 300, client: httpx.Client | None = None,
+                 max_jetons_sortie: int = 1024):
         self.nom = nom
         self.hote = hote.rstrip("/")
-        self.options = {"num_ctx": contexte, "temperature": temperature, "seed": graine}
+        # num_predict borne la réponse : une génération qui s'emballe ne peut plus bloquer l'agent
+        self.options = {"num_ctx": contexte, "temperature": temperature, "seed": graine, "num_predict": max_jetons_sortie}
         self.client = client or httpx.Client(timeout=delai_secondes)
 
     def discuter(self, messages: list[dict], outils: list[dict]) -> Reponse:
@@ -147,4 +149,5 @@ def texte(contenu: str | dict) -> Reponse:
 def depuis_configuration(config: dict) -> ModeleOllama:
     modele = config["modele"]
     return ModeleOllama(modele["nom"], modele.get("hote", "http://localhost:11434"), modele.get("contexte", 4096),
-                        modele.get("temperature", 0), modele.get("graine", 42), modele.get("delai_secondes", 300))
+                        modele.get("temperature", 0), modele.get("graine", 42), modele.get("delai_secondes", 300),
+                        max_jetons_sortie=modele.get("max_jetons_sortie", 1024))

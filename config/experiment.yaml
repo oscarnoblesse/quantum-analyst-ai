@@ -14,6 +14,7 @@ modele:
   temperature: 0
   graine: 42
   delai_secondes: 300
+  max_jetons_sortie: 1024       # num_predict ; le budget de contexte d'un agent = contexte - max_jetons_sortie - 200
 
 agents:
   inventoriste:   {max_etapes: 90, fenetre: 6}

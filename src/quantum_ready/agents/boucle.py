@@ -52,6 +52,65 @@ class EtatBoucle:
     appels: list[Appel] = field(default_factory=list)
     echanges: list[list[dict]] = field(default_factory=list)
     corrections: list[dict] = field(default_factory=list)
+    debut: int = 0  # premier échange encore envoyé au modèle (avance par blocs : début de conversation stable)
+
+
+CARACTERES_PAR_JETON = 3.2  # estimation prudente pour du français mêlé de chemins et d'identifiants
+TAILLE_RESULTAT_ANCIEN = 240
+
+
+def estimer_jetons(messages: list[dict], outils: list[dict]) -> int:
+    """Estimation (prudente) du nombre de jetons d'une requête : messages et description des outils."""
+    taille = sum(len(m.get("content", "")) + len(json.dumps(m.get("tool_calls", ""), ensure_ascii=False)) + 16 for m in messages)
+    return int((taille + len(json.dumps(outils, ensure_ascii=False))) / CARACTERES_PAR_JETON)
+
+
+def raccourcir(echange: list[dict]) -> list[dict]:
+    """Un échange déjà lu : les résultats d'outils sont raccourcis, l'essentiel est dans la mémoire de travail."""
+    resultat = []
+    for message in echange:
+        if message["role"] == "tool" and len(message["content"]) > TAILLE_RESULTAT_ANCIEN:
+            message = message | {"content": message["content"][:TAILLE_RESULTAT_ANCIEN] + " … (résultat déjà lu ; voir la mémoire de travail)"}
+        resultat.append(message)
+    return resultat
+
+
+def composer(config: "ConfigurationAgent", consigne: str, etat: EtatBoucle, session: Session, outils: list[dict]) -> list[dict]:
+    """Messages d'un tour, sous le budget de contexte.
+
+    Ordre : consigne fixe, échanges, corrections, puis mémoire de travail EN DERNIER. Le
+    début reste identique d'un tour à l'autre, ce qui permet à Ollama de réutiliser son
+    cache. Si le budget est dépassé : d'abord raccourcir les résultats déjà lus, puis
+    oublier les échanges les plus anciens PAR BLOCS (pour garder un début stable).
+    """
+    raccourcis = False
+
+    def assembler():
+        gardes = etat.echanges[etat.debut :]
+        messages = [{"role": "system", "content": config.prompt}, {"role": "user", "content": consigne}]
+        for i, echange in enumerate(gardes):
+            messages += raccourcir(echange) if raccourcis and i < len(gardes) - 1 else echange
+        messages += etat.corrections
+        if config.memoire:
+            messages.append({"role": "user", "content": "Mémoire de travail (écrite par le système) :\n" + config.memoire(etat, session)})
+        return messages
+
+    if len(etat.echanges) - etat.debut > config.fenetre:
+        etat.debut = len(etat.echanges) - max(1, config.fenetre // 2)
+    messages = assembler()
+    if estimer_jetons(messages, outils) > config.budget_jetons:
+        raccourcis = True
+        messages = assembler()
+    while estimer_jetons(messages, outils) > config.budget_jetons and etat.debut < len(etat.echanges) - 1:
+        etat.debut = min(len(etat.echanges) - 1, etat.debut + max(1, (len(etat.echanges) - etat.debut) // 2))
+        messages = assembler()
+    if estimer_jetons(messages, outils) > config.budget_jetons:  # un seul résultat trop long : on le tronque
+        exces = int((estimer_jetons(messages, outils) - config.budget_jetons) * CARACTERES_PAR_JETON) + 200
+        for message in reversed(messages):
+            if message["role"] == "tool" and len(message["content"]) > exces:
+                message["content"] = message["content"][: len(message["content"]) - exces] + " … (tronqué : contexte limité)"
+                break
+    return messages
 
 
 @dataclass
@@ -63,6 +122,7 @@ class ConfigurationAgent:
     max_etapes: int = 30
     fenetre: int = 6
     memoire: Callable[[EtatBoucle, Session], str] | None = None
+    budget_jetons: int = 3000          # taille maximale estimée de ce qui est envoyé au modèle (outils compris)
 
 
 class ResultatAgent(BaseModel):
@@ -110,17 +170,16 @@ async def executer_agent(config: ConfigurationAgent, modele: Modele, outils: Cli
     deja_faits: dict[str, Appel] = {}
     resultat = ResultatAgent(agent=config.nom, arret="limite_etapes")
     consigne = f"{config.consigne}\n\nQuand tu as terminé, réponds UNIQUEMENT par un objet JSON avec ces champs :\n{decrire_schema(config.sortie)}"
-    session.journaliser(JOURNAL_AGENTS, {"agent": config.nom, "evenement": "debut", "modele": modele.nom, "prompt": config.prompt,
+    import hashlib
+
+    session.journaliser(JOURNAL_AGENTS, {"agent": config.nom, "evenement": "debut", "modele": modele.nom,
+                                         "empreinte_prompt": hashlib.sha256(config.prompt.encode()).hexdigest()[:12],
+                                         "budget_jetons": config.budget_jetons, "prompt": config.prompt,
                                          "consigne": consigne, "outils": sorted(outils.noms)})
 
     for etape in range(1, config.max_etapes + 1):
         resultat.etapes = etape
-        messages = [{"role": "system", "content": config.prompt}, {"role": "user", "content": consigne}]
-        if config.memoire:
-            messages.append({"role": "user", "content": "Mémoire de travail (écrite par le système) :\n" + config.memoire(etat, session)})
-        for echange in etat.echanges[-config.fenetre :]:
-            messages += echange
-        messages += etat.corrections
+        messages = composer(config, consigne, etat, session, outils.schemas)
 
         try:
             reponse = await asyncio.to_thread(modele.discuter, messages, outils.schemas)
@@ -130,6 +189,7 @@ async def executer_agent(config: ConfigurationAgent, modele: Modele, outils: Cli
         resultat.jetons_entree += reponse.jetons_entree or 0
         resultat.jetons_sortie += reponse.jetons_sortie or 0
         session.journaliser(JOURNAL_AGENTS, {"agent": config.nom, "evenement": "tour", "etape": etape, "messages": len(messages),
+                                             "jetons_estimes": estimer_jetons(messages, outils.schemas),
                                              "texte": reponse.texte[:2000], "appels": [a.model_dump() for a in reponse.appels],
                                              "jetons_entree": reponse.jetons_entree, "jetons_sortie": reponse.jetons_sortie, "duree_ms": reponse.duree_ms})
 

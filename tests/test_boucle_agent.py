@@ -73,7 +73,7 @@ def test_limite_d_etapes_et_fenetre(racine_si, tmp_path):
     assert resultat.arret == "limite_etapes" and resultat.appels_outils == 5
     dernier = modele.recus[-1]
     assert sum(m["role"] == "tool" for m in dernier) == 2
-    assert "4 appels faits" in dernier[2]["content"]
+    assert "4 appels faits" in dernier[-1]["content"]  # mémoire de travail en dernier
 
 
 def test_erreur_du_modele(racine_si, tmp_path):
@@ -87,3 +87,14 @@ def test_utilitaires():
     assert extraire_json('bla {"a": {"b": 1}} bla') == {"a": {"b": 1}}
     description = decrire_schema(Sortie)
     assert '"resume" (str) : Une phrase' in description and '"fichiers" (liste de str)' in description
+
+
+def test_budget_de_contexte(racine_si, tmp_path):
+    """Sous un budget serré, les résultats déjà lus sont raccourcis (puis, si besoin, les échanges anciens oubliés)."""
+    reponses = [appel("lister_fichiers", cible=".")] + [appel("lister_fichiers", cible=d) for d in ("api", "db", "ssh", "nginx")]
+    resultat, _, modele = _executer(racine_si, tmp_path, reponses, max_etapes=5, fenetre=10, budget_jetons=2500,
+                                    memoire=lambda etat, session: "mémoire")
+    assert resultat.etapes == 5
+    assert not any("résultat déjà lu" in m["content"] for m in modele.recus[1])  # sous le budget : rien n'est raccourci
+    assert any("résultat déjà lu" in m["content"] for m in modele.recus[-1] if m["role"] == "tool")
+    assert modele.recus[-1][-1]["content"].startswith("Mémoire de travail")

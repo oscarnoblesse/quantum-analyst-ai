@@ -24,12 +24,14 @@ def restants(session: Session) -> list[str]:
 
 
 def memoire(etat: EtatBoucle, session: Session) -> str:
-    total = len(lire_json(session.fichier_cbom, {}).get("components", []))
+    from quantum_ready.serveur_mcp.outils_exposes import ligne_actif
+
+    composants = {c["bom-ref"]: c for c in lire_json(session.fichier_cbom, {}).get("components", [])}
     reste = restants(session)
-    pages = sorted({a.arguments.get("page", 1) for a in etat.appels if a.nom == "lister_actifs" and not a.erreur})
-    lignes = [f"{total - len(reste)} actifs évalués sur {total}. Pages de lister_actifs déjà lues : {pages or 'aucune'}."]
+    lignes = [f"{len(composants) - len(reste)} actifs évalués sur {len(composants)}."]
     if reste:
-        lignes.append("Prochaines références à évaluer : " + ", ".join(reste[:10]))
+        lignes.append("Prochains actifs à évaluer, en un seul appel à score_mosca (réf | type | nom | exposition | lieu | indices) :")
+        lignes += [ligne_actif(composants[r]) for r in reste[:5]]
     else:
         lignes.append("Tous les actifs sont évalués : réponds par le JSON final.")
     return "\n".join(lignes)

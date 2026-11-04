@@ -85,3 +85,25 @@ def test_plan_refuse_par_le_code_puis_corrige(racine_si, tmp_path):
     assert etat["plan_valide"] and etat["tentatives_architecte"] == 2
     assert "REFUSÉ" in vu[0] and "NORME-INVENTEE" in vu[0] and "crypto-inexistant" in vu[0] and "critique" in vu[0]
     assert json.loads((session.dossier / "plan.json").read_text())["verification"] == "plan conforme"
+
+
+def test_arret_propre_si_le_modele_tombe_pendant_l_inventaire(racine_si, tmp_path):
+    from quantum_ready.llm import ErreurModele
+
+    def panne(messages, outils):
+        if len(messages) > 4:
+            raise ErreurModele("Ollama injoignable (ReadTimeout)")
+        return appel("lister_fichiers", cible=".")
+    choisir = lambda nom: ModeleSimule(panne) if nom == "inventoriste" else _regles(nom)  # noqa: E731
+    session = Session(tmp_path / "s", racine_si)
+    etat = construire_graphe(choisir, session, PARAMETRES, "memoire").invoke({})
+    assert etat["arret"] == "erreur_modele" and list(etat["resultats"]) == ["inventoriste"]
+    assert not session.fichier_cbom.exists()
+
+
+def test_budget_transmis_aux_agents(racine_si, tmp_path):
+    session = Session(tmp_path / "s", racine_si)
+    parametres = PARAMETRES | {"modele": {"contexte": 4096, "max_jetons_sortie": 1024}}
+    construire_graphe(_regles, session, parametres, "memoire").invoke({})
+    debuts = [e for e in session.evenements("journal_agents.jsonl") if e["evenement"] == "debut"]
+    assert {e["budget_jetons"] for e in debuts} == {2872} and all(len(e["empreinte_prompt"]) == 12 for e in debuts)

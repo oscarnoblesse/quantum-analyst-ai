@@ -29,7 +29,7 @@ def test_requete_reproductible_et_appel_d_outil():
     assert reponse.appels[0].nom == "lister_fichiers" and reponse.appels[0].arguments == {"cible": "."}
     assert reponse.jetons_entree == 120
     corps = envoyes[0]
-    assert corps["options"] == {"num_ctx": 4096, "temperature": 0, "seed": 42}
+    assert corps["options"] == {"num_ctx": 4096, "temperature": 0, "seed": 42, "num_predict": 1024}
     assert corps["think"] is False and corps["stream"] is False and corps["tools"] == OUTILS
 
 
@@ -67,7 +67,7 @@ def test_modele_simule():
 
 def test_depuis_configuration():
     modele = depuis_configuration({"modele": {"nom": "m", "contexte": 2048, "graine": 7}})
-    assert modele.nom == "m" and modele.options == {"num_ctx": 2048, "temperature": 0, "seed": 7}
+    assert modele.nom == "m" and modele.options == {"num_ctx": 2048, "temperature": 0, "seed": 7, "num_predict": 1024}
 
 
 def test_reflexion_retiree_meme_sans_balise_d_ouverture():
