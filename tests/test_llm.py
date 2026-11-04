@@ -5,7 +5,7 @@ import json
 import httpx
 import pytest
 
-from quantum_ready.llm import ErreurModele, ModeleOllama, ModeleSimule, appel, depuis_configuration, texte
+from quantum_ready.llm import ErreurModele, ModeleOllama, ModeleSimule, appel, depuis_configuration, retirer_reflexion, texte
 
 OUTILS = [{"type": "function", "function": {"name": "lister_fichiers", "description": "d", "parameters": {"type": "object", "properties": {}}}}]
 
@@ -68,3 +68,13 @@ def test_modele_simule():
 def test_depuis_configuration():
     modele = depuis_configuration({"modele": {"nom": "m", "contexte": 2048, "graine": 7}})
     assert modele.nom == "m" and modele.options == {"num_ctx": 2048, "temperature": 0, "seed": 7}
+
+
+def test_reflexion_retiree_meme_sans_balise_d_ouverture():
+    """Cas réel observé avec qwen3:4b (variante thinking) et think=false."""
+    brut = 'Okay, the user wants me to respond with "bonjour" only. Let me check.\n</think>\n\nbonjour'
+    assert retirer_reflexion(brut) == "bonjour"
+    assert retirer_reflexion("<think>a</think>b<think>c</think>d") == "bd"
+    assert retirer_reflexion('{"resume": "ok"}') == '{"resume": "ok"}'
+    modele, _ = _ollama({"message": {"content": brut}})
+    assert modele.discuter([], OUTILS).texte == "bonjour"
