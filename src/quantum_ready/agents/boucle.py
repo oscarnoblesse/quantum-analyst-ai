@@ -33,7 +33,6 @@ JOURNAL_AGENTS = "journal_agents.jsonl"
 JOURNAL_OUTILS = "journal_outils.jsonl"
 MAX_APPELS_PAR_TOUR = 5
 MAX_CORRECTIONS = 2
-MAX_REFUS_DE_FIN = 4  # au-delà, la réponse finale est acceptée telle quelle, avec le motif du refus dans le message
 
 
 @dataclass
@@ -126,6 +125,7 @@ class ConfigurationAgent:
     budget_jetons: int = 3000          # taille maximale estimée de ce qui est envoyé au modèle (outils compris)
     # Contrôle de la réponse finale par le code : renvoie un message si le travail n'est pas fini ou incohérent.
     verifier_fin: Callable[[EtatBoucle, Session, BaseModel], str | None] | None = None
+    max_refus_de_fin: int = 4  # au-delà, la réponse finale est acceptée, avec le motif du refus dans le message
 
 
 class ResultatAgent(BaseModel):
@@ -227,14 +227,14 @@ async def executer_agent(config: ConfigurationAgent, modele: Modele, outils: Cli
             ]
             continue
         refus = config.verifier_fin(etat, session, sortie) if config.verifier_fin else None
-        if refus and resultat.fins_refusees < MAX_REFUS_DE_FIN:
+        if refus and resultat.fins_refusees < config.max_refus_de_fin:
             resultat.fins_refusees += 1
             etat.corrections = [{"role": "assistant", "content": reponse.texte[:1500]},
                                 {"role": "user", "content": f"Réponse finale REFUSÉE par la vérification automatique : {refus}"}]
             session.journaliser(JOURNAL_AGENTS, {"agent": config.nom, "evenement": "fin_refusee", "etape": etape, "motif": refus})
             continue
         if refus:
-            resultat.message = f"réponse finale acceptée après {MAX_REFUS_DE_FIN} refus : {refus}"
+            resultat.message = f"réponse finale acceptée après {config.max_refus_de_fin} refus : {refus}"
         resultat.arret, resultat.sortie = "termine", sortie.model_dump(mode="json")
         break
 
