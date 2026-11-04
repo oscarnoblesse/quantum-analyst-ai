@@ -71,6 +71,20 @@ def appels_dans_le_texte(texte: str, noms_connus: set[str]) -> list[AppelOutil]:
     return appels
 
 
+def retirer_reflexion(texte: str) -> str:
+    """Retire le raisonnement qu'un modèle « thinking » écrit malgré think=False.
+
+    Les variantes « thinking » de qwen3 raisonnent toujours ; selon le gabarit, le
+    raisonnement arrive dans un bloc <think>…</think> ou SANS balise d'ouverture,
+    terminé par </think>. Dans les deux cas, seule la partie après la dernière
+    balise </think> est la réponse.
+    """
+    texte = re.sub(r"<think>.*?</think>", "", texte, flags=re.S)
+    if "</think>" in texte:
+        texte = texte.rsplit("</think>", 1)[1]
+    return texte.strip()
+
+
 class ModeleOllama:
     """Modèle local servi par Ollama, réglé pour être aussi reproductible que possible."""
 
@@ -94,7 +108,7 @@ class ModeleOllama:
             raise ErreurModele(f"Ollama injoignable sur {self.hote} ({type(erreur).__name__}) : est-il lancé, le modèle {self.nom} est-il téléchargé ?") from erreur
         message = donnees.get("message", {})
         texte = message.get("content", "") or ""
-        texte = re.sub(r"<think>.*?</think>", "", texte, flags=re.S).strip()  # au cas où le modèle raisonne malgré think=False
+        texte = retirer_reflexion(texte)
         appels = [AppelOutil(nom=a["function"]["name"], arguments=_arguments(a["function"].get("arguments")))
                   for a in message.get("tool_calls") or [] if a.get("function", {}).get("name")]
         if not appels:
