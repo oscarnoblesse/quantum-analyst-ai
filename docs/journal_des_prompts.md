@@ -121,4 +121,20 @@ Les deux défauts de la v2 (exclusions abusives, fichier lu avec le mauvais outi
 - fenêtre de l'Analyste ramenée à 1 échange (il n'a pas besoin de son historique, la mémoire contient tout) ; `max_etapes` porté à 40 ;
 - le nombre de refus de la réponse finale devient un paramètre par agent (`max_refus_de_fin`) : 12 pour l'Analyste, 4 pour les autres.
 
-**Effet mesuré :** à compléter après la prochaine exécution.
+**Effet mesuré** (exécution `20261104T203840Z_ollama`) :
+
+| Mesure | v3 | v4 |
+| --- | --- | --- |
+| Rappel / F1 | 100 % / 0,967 | 100 % / 0,967 |
+| Actifs évalués par l'Analyste | 39 / 78 | 78 / 78 |
+| Réponses finales refusées (Analyste) | 5 | 0 |
+| Appels à `score_mosca` | — | 17 |
+| Plan | 4 étapes, conforme | 3 étapes, refusé deux fois |
+| Tours de modèle | 85 | 95 |
+| Durée | 2 100 s | 2 221 s |
+
+L'Analyste évalue désormais tous les actifs sans aucun refus : la mémoire impérative et la fenêtre de 1 échange suffisent. Trois défauts apparaissent ou demeurent :
+
+- l'Architecte demande `lister_priorites(nombre=20)` alors qu'il y a 21 actifs critiques ; les 3 critiques de score 80 (derrière les scores 100) ne lui sont jamais montrés. Au second essai, il refait exactement les mêmes appels malgré le refus qui nomme les 3 actifs manquants ;
+- `score_mosca` classe « critique » des actifs qui ne sont pas en danger (x + y = 8 ≤ z = 10, score 80) : 21 critiques sur 78, et une explication contradictoire ;
+- le résumé de l'Inventoriste affirme encore « l'utilisation de cryptographie post-quantique » : la consigne du prompt n'a pas suffi.
