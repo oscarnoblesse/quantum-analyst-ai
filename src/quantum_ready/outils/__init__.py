@@ -21,7 +21,7 @@ LISTES_FERMEES: dict[str, tuple[str, ...]] = {
     ),
     "cartographe": ("lister_trouvailles", "construire_cbom", "valider_schema"),
     "analyste_risque": ("lister_actifs", "score_mosca"),
-    "architecte": (),     # rechercher_standard (RAG FIPS/ANSSI/NIST) : étape suivante
+    "architecte": ("lister_priorites", "rechercher_standard"),
     "demonstrateur": (),  # openssl >= 3.5 et bench_pqc : étape du démonstrateur
 }
 

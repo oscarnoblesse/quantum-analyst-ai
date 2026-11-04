@@ -69,3 +69,39 @@ def analyste(messages, outils) -> Reponse:
 
 
 POLITIQUES = {"inventoriste": inventoriste, "cartographe": cartographe, "analyste_risque": analyste}
+
+
+THEMES = [  # (motif dans le lieu ou le nom, requête, action, cible, échéance, fiche)
+    ("nginx", "échange de clés TLS hybride", "Mettre à jour OpenSSL (3.5 ou plus), proposer X25519MLKEM768, désactiver TLS 1.2 et les suites Kx=RSA",
+     "X25519MLKEM768, TLS 1.3", "immédiat", "IETF-TLS-HYBRIDE"),
+    ("ssh", "OpenSSH KexAlgorithms hybride", "Retirer la liste KexAlgorithms écrite à la main, passer à OpenSSH 10, retirer la clé DSA",
+     "mlkem768x25519-sha256", "immédiat", "OPENSSH-PQ"),
+    ("factures", "signature ML-DSA factures", "Signer les factures en ML-DSA (ou hybride), conserver les vérifications des anciennes signatures",
+     "ML-DSA-65", "avant 2030", "NIST-FIPS-204"),
+    ("scripts", "sauvegardes chiffrement hybride GnuPG", "Rechiffrer les sauvegardes pour une clé hybride ML-KEM", "ML-KEM-768 + courbe elliptique", "immédiat", "GNUPG-PQ"),
+    ("", "certificats ML-DSA PKI autorités", "Préparer une PKI ML-DSA (autorités puis certificats serveurs et clients)", "ML-DSA-65 / ML-DSA-87", "avant 2030", "NIST-FIPS-204"),
+]
+
+
+def architecte(messages, outils) -> Reponse:
+    resultats = _resultats_outils(messages)
+    recherches = re.search(r"Recherches faites \((\d+)\)", _memoire(messages))
+    faites = int(recherches.group(1)) if recherches else 0
+    if faites < len(THEMES):  # les recherches d'abord : la mémoire de travail en garde la trace
+        return appel("rechercher_standard", requete=THEMES[faites][1])
+    priorites = next((r for r in resultats if "les plus prioritaires" in r), None)
+    if priorites is None:  # puis la liste des priorités, juste avant d'écrire le plan
+        return appel("lister_priorites", nombre=500)
+    lignes = [l.split(" | ") for l in priorites.splitlines()[1:]]
+    etapes = []
+    restantes = [l for l in lignes if l[2] == "critique"]
+    for ordre, (motif, _, action, cible, echeance, fiche) in enumerate(THEMES, start=1):
+        concernes = [l for l in restantes if motif in l[4] or motif in l[3].lower()] if motif else restantes
+        restantes = [l for l in restantes if l not in concernes]
+        if concernes:
+            etapes.append({"ordre": len(etapes) + 1, "actifs": [l[0] for l in concernes], "action": action, "cible": cible,
+                           "echeance": echeance, "references": [fiche, "MOSCA"]})
+    return texte({"etapes": etapes, "resume": "Plan à règles fixes : échanges de clés d'abord, puis signatures et PKI."})
+
+
+POLITIQUES["architecte"] = architecte

@@ -15,10 +15,11 @@ agents:
   inventoriste:   {max_etapes: 90, fenetre: 6}
   cartographe:    {max_etapes: 12, fenetre: 4}
   analyste_risque: {max_etapes: 30, fenetre: 4}
-  architecte:     {max_etapes: 20, fenetre: 4}
+  architecte:     {max_etapes: 20, fenetre: 6}
 
 orchestrateur:
   tentatives_cartographe: 3    # boucle de vérification : CBOM invalide -> le Cartographe recommence
+  tentatives_architecte: 2     # boucle de vérification : plan non conforme -> l'Architecte recommence
   validation_humaine: demander # demander | accepter (exécution non interactive, ex. make reproduce)
 
 mosca:

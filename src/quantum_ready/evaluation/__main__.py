@@ -23,6 +23,7 @@ LIGNES = [
     ("F1", lambda r: f"{r['qualite']['f1']:.3f}"),
     ("Composants / appariés / doublons / en trop", lambda r: f"{r['qualite']['composants']} / {r['qualite']['apparies']} / {r['qualite']['doublons']} / {r['qualite']['en_trop']}"),
     ("Actifs Shor bien classés", lambda r: r["qualite"]["shor_bien_classes"]),
+    ("Plan : étapes (conforme)", lambda r: f"{r['plan']['etapes']} ({'oui' if r['plan']['conforme'] else 'non'})" if r.get("plan") else "—"),
     ("Appels d'outils (refusés, en erreur)", lambda r: f"{r['couts']['appels_outils']} ({r['couts']['appels_refuses']}, {r['couts']['erreurs_outils']})"),
     ("Tours de modèle", lambda r: str(r["couts"]["tours_de_modele"])),
     ("Jetons entrée / sortie", lambda r: f"{r['couts']['jetons_entree']} / {r['couts']['jetons_sortie']}"),
