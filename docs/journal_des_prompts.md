@@ -147,4 +147,19 @@ Prompts inchangés (mêmes empreintes que la v4). Changements du code :
 - `lister_priorites` renvoie toujours tous les actifs critiques, quel que soit le `nombre` demandé ;
 - après un refus, la mémoire de travail de l'Architecte rappelle à chaque tour, en dernière ligne, les erreurs du plan précédent ; elle liste tous les critiques (elle s'arrêtait à 20).
 
-**Effet mesuré :** à compléter après la prochaine exécution.
+**Effet mesuré** (exécution `20261104T213437Z_ollama`) :
+
+| Mesure | v4 | v5 |
+| --- | --- | --- |
+| Rappel / F1 | 100 % / 0,967 | 100 % / 0,967 |
+| Actifs évalués | 78 / 78 | 78 / 78 |
+| Actifs critiques | 21 | 7 (factures signées en ECDSA, sauvegardes OpenPGP RSA) |
+| Plan | 3 étapes, refusé deux fois | 5 étapes, conforme au premier essai |
+| Tours de modèle | 95 | 91 |
+| Durée | 2 221 s | 957 s |
+
+Le plan est accepté par le code du premier coup. Restent des défauts que le code ne vérifie pas :
+
+- le champ `critiques` de la sortie de l'Analyste cite un seul actif, qui n'est même pas critique dans `scores.json` (le modèle résume sans relire) ;
+- le résumé de l'Inventoriste est identique au mot près à celui de la v4 (température 0, graine 42) et affirme toujours « l'utilisation de cryptographie post-quantique » ;
+- étape 5 du plan : la clé RSA-2048 du certificat nginx sert à l'authentification ; elle relève d'un certificat ML-DSA, pas d'un échange de clés hybride.
