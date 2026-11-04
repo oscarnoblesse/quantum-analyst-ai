@@ -1,9 +1,11 @@
 # Paramètres de l'expérience Quantum-Ready. Toute exécution enregistre une copie de ce fichier dans sa trace.
 
 modele:
-  # Modèle local servi par Ollama. Prendre une variante « instruct » (sans raisonnement
-  # permanent) et FIGER son empreinte : `ollama show --modelfile <nom>` ou `ollama list`.
-  nom: qwen3:4b-instruct-2507-q4_K_M
+  # Modèle local servi par Ollama. Il doit avoir la capacité « tools » (`ollama show <nom>`).
+  # FIGER son empreinte (colonne ID de `ollama list`) : le même nom peut désigner un autre
+  # modèle après une mise à jour. Si le modèle raisonne en permanence malgré think=false,
+  # préférer une variante « instruct ».
+  nom: qwen3:4b
   empreinte: null              # à renseigner (digest affiché par `ollama list`)
   hote: http://localhost:11434
   contexte: 4096               # num_ctx : 8 Go de mémoire sur le portable de référence
