@@ -48,3 +48,12 @@ def test_explication_cite_les_valeurs():
 def test_entrees_invalides_sans_exception(x, y, z, exposition):
     resultat = score_mosca(x, y, z, exposition)
     assert resultat.valide is False and resultat.erreurs
+
+
+def test_critique_exige_le_danger():
+    """Choix de méthode A : exposé à Shor mais x + y <= z → au plus « haute », même avec un score élevé."""
+    pas_en_danger = score_mosca(5, 3, 10, "shor")
+    assert (pas_en_danger.en_danger, pas_en_danger.score, pas_en_danger.priorite) == (False, 80, "haute")
+    assert score_mosca(7, 3, 10, "shor").priorite == "haute"  # marge 0 : pas en danger
+    assert score_mosca(8, 3, 10, "inconnue").priorite == "critique"  # inconnue = pire cas
+    assert score_mosca(20, 5, 10, "grover").priorite != "critique"  # Grover ne rend jamais critique

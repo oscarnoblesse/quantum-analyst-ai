@@ -61,7 +61,7 @@ def verifier_plan(plan: dict | None, session: Session) -> list[str]:
 def memoire(etat: EtatBoucle, session: Session) -> str:
     recherches = [a.arguments.get("requete", "") for a in etat.appels if a.nom == "rechercher_standard"]
     fiches = sorted({ligne.split("]")[0][1:] for a in etat.appels if a.nom == "rechercher_standard" for ligne in a.texte.splitlines() if ligne.startswith("[")})
-    lignes = [f"Actifs critiques à couvrir ({len(critiques(session))}) : " + ", ".join(critiques(session)[:20])]
+    lignes = [f"Actifs critiques à couvrir, TOUS dans le plan ({len(critiques(session))}) : " + ", ".join(critiques(session))]
     lignes.append(f"Recherches faites ({len(recherches)}) : " + "; ".join(recherches[-6:]) if recherches else "Aucune recherche dans le corpus pour l'instant.")
     if fiches:
         lignes.append("Fiches trouvées (identifiants citables) : " + ", ".join(fiches))
@@ -72,5 +72,11 @@ def configuration(erreurs_precedentes: list[str] | None = None, max_etapes: int 
     consigne = "Rédige le plan de migration post-quantique priorisé du SI, étape par étape, en citant les fiches du corpus."
     if erreurs_precedentes:
         consigne += "\nTon plan précédent a été REFUSÉ par la vérification automatique :\n" + "\n".join(f"- {e}" for e in erreurs_precedentes[:8])
+    memoire_agent = memoire
+    if erreurs_precedentes:
+        # Le refus est rappelé à CHAQUE tour, en dernier, là où un petit modèle le lit (au second essai de la v4,
+        # l'Architecte avait refait le même plan : le refus, placé en début de conversation, n'était pas suivi).
+        rappel = "PLAN PRÉCÉDENT REFUSÉ, ton nouveau plan doit corriger : " + " ; ".join(erreurs_precedentes[:8])
+        memoire_agent = lambda etat, session: memoire(etat, session) + "\n" + rappel  # noqa: E731
     return ConfigurationAgent(nom=NOM, prompt=lire_prompt(NOM), consigne=consigne, sortie=SortieArchitecte,
-                              max_etapes=max_etapes, fenetre=fenetre, memoire=memoire)
+                              max_etapes=max_etapes, fenetre=fenetre, memoire=memoire_agent)

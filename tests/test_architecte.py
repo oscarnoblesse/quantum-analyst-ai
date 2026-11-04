@@ -57,3 +57,27 @@ def test_outils_de_l_architecte(tmp_path):
     assert noms == ["lister_priorites", "rechercher_standard"]
     assert "crypto-a | 100 | critique | RSA-2048" in priorites and "crypto-b" not in priorites
     assert not erreur and normes.startswith("[SYMETRIQUE-ET-HACHAGE]")
+
+
+def test_lister_priorites_montre_toujours_tous_les_critiques(tmp_path):
+    session = _session_avec_scores(tmp_path)
+    scores = {f"crypto-{i:02d}": {"score": 100, "priorite": "critique", "justification": "-"} for i in range(4)}
+    scores["crypto-haute"] = {"score": 99, "priorite": "haute", "justification": "-"}
+    ecrire_json(session.fichier_scores, scores)
+
+    async def executer():
+        async with ouvrir_outils("architecte", session, transport="memoire") as outils:
+            return await outils.appeler("lister_priorites", {"nombre": 2})
+    priorites, _ = asyncio.run(executer())
+    assert all(f"crypto-{i:02d}" in priorites for i in range(4)) and "crypto-haute" not in priorites
+
+
+def test_le_refus_est_rappele_dans_la_memoire_a_chaque_tour(tmp_path):
+    from quantum_ready.agents import architecte
+    from quantum_ready.agents.boucle import EtatBoucle
+
+    session = _session_avec_scores(tmp_path)
+    sans = architecte.configuration().memoire(EtatBoucle(), session)
+    avec = architecte.configuration(["1 actif(s) critique(s) non couvert(s) : crypto-a"]).memoire(EtatBoucle(), session)
+    assert "REFUSÉ" not in sans and "crypto-a" in sans
+    assert avec.splitlines()[-1].startswith("PLAN PRÉCÉDENT REFUSÉ") and "crypto-a" in avec.splitlines()[-1]
