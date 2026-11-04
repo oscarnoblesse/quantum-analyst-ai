@@ -1,0 +1,28 @@
+# Paramètres de l'expérience Quantum-Ready. Toute exécution enregistre une copie de ce fichier dans sa trace.
+
+modele:
+  # Modèle local servi par Ollama. Prendre une variante « instruct » (sans raisonnement
+  # permanent) et FIGER son empreinte : `ollama show --modelfile <nom>` ou `ollama list`.
+  nom: qwen3:4b-instruct-2507-q4_K_M
+  empreinte: null              # à renseigner (digest affiché par `ollama list`)
+  hote: http://localhost:11434
+  contexte: 4096               # num_ctx : 8 Go de mémoire sur le portable de référence
+  temperature: 0
+  graine: 42
+  delai_secondes: 300
+
+agents:
+  inventoriste:   {max_etapes: 90, fenetre: 6}
+  cartographe:    {max_etapes: 12, fenetre: 4}
+  analyste_risque: {max_etapes: 30, fenetre: 4}
+  architecte:     {max_etapes: 20, fenetre: 4}
+
+orchestrateur:
+  tentatives_cartographe: 3    # boucle de vérification : CBOM invalide -> le Cartographe recommence
+  validation_humaine: demander # demander | accepter (exécution non interactive, ex. make reproduce)
+
+mosca:
+  # z : années avant un ordinateur quantique capable de casser RSA-2048 / ECC-256.
+  # Valeur centrale et scénarios de sensibilité (étude reportée dans le rapport).
+  horizon_menace_annees: 10
+  scenarios: [5, 10, 15]
