@@ -1,8 +1,9 @@
-"""Politiques simulées : des « modèles » déterministes qui jouent un agent raisonnable.
+"""Politiques à règles fixes : des « modèles » déterministes qui jouent un agent raisonnable.
 
 Elles ne remplacent pas un vrai modèle de langage : elles vérifient que la
-mécanique (prompts, mémoire de travail, MCP, sorties) PERMET d'atteindre le but.
-Elles servent aussi de référence d'ablation « agent à règles fixes ».
+mécanique (prompts, mémoire de travail, MCP, sorties) PERMET d'atteindre le but,
+et servent de configuration d'ablation « agents à règles fixes, sans LLM ».
+Elles lisent la mémoire de travail et les résultats d'outils, comme le ferait le modèle.
 """
 
 import json
@@ -65,3 +66,6 @@ def analyste(messages, outils) -> Reponse:
         x = 10 if "3650" in ligne or "Factures" in ligne else 5 if "shor" in ligne else 1
         evaluations.append({"ref": ref, "x": x, "y": 2, "justification": "règle simulée"})
     return appel("score_mosca", evaluations=evaluations)
+
+
+POLITIQUES = {"inventoriste": inventoriste, "cartographe": cartographe, "analyste_risque": analyste}

@@ -9,7 +9,7 @@ from quantum_ready.agents import analyste_risque, cartographe, inventoriste
 from quantum_ready.agents.communs import lancer, lire_prompt
 from quantum_ready.llm import ModeleSimule
 from quantum_ready.serveur_mcp.session import Session
-from tests import politiques_simulees
+from quantum_ready.agents import politiques as politiques_simulees
 
 
 @pytest.fixture(scope="module")
