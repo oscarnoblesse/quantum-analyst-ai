@@ -5,8 +5,10 @@ modele:
   # FIGER son empreinte (colonne ID de `ollama list`) : le même nom peut désigner un autre
   # modèle après une mise à jour. Si le modèle raisonne en permanence malgré think=false,
   # préférer une variante « instruct ».
-  nom: qwen3:4b
-  empreinte: 359d7dd4bcda       # ID affiché par `ollama list` (4.0B, Q4_K_M, capacités : tools, thinking)
+  nom: qwen3:4b-instruct-2507-q4_K_M
+  empreinte: 0edcdef34593       # ID affiché par `ollama list` (4.0B, Q4_K_M, sans raisonnement)
+  # Variante écartée pour la configuration principale : qwen3:4b (ID 359d7dd4bcda, variante
+  # « thinking ») raisonne malgré think=false et consomme la fenêtre de 4096 jetons.
   hote: http://localhost:11434
   contexte: 4096               # num_ctx : 8 Go de mémoire sur le portable de référence
   temperature: 0
