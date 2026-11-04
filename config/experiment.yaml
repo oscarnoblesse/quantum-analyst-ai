@@ -6,7 +6,7 @@ modele:
   # modèle après une mise à jour. Si le modèle raisonne en permanence malgré think=false,
   # préférer une variante « instruct ».
   nom: qwen3:4b
-  empreinte: null              # à renseigner (digest affiché par `ollama list`)
+  empreinte: 359d7dd4bcda       # ID affiché par `ollama list` (4.0B, Q4_K_M, capacités : tools, thinking)
   hote: http://localhost:11434
   contexte: 4096               # num_ctx : 8 Go de mémoire sur le portable de référence
   temperature: 0
