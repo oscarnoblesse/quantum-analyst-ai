@@ -29,6 +29,8 @@ def _court(texte: str, taille: int = 110) -> str:
 
 def resumer(resultat: Resultat, identifiants: list[str]) -> str:
     """Résultat d'un outil d'inventaire, en quelques lignes lisibles par le modèle."""
+    if resultat.erreurs and not resultat.trouvailles and not resultat.pistes:
+        return "\n".join(f"ERREUR : {e}" for e in resultat.erreurs)
     lignes = [f"{resultat.outil} « {resultat.cible} » : {len(resultat.trouvailles)} trouvaille(s) enregistrée(s)"]
     for identifiant, t in list(zip(identifiants, resultat.trouvailles))[:MAX_TROUVAILLES_AFFICHEES]:
         details = [t.type_actif, _court(t.nom, 60), t.exposition]
