@@ -19,8 +19,9 @@ def test_chaine_complete_avec_validation(racine_si, tmp_path):
     vus = []
     etat = construire_graphe(_regles, session, PARAMETRES, "memoire", lambda s: vus.append(resume_pour_humain(s)) or True).invoke({})
     assert etat["arret"] == "termine" and etat["cbom_valide"] and etat["tentatives_cartographe"] == 1
-    assert list(etat["resultats"]) == ["inventoriste", "cartographe", "analyste_risque"]
-    assert vus and vus[0].startswith("CBOM : 78 composants")
+    assert list(etat["resultats"]) == ["inventoriste", "cartographe", "analyste_risque", "architecte"]
+    assert etat["plan_valide"] and etat["tentatives_architecte"] == 1
+    assert vus and vus[0].startswith("CBOM : 78 composants") and "Plan de migration" in vus[0] and "plan conforme" in vus[0]
 
 
 def test_refus_humain(racine_si, tmp_path):
@@ -67,3 +68,20 @@ def test_executer_en_ligne_de_commande(racine_si, tmp_path, monkeypatch):
     sauve = json.loads((tmp_path / "trace" / "rapport.json").read_text())
     assert sauve["agents"]["inventoriste"]["arret"] == "termine"
     assert (tmp_path / "trace" / "configuration.yaml").is_file()
+
+
+def test_plan_refuse_par_le_code_puis_corrige(racine_si, tmp_path):
+    vu = []
+
+    def architecte_qui_apprend(messages, outils):
+        vu.append(messages[1]["content"])
+        return POLITIQUES["architecte"](messages, outils)
+    modeles = {"architecte": [ModeleSimule([texte({"etapes": [{"ordre": 1, "actifs": ["crypto-inexistant"], "action": "a", "cible": "c",
+                                                                 "echeance": "e", "references": ["NORME-INVENTEE"]}], "resume": "-"})]),
+                              ModeleSimule(architecte_qui_apprend)]}
+    choisir = lambda nom: modeles[nom].pop(0) if nom in modeles else _regles(nom)  # noqa: E731
+    session = Session(tmp_path / "s", racine_si)
+    etat = construire_graphe(choisir, session, PARAMETRES, "memoire").invoke({})
+    assert etat["plan_valide"] and etat["tentatives_architecte"] == 2
+    assert "REFUSÉ" in vu[0] and "NORME-INVENTEE" in vu[0] and "crypto-inexistant" in vu[0] and "critique" in vu[0]
+    assert json.loads((session.dossier / "plan.json").read_text())["verification"] == "plan conforme"

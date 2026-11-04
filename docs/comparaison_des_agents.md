@@ -15,6 +15,7 @@ Une implémentation reçoit la racine d'un SI fictif et produit un **dossier de 
 | `cbom.json` | oui | CBOM CycloneDX 1.6 du SI. La propriété `quantum-ready:exposition-quantique` (shor, grover, resistant, aucune, inconnue) est conseillée : elle est mesurée. |
 | `journal_outils.jsonl` | conseillé | Un événement par appel d'outil : `agent`, `outil`, `arguments`, `statut` (ok, erreur, exception, refus), `duree_ms`. |
 | `journal_agents.jsonl` | conseillé | Un événement par tour de modèle (`evenement: "tour"`, `jetons_entree`, `jetons_sortie`, `duree_ms`) et un événement `fin` par agent (`arret`, `duree_ms`). |
+| `plan.json` | conseillé | Plan de migration : `etapes` (`ordre`, `actifs`, `action`, `cible`, `echeance`, `references`). Sa conformité est revérifiée : fiches du corpus existantes, actifs existants, actifs critiques couverts. |
 | `scores.json`, `rapport.json` | facultatif | Scores de Mosca et rapport d'exécution. |
 
 Sans journaux, la qualité de l'inventaire est mesurée mais pas les coûts.
@@ -39,6 +40,7 @@ Le module `quantum_ready.evaluation` apparie chaque composant du CBOM à au plus
 | Précision hors doublons | Idem, sans compter les doublons (même actif vu deux fois, à un emplacement attendu) |
 | F1 | Moyenne harmonique du rappel et de la précision stricte |
 | Actifs Shor bien classés | Actifs « Oui (Shor) » appariés à un composant d'exposition `shor` |
+| Plan | Nombre d'étapes et conformité (vérifiée avec les mêmes règles pour toutes les implémentations) |
 | Coûts | Appels d'outils (refusés, en erreur), tours de modèle, jetons, durée |
 
 ## Points de référence

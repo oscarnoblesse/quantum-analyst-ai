@@ -1,15 +1,15 @@
 """Orchestrateur LangGraph : enchaîne les agents sur un état partagé typé.
 
-    inventoriste -> cartographe -> [vérification du CBOM par le code]
-                        ^                 | invalide (au plus N tentatives)
-                        +-----------------+
-                                          | valide
-                                          v
-                                   analyste_risque -> validation humaine -> fin
+    inventoriste -> cartographe <-> [le code revalide le CBOM]
+                 -> analyste_risque
+                 -> architecte <-> [le code vérifie le plan]
+                 -> validation humaine -> fin
 
-La boucle de vérification ne fait pas confiance au modèle : après le Cartographe,
-le CODE revalide le CBOM enregistré (schéma CycloneDX 1.6 et cohérence) ; s'il est
-invalide, le Cartographe recommence avec les erreurs. Aucune modification du SI
+Deux boucles de vérification, qui ne font pas confiance au modèle :
+- après le Cartographe, le CODE revalide le CBOM enregistré (schéma CycloneDX 1.6
+  et cohérence) ; s'il est invalide, le Cartographe recommence avec les erreurs ;
+- après l'Architecte, le CODE vérifie le plan (fiches du corpus existantes,
+  actifs existants, actifs critiques tous couverts) ; sinon il recommence. Aucune modification du SI
 n'est faite par le système ; la validation humaine porte sur les résultats avant
 qu'ils servent à la migration.
 
@@ -30,7 +30,7 @@ from typing import TypedDict
 import yaml
 from langgraph.graph import END, START, StateGraph
 
-from quantum_ready.agents import analyste_risque, cartographe, inventoriste
+from quantum_ready.agents import analyste_risque, architecte, cartographe, inventoriste
 from quantum_ready.agents.communs import lancer
 from quantum_ready.llm import Modele, ModeleSimule, depuis_configuration
 from quantum_ready.outils.valider_schema import valider_schema
@@ -45,6 +45,9 @@ class EtatOrchestrateur(TypedDict, total=False):
     tentatives_cartographe: int
     erreurs_cbom: list[str]
     cbom_valide: bool
+    tentatives_architecte: int
+    erreurs_plan: list[str]
+    plan_valide: bool
     validation: str
     arret: str
 
@@ -55,6 +58,7 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
     agents = parametres.get("agents", {})
     horizon = parametres.get("mosca", {}).get("horizon_menace_annees", 10)
     tentatives_max = parametres.get("orchestrateur", {}).get("tentatives_cartographe", 3)
+    tentatives_plan = parametres.get("orchestrateur", {}).get("tentatives_architecte", 2)
 
     def executer(config, etat: EtatOrchestrateur) -> dict:
         resultat = asyncio.run(lancer(config, modeles(config.nom), session, horizon, transport))
@@ -95,6 +99,21 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
     def noeud_analyste(etat):
         return executer(analyste_risque.configuration(horizon, **agents.get("analyste_risque", {})), etat)
 
+    def noeud_architecte(etat):
+        config = architecte.configuration(etat.get("erreurs_plan"), **agents.get("architecte", {}))
+        mise_a_jour = executer(config, etat)
+        cle = max((k for k in mise_a_jour["resultats"] if k.startswith("architecte")), key=lambda k: list(mise_a_jour["resultats"]).index(k))
+        plan = mise_a_jour["resultats"][cle]["sortie"]
+        erreurs = architecte.verifier_plan(plan, session)
+        if plan:
+            ecrire_json(session.dossier / "plan.json", plan | {"verification": erreurs or "plan conforme"})
+        return mise_a_jour | {"tentatives_architecte": etat.get("tentatives_architecte", 0) + 1, "plan_valide": not erreurs, "erreurs_plan": erreurs}
+
+    def apres_architecte(etat) -> str:
+        if etat.get("plan_valide") or etat.get("tentatives_architecte", 0) >= tentatives_plan:
+            return "validation_humaine"
+        return "architecte"
+
     def noeud_validation(etat):
         decision = valider(session) if valider else True
         return {"validation": "acceptee" if decision else "refusee"}
@@ -114,12 +133,14 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
     graphe.add_node("inventoriste", noeud_inventoriste)
     graphe.add_node("cartographe", noeud_cartographe)
     graphe.add_node("analyste_risque", noeud_analyste)
+    graphe.add_node("architecte", noeud_architecte)
     graphe.add_node("validation_humaine", noeud_validation)
     graphe.add_node("fin", noeud_fin)
     graphe.add_edge(START, "inventoriste")
     graphe.add_conditional_edges("inventoriste", apres_inventoriste, {"cartographe": "cartographe", "fin": "fin"})
     graphe.add_conditional_edges("cartographe", apres_cartographe, {"analyste_risque": "analyste_risque", "cartographe": "cartographe", "fin": "fin"})
-    graphe.add_edge("analyste_risque", "validation_humaine")
+    graphe.add_edge("analyste_risque", "architecte")
+    graphe.add_conditional_edges("architecte", apres_architecte, {"architecte": "architecte", "validation_humaine": "validation_humaine"})
     graphe.add_edge("validation_humaine", "fin")
     graphe.add_edge("fin", END)
     return graphe.compile()
@@ -132,6 +153,10 @@ def resume_pour_humain(session: Session) -> str:
     critiques = sorted((s for s in scores.items() if s[1]["priorite"] == "critique"), key=lambda s: -s[1]["score"])
     lignes = [f"CBOM : {len(noms)} composants ; {len(scores)} actifs évalués ; {len(critiques)} critiques."]
     lignes += [f"  {ref} {noms.get(ref, '?')[:50]} : score {s['score']} ({s['justification'][:80]})" for ref, s in critiques[:10]]
+    plan = lire_json(session.dossier / "plan.json", {})
+    if plan:
+        lignes.append(f"Plan de migration : {len(plan.get('etapes', []))} étapes ; vérification : {plan.get('verification')}")
+        lignes += [f"  {e['ordre']}. {e['action'][:90]} -> {e['cible']} ({e['echeance']}) [{', '.join(e['references'])}]" for e in plan.get("etapes", [])]
     return "\n".join(lignes)
 
 
@@ -161,6 +186,8 @@ def executer(racine: str, dossier_session: str | None = None, modele: str = "oll
     etat = construire_graphe(choisir, session, parametres, transport, valider).invoke({})
     rapport = {"session": str(dossier), "racine": racine, "modele": modele, "arret": etat.get("arret"),
                "tentatives_cartographe": etat.get("tentatives_cartographe", 0), "cbom_valide": etat.get("cbom_valide", False),
+               "tentatives_architecte": etat.get("tentatives_architecte", 0), "plan_valide": etat.get("plan_valide", False),
+               "erreurs_plan": etat.get("erreurs_plan", []),
                "validation": etat.get("validation", "non_demandee"),
                "agents": {nom: {k: v for k, v in r.items() if k != "sortie"} | {"sortie": r.get("sortie")} for nom, r in etat.get("resultats", {}).items()}}
     ecrire_json(dossier / "rapport.json", rapport)

@@ -79,4 +79,18 @@ def evaluer(dossier: str | Path, verite_terrain: str | Path = VERITE_TERRAIN) ->
     from quantum_ready.outils.valider_schema import valider_schema
 
     validation = valider_schema(cbom)
-    return resultat | {"cbom_valide": validation.valide, "qualite": qualite(cbom, actifs), "couts": couts(dossier)}
+    return resultat | {"cbom_valide": validation.valide, "qualite": qualite(cbom, actifs), "plan": plan(dossier), "couts": couts(dossier)}
+
+
+def plan(dossier: Path) -> dict | None:
+    """Plan de migration : nombre d'étapes et conformité, revérifiée ici avec les règles de l'Architecte."""
+    chemin = dossier / "plan.json"
+    if not chemin.is_file():
+        return None
+    from quantum_ready.agents.architecte import verifier_plan
+    from quantum_ready.serveur_mcp.session import Session
+
+    contenu = json.loads(chemin.read_text(encoding="utf-8"))
+    erreurs = verifier_plan(contenu, Session(dossier, dossier))
+    return {"etapes": len(contenu.get("etapes", [])), "conforme": not erreurs, "erreurs": erreurs,
+            "references": sorted({r for e in contenu.get("etapes", []) for r in e.get("references", [])})}

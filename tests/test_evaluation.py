@@ -57,6 +57,8 @@ def test_les_agents_a_regles_trouvent_tout(sessions):
     qualite = resultat["qualite"]
     assert qualite["rappel"] == 1.0 and qualite["rappel_caches"] == 1.0 and qualite["precision_hors_doublons"] > 0.95
     assert resultat["couts"]["tours_de_modele"] > 0 and resultat["couts"]["arrets"]["analyste_risque"] == "termine"
+    assert resultat["plan"]["conforme"] and resultat["plan"]["etapes"] >= 3 and "IETF-TLS-HYBRIDE" in resultat["plan"]["references"]
+    assert evaluer(sessions / "outils_seuls")["plan"] is None
 
 
 def test_tableau_et_ligne_de_commande(sessions, capsys):

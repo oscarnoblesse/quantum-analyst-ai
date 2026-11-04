@@ -197,7 +197,34 @@ def creer_outils(session: Session, agent: str, horizon_menace: float = 10) -> di
         manquants = len(expositions) - len(scores)
         return "\n".join(lignes + [f"{len(scores)} actif(s) évalué(s), {manquants} restant(s)."])
 
+    # --- Architecte ---
+
+    def lister_priorites(nombre: int = 15) -> str:
+        """Liste les actifs les plus prioritaires d'après les scores de Mosca (réf | score | priorité | nom | lieu | justification)."""
+        scores = lire_json(session.fichier_scores, {})
+        if not scores:
+            return "ERREUR : aucun score enregistré (l'Analyste risque n'a pas encore travaillé)"
+        cbom = lire_json(session.fichier_cbom, {})
+        composants = {c["bom-ref"]: c for c in cbom.get("components", [])}
+        classes = sorted(scores.items(), key=lambda s: (-s[1]["score"], s[0]))[: max(1, nombre)]
+        lignes = [f"{len(classes)} actifs les plus prioritaires sur {len(scores)} (horizon z = {horizon_menace:g} ans)"]
+        for ref, s in classes:
+            c = composants.get(ref, {})
+            lieu = c.get("evidence", {}).get("occurrences", [{}])[0].get("location", "?")
+            lignes.append(f"{ref} | {s['score']} | {s['priorite']} | {_court(c.get('name', '?'), 40)} | {_court(lieu, 35)} | {_court(s.get('justification', ''), 60)}")
+        return "\n".join(lignes)
+
+    def rechercher_standard(requete: str, nombre: int = 3) -> str:
+        """Cherche dans le corpus de normes (NIST FIPS 203/204/205, NIST IR 8547, ANSSI, IETF, OpenSSH...) les passages utiles. Citer l'identifiant de fiche dans le plan."""
+        from quantum_ready.outils.rechercher_standard import rechercher_standard as _rechercher
+
+        resultat = _rechercher(requete, nombre)
+        if resultat.erreurs:
+            return "\n".join(f"ERREUR : {e}" for e in resultat.erreurs)
+        return "\n".join(f"[{e.fiche}] {_court(e.texte, 420)}" for e in resultat.extraits)
+
     return {f.__name__: f for f in (
+        lister_priorites, rechercher_standard,
         lister_fichiers, analyser_x509, analyser_cle, analyser_pkcs12, analyser_configuration, scanner_code_crypto,
         analyser_dependances, rechercher_algorithmes, lister_trouvailles, construire_cbom, valider_schema, lister_actifs, score_mosca,
     )}
