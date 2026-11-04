@@ -19,14 +19,21 @@ Spécification (c'est elle que les tests vérifient) :
 4. poids selon l'exposition : shor 1.0, inconnue 1.0 (par prudence),
    grover 0.3, resistant 0.0, aucune 0.0.
 5. score = round(100 * poids * urgence), entier entre 0 et 100.
-6. priorite : « critique » si score >= 80, « haute » si >= 50,
-   « moyenne » si >= 20, sinon « faible ».
+6. priorite : « critique » si et seulement si l'actif est en danger (x + y > z)
+   ET cassé par Shor (poids 1 : « shor » ou « inconnue ») ; sinon « haute » si
+   score >= 50, « moyenne » si >= 20, « faible » en dessous.
 7. explication : une phrase en français qui cite x, y, z et la marge
    (c'est ce que l'Analyste risque recopiera dans son rapport).
 
 Pourquoi « inconnue » pèse comme « shor » : un actif dont l'algorithme n'a pas pu
 être déterminé est traité comme le pire cas, sinon une lacune de l'inventaire
 ferait baisser artificiellement la priorité de migration.
+
+Pourquoi « critique » exige le danger (choix de méthode, v4 → v5) : l'exposition
+à Shor dit SI un actif sera cassé ; l'inégalité de Mosca dit si c'est AVANT la fin
+de sa durée de protection. Un actif exposé à Shor mais dont x + y reste sous z
+peut être migré dans le cycle normal ; le classer critique noyait les vrais
+urgences (21 critiques sur 78 au lieu de 6) et rendait l'explication contradictoire.
 
 Pourquoi le modèle de langage ne calcule pas ce score : le calcul doit être
 reproductible et vérifiable ; le modèle choisit x et y (il les justifie par le
@@ -79,7 +86,10 @@ def score_mosca(x: float, y: float, z: float, exposition: str) -> ResultatMosca:
     en_danger = marge > 0
     urgence = 1.0 if en_danger else (x + y) / z
     score = round(100 * POIDS[exposition] * urgence)
-    priorite: Priorite = next((nom for seuil, nom in SEUILS if score >= seuil), "faible")
+    if en_danger and POIDS[exposition] == 1.0:
+        priorite: Priorite = "critique"
+    else:
+        priorite = next((nom for seuil, nom in SEUILS if score >= seuil and nom != "critique"), "faible")
     etat = "dépasse" if en_danger else "ne dépasse pas"
     explication = (
         f"Données à protéger {x:g} an(s) (x) et migration de {y:g} an(s) (y) : x + y = {x + y:g}, "

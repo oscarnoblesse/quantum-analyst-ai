@@ -87,7 +87,7 @@ def architecte(messages, outils) -> Reponse:
     priorites = next((r for r in resultats if "les plus prioritaires" in r), None)
     if priorites is None:  # puis la liste des priorités, juste avant d'écrire le plan
         return appel("lister_priorites", nombre=500)
-    lignes = [l.split(" | ") for l in priorites.splitlines()[1:]]
+    lignes = [l.split(" | ") for l in priorites.splitlines()[1:] if l.count(" | ") >= 5]  # ignore une ligne tronquée
     etapes = []
     restantes = [l for l in lignes if l[2] == "critique"]
     for ordre, (motif, _, action, cible, echeance, fiche) in enumerate(THEMES, start=1):

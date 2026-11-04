@@ -138,3 +138,13 @@ L'Analyste évalue désormais tous les actifs sans aucun refus : la mémoire imp
 - l'Architecte demande `lister_priorites(nombre=20)` alors qu'il y a 21 actifs critiques ; les 3 critiques de score 80 (derrière les scores 100) ne lui sont jamais montrés. Au second essai, il refait exactement les mêmes appels malgré le refus qui nomme les 3 actifs manquants ;
 - `score_mosca` classe « critique » des actifs qui ne sont pas en danger (x + y = 8 ≤ z = 10, score 80) : 21 critiques sur 78, et une explication contradictoire ;
 - le résumé de l'Inventoriste affirme encore « l'utilisation de cryptographie post-quantique » : la consigne du prompt n'a pas suffi.
+
+## Version 5
+
+Prompts inchangés (mêmes empreintes que la v4). Changements du code :
+
+- **`score_mosca`, choix de méthode** : « critique » exige désormais que l'actif soit en danger au sens de Mosca (x + y > z) **et** cassé par Shor (ou d'algorithme inconnu). Recalculé sur les scores de la v4, le nombre de critiques passe de 21 à 6. Justification dans le rapport technique ;
+- `lister_priorites` renvoie toujours tous les actifs critiques, quel que soit le `nombre` demandé ;
+- après un refus, la mémoire de travail de l'Architecte rappelle à chaque tour, en dernière ligne, les erreurs du plan précédent ; elle liste tous les critiques (elle s'arrêtait à 20).
+
+**Effet mesuré :** à compléter après la prochaine exécution.

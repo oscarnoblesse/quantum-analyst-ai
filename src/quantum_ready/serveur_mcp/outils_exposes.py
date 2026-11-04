@@ -210,8 +210,12 @@ def creer_outils(session: Session, agent: str, horizon_menace: float = 10) -> di
             return "ERREUR : aucun score enregistré (l'Analyste risque n'a pas encore travaillé)"
         cbom = lire_json(session.fichier_cbom, {})
         composants = {c["bom-ref"]: c for c in cbom.get("components", [])}
-        classes = sorted(scores.items(), key=lambda s: (-s[1]["score"], s[0]))[: max(1, nombre)]
-        lignes = [f"{len(classes)} actifs les plus prioritaires sur {len(scores)} (horizon z = {horizon_menace:g} ans)"]
+        tries = sorted(scores.items(), key=lambda s: (s[1]["priorite"] != "critique", -s[1]["score"], s[0]))
+        nb_critiques = sum(1 for _, s in tries if s["priorite"] == "critique")
+        # Les critiques sont toujours tous montrés : un plan qui ne les verrait pas ne pourrait pas les couvrir.
+        classes = tries[: max(1, nombre, nb_critiques)]
+        lignes = [f"{len(classes)} actifs les plus prioritaires sur {len(scores)}, dont les {nb_critiques} critiques "
+                  f"(horizon z = {horizon_menace:g} ans)"]
         for ref, s in classes:
             c = composants.get(ref, {})
             lieu = c.get("evidence", {}).get("occurrences", [{}])[0].get("location", "?")
