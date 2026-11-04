@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small reference agents agents-regles evaluer
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -24,3 +24,16 @@ verifier-si: ## Compare le SI généré à la vérité terrain, actif par actif
 reproduce: install verite-terrain si test ## Reproduction complète (sera complétée au fil du projet)
 
 reproduce-small: install verite-terrain si test ## Reproduction réduite pour la CI (sera complétée au fil du projet)
+
+reference: ## Référence d'ablation : outils seuls, sans agent (traces/reference_outils_seuls)
+	uv run python -m quantum_ready.evaluation.reference --racine si/generated/v1 --session traces/reference_outils_seuls
+
+agents: ## Système multi-agents avec le modèle local (Ollama doit tourner)
+	uv run python -m quantum_ready.orchestrateur --racine si/generated/v1 --modele ollama
+
+agents-regles: ## Agents à règles fixes, sans modèle (ablation) (traces/regles)
+	uv run python -m quantum_ready.orchestrateur --racine si/generated/v1 --modele regles --validation accepter --session traces/regles
+
+evaluer: ## Évalue et compare des sessions : make evaluer SESSIONS="traces/a traces/b"
+	uv run python -m quantum_ready.evaluation $(SESSIONS)
+
