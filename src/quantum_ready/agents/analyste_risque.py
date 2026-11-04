@@ -37,8 +37,16 @@ def memoire(etat: EtatBoucle, session: Session) -> str:
     return "\n".join(lignes)
 
 
+def verifier_fin(etat: EtatBoucle, session: Session, sortie: BaseModel) -> str | None:
+    reste = restants(session)
+    if reste:
+        return f"il reste {len(reste)} actif(s) à évaluer. Continue avec score_mosca sur ceux que la mémoire de travail affiche."
+    return None
+
+
 def configuration(horizon_menace: float = 10, max_etapes: int = 30, fenetre: int = 4) -> ConfigurationAgent:
     return ConfigurationAgent(
         nom=NOM, prompt=lire_prompt(NOM), sortie=SortieAnalyste, max_etapes=max_etapes, fenetre=fenetre, memoire=memoire,
+        verifier_fin=verifier_fin,
         consigne=f"Évalue la priorité de migration de chaque actif du CBOM. Horizon de la menace retenu : z = {horizon_menace:g} ans.",
     )

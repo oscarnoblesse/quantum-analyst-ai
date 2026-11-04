@@ -33,6 +33,7 @@ JOURNAL_AGENTS = "journal_agents.jsonl"
 JOURNAL_OUTILS = "journal_outils.jsonl"
 MAX_APPELS_PAR_TOUR = 5
 MAX_CORRECTIONS = 2
+MAX_REFUS_DE_FIN = 4  # au-delà, la réponse finale est acceptée telle quelle, avec le motif du refus dans le message
 
 
 @dataclass
@@ -123,6 +124,8 @@ class ConfigurationAgent:
     fenetre: int = 6
     memoire: Callable[[EtatBoucle, Session], str] | None = None
     budget_jetons: int = 3000          # taille maximale estimée de ce qui est envoyé au modèle (outils compris)
+    # Contrôle de la réponse finale par le code : renvoie un message si le travail n'est pas fini ou incohérent.
+    verifier_fin: Callable[[EtatBoucle, Session, BaseModel], str | None] | None = None
 
 
 class ResultatAgent(BaseModel):
@@ -134,6 +137,7 @@ class ResultatAgent(BaseModel):
     appels_refuses: int = 0
     appels_en_double: int = 0
     erreurs_outils: int = 0
+    fins_refusees: int = 0
     jetons_entree: int = 0
     jetons_sortie: int = 0
     duree_ms: int = 0
@@ -222,6 +226,15 @@ async def executer_agent(config: ConfigurationAgent, modele: Modele, outils: Cli
                  f"un objet JSON avec ces champs :\n{decrire_schema(config.sortie)}\nProblème : {str(erreur)[:400]}"},
             ]
             continue
+        refus = config.verifier_fin(etat, session, sortie) if config.verifier_fin else None
+        if refus and resultat.fins_refusees < MAX_REFUS_DE_FIN:
+            resultat.fins_refusees += 1
+            etat.corrections = [{"role": "assistant", "content": reponse.texte[:1500]},
+                                {"role": "user", "content": f"Réponse finale REFUSÉE par la vérification automatique : {refus}"}]
+            session.journaliser(JOURNAL_AGENTS, {"agent": config.nom, "evenement": "fin_refusee", "etape": etape, "motif": refus})
+            continue
+        if refus:
+            resultat.message = f"réponse finale acceptée après {MAX_REFUS_DE_FIN} refus : {refus}"
         resultat.arret, resultat.sortie = "termine", sortie.model_dump(mode="json")
         break
 

@@ -177,7 +177,11 @@ def lire_env(texte: str) -> list[tuple[int, str, str]]:
 
 def secret_depuis_env(fichier_env: str, variable: str, racine: Path) -> str:
     """Valeur d'une variable d'un .env du SI. Réservé aux outils : ne jamais la renvoyer à l'agent."""
-    texte = resoudre(fichier_env, racine).read_text(encoding="utf-8")
+    try:
+        texte = resoudre(fichier_env, racine).read_text(encoding="utf-8")
+    except ErreurOutil as erreur:
+        candidats = sorted(p.relative_to(racine).as_posix() for p in racine.rglob("*") if p.is_file() and (p.name.startswith(".env") or p.suffix == ".env"))
+        raise ErreurOutil(f"{erreur}. Fichiers de variables du SI : {', '.join(candidats) or 'aucun'}") from erreur
     for _, nom, valeur in lire_env(texte):
         if nom == variable:
             return valeur

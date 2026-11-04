@@ -50,4 +50,42 @@ Modèle : `qwen3:4b-instruct-2507-q4_K_M` (empreinte `0edcdef34593`), contexte d
 - la mémoire de travail de l'Analyste affiche directement les 5 prochains actifs avec leurs indices, pour qu'il n'ait plus besoin de garder une page de `lister_actifs` dans sa fenêtre ;
 - le client retire le raisonnement d'un modèle « thinking » même sans balise d'ouverture (observé avec `qwen3:4b`, variante écartée).
 
-**Effet mesuré :** à compléter après la prochaine exécution (`make agents`, puis `make evaluer`).
+**Effet mesuré :** exécution `traces/20261104T182150Z_ollama`, validation humaine refusée.
+
+| Mesure | Version 1 | Version 2 |
+| --- | --- | --- |
+| Rappel | 24,7 % | **95,9 %** (70 actifs sur 73) |
+| Rappel des actifs cachés | 25,0 % | 87,5 % |
+| Précision stricte | 90,0 % | 92,1 % |
+| F1 | 0,387 | **0,940** |
+| Actifs Shor bien classés | 11/43 | 40/43 |
+| Plan | 3 étapes, non conforme | 3 étapes, conforme |
+| Tours de modèle | 22 | 90 |
+| Durée totale | 1 385 s | 1 558 s |
+
+L'Inventoriste parcourt désormais tout le SI (76 tours, 58 appels d'outils, aucun refus) et fait le lien `KEYSTORE_PASS` → PKCS#12 (QR-020), que la référence « outils seuls » ne fait pas. Pour ouvrir le conteneur, il a essayé quatre emplacements erronés du fichier `.env` avant de trouver `api/.env` de lui-même.
+
+**Défauts constatés :**
+
+1. *Exclusions abusives.* L'Inventoriste a exclu le certificat admin (QR-070) et le chiffrement du PKCS#12 (QR-021), avec des raisons comme « algorithme Shor détecté, donc à exclure » : il a compris « exclure » comme « écarter ce qui est vulnérable ».
+2. *Fichier analysé avec le mauvais outil.* `scripts/backup.sh` (QR-043) n'a pas été lu par `analyser_configuration` ; la mémoire de travail le comptait pourtant comme analysé.
+3. *Analyste arrêté trop tôt.* Réponse finale après 15 actifs évalués sur 76, malgré la mémoire de travail.
+4. *Plan : champ « cible » rempli avec des chemins de fichiers* au lieu d'algorithmes ; il ne couvre que les 6 actifs critiques issus des 15 évalués.
+
+## Version 3 — 4 novembre 2026
+
+| Agent | Empreinte du prompt | Modification |
+| --- | --- | --- |
+| Inventoriste | `2c5b467ffdc2` | les exclusions ne portent que sur des « indices à confirmer » ; ne jamais exclure un actif parce qu'il est vulnérable |
+| Cartographe | `3c56409f708a` | même règle : un actif vulnérable n'est pas un faux positif |
+| Analyste risque | `168ee09c20e7` | inchangé |
+| Architecte | `728113259bc8` | le champ « cible » est un algorithme, un protocole ou une version, jamais un chemin |
+
+**Garde-fous du code sur la réponse finale** (la réponse est renvoyée à l'agent avec le motif, au plus 4 fois, puis acceptée avec le motif consigné) :
+
+- Inventoriste : refus tant qu'un fichier n'a pas été lu par l'outil conseillé (sauf s'il est déclaré laissé de côté), et refus d'une exclusion qui ne porte pas sur un indice à confirmer ;
+- Analyste risque : refus tant qu'il reste des actifs à évaluer ;
+- un fichier ne compte comme analysé que s'il a été lu par l'outil conseillé ;
+- l'erreur « fichier .env introuvable » liste les fichiers de variables du SI.
+
+**Effet mesuré :** à compléter après la prochaine exécution.

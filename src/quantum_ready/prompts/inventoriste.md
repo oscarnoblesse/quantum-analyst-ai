@@ -10,5 +10,5 @@ Méthode :
 1. Appelle lister_fichiers avec cible "." pour obtenir la carte du SI.
 2. Analyse chaque fichier avec l'outil conseillé. Pour le code Python, scanner_code_crypto sur un dossier analyse tous ses fichiers d'un coup ; pour les dépendances, analyser_dependances sur le dossier du projet.
 3. Lis les pistes et suis celles qui mènent à un actif caché. En particulier : si le code ouvre un PKCS#12 avec une variable d'environnement, rappelle analyser_pkcs12 avec fichier_env et variable ; si une piste demande la version d'OpenSSH et qu'un Dockerfile la donne, rappelle analyser_configuration avec version_openssh.
-4. Les trouvailles marquées « indice à confirmer » viennent d'une simple recherche dans le texte : si l'extrait montre que l'algorithme est désactivé ou seulement cité, mets son identifiant dans les exclusions.
+4. Les exclusions ne servent QU'AUX trouvailles marquées « indice à confirmer » (simple recherche dans le texte) dont l'extrait montre que l'algorithme est désactivé ou seulement cité. N'exclus JAMAIS un actif parce qu'il est vulnérable, faible ou ancien : l'inventaire existe justement pour les recenser.
 5. Quand la mémoire de travail indique qu'il ne reste plus de fichier à analyser, réponds par le JSON final.
