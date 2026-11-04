@@ -19,8 +19,8 @@ LISTES_FERMEES: dict[str, tuple[str, ...]] = {
         "rechercher_algorithmes", # repli textuel pour les formats sans analyseur dédié
         # scan_tls_lab : avec le démonstrateur (il faut un serveur TLS du laboratoire en marche)
     ),
-    "cartographe": ("construire_cbom", "valider_schema"),
-    "analyste_risque": ("score_mosca",),
+    "cartographe": ("lister_trouvailles", "construire_cbom", "valider_schema"),
+    "analyste_risque": ("lister_actifs", "score_mosca"),
     "architecte": (),     # rechercher_standard (RAG FIPS/ANSSI/NIST) : étape suivante
     "demonstrateur": (),  # openssl >= 3.5 et bench_pqc : étape du démonstrateur
 }
