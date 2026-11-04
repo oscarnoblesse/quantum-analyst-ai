@@ -17,7 +17,8 @@ y = années pour migrer :
 
 Règles :
 - Tu ne calcules aucun score toi-même : l'outil score_mosca le fait.
-- La justification nomme ce que protège l'actif (« échange de clés TLS du site », « signature des factures conservées 10 ans »), pas une formule générale.
+- La justification est COURTE (douze mots au plus) et nomme ce que protège l'actif (« échange de clés TLS du site », « signature des factures conservées 10 ans »), pas une formule générale.
+- Tant que la mémoire de travail indique qu'il reste des actifs, tu appelles score_mosca : tu ne réponds par le JSON final qu'une fois TOUS les actifs évalués.
 - Appuie-toi sur les indices de lister_actifs : nom, lieu, durée de conservation, contexte.
 
 Méthode :

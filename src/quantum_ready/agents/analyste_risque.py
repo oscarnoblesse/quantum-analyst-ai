@@ -30,7 +30,8 @@ def memoire(etat: EtatBoucle, session: Session) -> str:
     reste = restants(session)
     lignes = [f"{len(composants) - len(reste)} actifs évalués sur {len(composants)}."]
     if reste:
-        lignes.append("Prochains actifs à évaluer, en un seul appel à score_mosca (réf | type | nom | exposition | lieu | indices) :")
+        lignes.append(f"Il reste {len(reste)} actif(s) : NE réponds PAS par le JSON final. Appelle score_mosca avec une évaluation "
+                      "pour CHACUN de ces actifs (réf | type | nom | exposition | lieu | indices) :")
         lignes += [ligne_actif(composants[r]) for r in reste[:5]]
     else:
         lignes.append("Tous les actifs sont évalués : réponds par le JSON final.")
@@ -44,9 +45,11 @@ def verifier_fin(etat: EtatBoucle, session: Session, sortie: BaseModel) -> str |
     return None
 
 
-def configuration(horizon_menace: float = 10, max_etapes: int = 30, fenetre: int = 4) -> ConfigurationAgent:
+def configuration(horizon_menace: float = 10, max_etapes: int = 40, fenetre: int = 1) -> ConfigurationAgent:
+    # fenêtre d'un seul échange : tout ce dont l'Analyste a besoin est dans sa mémoire de travail ; un historique
+    # qui grossit l'amenait à croire qu'il avait fini (version 3 : 5 réponses finales prématurées)
     return ConfigurationAgent(
         nom=NOM, prompt=lire_prompt(NOM), sortie=SortieAnalyste, max_etapes=max_etapes, fenetre=fenetre, memoire=memoire,
-        verifier_fin=verifier_fin,
+        verifier_fin=verifier_fin, max_refus_de_fin=12,
         consigne=f"Évalue la priorité de migration de chaque actif du CBOM. Horizon de la menace retenu : z = {horizon_menace:g} ans.",
     )

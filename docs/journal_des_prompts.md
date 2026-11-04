@@ -88,4 +88,37 @@ L'Inventoriste parcourt désormais tout le SI (76 tours, 58 appels d'outils, auc
 - un fichier ne compte comme analysé que s'il a été lu par l'outil conseillé ;
 - l'erreur « fichier .env introuvable » liste les fichiers de variables du SI.
 
+**Effet mesuré** (exécution `20261104T193349Z_ollama`, qwen3:4b-instruct-2507, 0edcdef34593) :
+
+| Mesure | v2 | v3 |
+| --- | --- | --- |
+| Rappel | 95,9 % | 100 % |
+| Rappel des actifs cachés | — | 100 % |
+| Précision stricte | — | 93,6 % |
+| F1 | 0,940 | 0,967 |
+| Classification Shor | — | 42 / 43 |
+| Plan | 3 étapes, conforme | 4 étapes, conforme |
+| Tours de modèle | — | 85 |
+| Durée | 1 558 s | 2 100 s |
+
+Les deux défauts de la v2 (exclusions abusives, fichier lu avec le mauvais outil) ont disparu. Deux défauts restent :
+
+- l'Analyste risque a rendu 5 fois une réponse finale prématurée ; le garde-fou l'a refusée 4 fois puis l'a acceptée, et 39 des 78 actifs n'ont pas été évalués. La fenêtre de 4 échanges lui laissait relire ses anciens JSON finals refusés, qu'il recopiait ;
+- le résumé de l'Inventoriste affirme que curve25519 est « post-quantique » : le modèle porte un jugement qu'aucun outil n'a produit.
+
+## Version 4
+
+| Agent | Empreinte du prompt | Modification |
+| --- | --- | --- |
+| Inventoriste | `4e1f7282b6c6` | le résumé décrit ce qui a été fait, sans juger les algorithmes (le jugement revient aux outils et à l'Analyste) |
+| Cartographe | `3c56409f708a` | inchangé |
+| Analyste risque | `b4a3125663d1` | justification de douze mots au plus ; continuer d'appeler `score_mosca` tant qu'il reste des actifs |
+| Architecte | `728113259bc8` | inchangé |
+
+**Changements du code et de la configuration :**
+
+- la mémoire de travail de l'Analyste devient impérative : « Il reste N actif(s) : NE réponds PAS par le JSON final… », suivie des 5 prochains actifs ;
+- fenêtre de l'Analyste ramenée à 1 échange (il n'a pas besoin de son historique, la mémoire contient tout) ; `max_etapes` porté à 40 ;
+- le nombre de refus de la réponse finale devient un paramètre par agent (`max_refus_de_fin`) : 12 pour l'Analyste, 4 pour les autres.
+
 **Effet mesuré :** à compléter après la prochaine exécution.

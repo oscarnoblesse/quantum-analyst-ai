@@ -83,8 +83,11 @@ def test_plan_refuse_par_le_code_puis_corrige(racine_si, tmp_path):
     choisir = lambda nom: modeles[nom].pop(0) if nom in modeles else _regles(nom)  # noqa: E731
     session = Session(tmp_path / "s", racine_si)
     etat = construire_graphe(choisir, session, PARAMETRES, "memoire").invoke({})
-    assert etat["plan_valide"] and etat["tentatives_architecte"] == 2
-    assert "REFUSÉ" in vu[0] and "NORME-INVENTEE" in vu[0] and "crypto-inexistant" in vu[0] and "critique" in vu[0]
+    # Assertions séparées et messages détaillés : ce test a échoué de façon intermittente sans trace exploitable.
+    assert etat["plan_valide"], (etat.get("tentatives_architecte"), etat.get("erreurs_plan"), vu)
+    assert etat["tentatives_architecte"] == 2, etat.get("erreurs_plan")
+    for attendu in ("REFUSÉ", "NORME-INVENTEE", "crypto-inexistant", "critique"):
+        assert attendu in vu[0], (attendu, vu[0])
     assert json.loads((session.dossier / "plan.json").read_text())["verification"] == "plan conforme"
 
 
