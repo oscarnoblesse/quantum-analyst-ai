@@ -55,9 +55,10 @@ def test_seconde_tentative_recoit_les_erreurs(racine_si, tmp_path):
 
 
 def test_inventaire_vide(racine_si, tmp_path):
-    vide = lambda nom: ModeleSimule([texte({"resume": "rien"})])  # noqa: E731
+    vide = lambda nom: ModeleSimule(lambda messages, outils: texte({"resume": "rien"}))  # noqa: E731
     etat = construire_graphe(vide, Session(tmp_path / "s", racine_si), PARAMETRES, "memoire").invoke({})
     assert etat["arret"] == "inventaire_vide" and "cartographe" not in etat["resultats"]
+    assert etat["resultats"]["inventoriste"]["fins_refusees"] == 4
 
 
 def test_executer_en_ligne_de_commande(racine_si, tmp_path, monkeypatch):

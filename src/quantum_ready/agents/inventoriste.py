@@ -53,8 +53,8 @@ def fichiers_couverts(etat: EtatBoucle, fichiers: dict[str, tuple[str, str]]) ->
         if appel.refuse or appel.erreur and "trouvaille" not in appel.texte:
             continue
         cible = str(appel.arguments.get("cible", ".")).strip("/") or "."
-        for chemin, (nature, _) in fichiers.items():
-            if chemin == cible:
+        for chemin, (nature, outil) in fichiers.items():
+            if chemin == cible and appel.nom == outil:  # analysé par l'outil qui sait le lire
                 couverts.add(chemin)
             elif appel.nom in OUTILS_DE_DOSSIER and (cible == "." or chemin.startswith(cible + "/")):
                 natures = OUTILS_DE_DOSSIER[appel.nom]
@@ -90,8 +90,29 @@ def memoire(etat: EtatBoucle, session: Session) -> str:
     return "\n".join(lignes)
 
 
+def verifier_fin(etat: EtatBoucle, session: Session, sortie: BaseModel) -> str | None:
+    """Pas de fin avec des fichiers non analysés (sauf s'ils sont déclarés laissés de côté) ; exclusions limitées aux indices."""
+    motifs = []
+    fichiers = carte(etat)
+    laisses = set(getattr(sortie, "fichiers_non_analyses", []))
+    restants = [c for c in fichiers if c not in fichiers_couverts(etat, fichiers) and c not in laisses]
+    if not fichiers:
+        motifs.append("aucune carte du SI : appelle d'abord lister_fichiers avec cible \".\"")
+    elif restants:
+        motifs.append(f"{len(restants)} fichier(s) pas encore analysé(s) avec l'outil conseillé, par exemple "
+                      + ", ".join(f"{c} -> {fichiers[c][1]}" for c in restants[:3]))
+    indices = {e["id"] for e in session.trouvailles() if "confiance" in e["trouvaille"]["proprietes"]}
+    abusives = [e.id for e in getattr(sortie, "exclusions", []) if e.id not in indices]
+    if abusives:
+        motifs.append(f"les exclusions {', '.join(abusives)} portent sur des actifs trouvés par un analyseur dédié. Un actif vulnérable "
+                      "ou faible DOIT rester dans l'inventaire : n'exclus que des « indices à confirmer » qui se révèlent faux. "
+                      "Retire ces identifiants des exclusions")
+    return " ; ".join(motifs) or None
+
+
 def configuration(max_etapes: int = 90, fenetre: int = 6) -> ConfigurationAgent:
     return ConfigurationAgent(
         nom=NOM, prompt=lire_prompt(NOM), sortie=SortieInventoriste, max_etapes=max_etapes, fenetre=fenetre, memoire=memoire,
+        verifier_fin=verifier_fin,
         consigne="Dresse l'inventaire cryptographique complet du SI fictif, fichier par fichier, et suis les pistes vers les actifs cachés.",
     )
