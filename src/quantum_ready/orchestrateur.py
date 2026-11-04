@@ -59,8 +59,11 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
     horizon = parametres.get("mosca", {}).get("horizon_menace_annees", 10)
     tentatives_max = parametres.get("orchestrateur", {}).get("tentatives_cartographe", 3)
     tentatives_plan = parametres.get("orchestrateur", {}).get("tentatives_architecte", 2)
+    modele = parametres.get("modele", {})
+    budget = modele.get("contexte", 4096) - modele.get("max_jetons_sortie", 1024) - 200
 
     def executer(config, etat: EtatOrchestrateur) -> dict:
+        config.budget_jetons = budget
         resultat = asyncio.run(lancer(config, modeles(config.nom), session, horizon, transport))
         resultats = dict(etat.get("resultats", {}))
         cle = config.nom if config.nom not in resultats else f"{config.nom}_{sum(k.startswith(config.nom) for k in resultats) + 1}"
@@ -73,7 +76,8 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
         return mise_a_jour | {"exclusions": sortie.get("exclusions", [])}
 
     def apres_inventoriste(etat) -> str:
-        if not session.trouvailles():
+        # Un inventaire interrompu par une panne du modèle n'est pas transmis : il fausserait toute la suite.
+        if etat["resultats"]["inventoriste"]["arret"] == "erreur_modele" or not session.trouvailles():
             return "fin"
         return "cartographe"
 
@@ -119,7 +123,9 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
         return {"validation": "acceptee" if decision else "refusee"}
 
     def noeud_fin(etat):
-        if etat.get("validation") == "acceptee":
+        if etat.get("resultats", {}).get("inventoriste", {}).get("arret") == "erreur_modele":
+            arret = "erreur_modele"
+        elif etat.get("validation") == "acceptee":
             arret = "termine"
         elif etat.get("validation") == "refusee":
             arret = "refuse_par_l_humain"

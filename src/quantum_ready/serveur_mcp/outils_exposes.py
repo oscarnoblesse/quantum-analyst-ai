@@ -52,6 +52,16 @@ def resumer(resultat: Resultat, identifiants: list[str]) -> str:
     return "\n".join(lignes)
 
 
+def ligne_actif(composant: dict) -> str:
+    """Une ligne par actif du CBOM : réf | type | nom | exposition | lieu | indices."""
+    props = {p["name"].split(":")[-1]: p["value"] for p in composant.get("properties", [])}
+    indices = [f"{k}={_court(props[k], 50)}" for k in ("duree-conservation-jours", "faiblesse-classique", "contexte") if k in props]
+    type_actif = composant.get("cryptoProperties", {}).get("assetType", composant["type"])
+    lieu = composant["evidence"]["occurrences"][0]["location"]
+    return (f"{composant['bom-ref']} | {type_actif} | {_court(composant['name'], 45)} | {props.get('exposition-quantique', '?')} | {_court(lieu, 40)}"
+            + (" | " + " ; ".join(indices) if indices else ""))
+
+
 class Evaluation(BaseModel):
     ref: str = Field(description="Référence de l'actif (bom-ref) donnée par lister_actifs")
     x: float = Field(description="Années pendant lesquelles les données ou la signature doivent rester sûres")
@@ -165,13 +175,7 @@ def creer_outils(session: Session, agent: str, horizon_menace: float = 10) -> di
             return "ERREUR : aucun CBOM enregistré"
         debut = (max(page, 1) - 1) * TAILLE_PAGE
         lignes = [f"Actifs {debut + 1} à {min(debut + TAILLE_PAGE, len(composants))} sur {len(composants)} (page {page}/{-(-len(composants) // TAILLE_PAGE)})"]
-        for c in composants[debut : debut + TAILLE_PAGE]:
-            props = {p["name"].split(":")[-1]: p["value"] for p in c.get("properties", [])}
-            indices = [f"{k}={_court(props[k], 50)}" for k in ("duree-conservation-jours", "faiblesse-classique", "contexte") if k in props]
-            type_actif = c.get("cryptoProperties", {}).get("assetType", c["type"])
-            lieu = c["evidence"]["occurrences"][0]["location"]
-            lignes.append(f"{c['bom-ref']} | {type_actif} | {_court(c['name'], 45)} | {props.get('exposition-quantique', '?')} | {_court(lieu, 40)}"
-                          + (" | " + " ; ".join(indices) if indices else ""))
+        lignes += [ligne_actif(c) for c in composants[debut : debut + TAILLE_PAGE]]
         return "\n".join(lignes)
 
     def score_mosca(evaluations: list[Evaluation]) -> str:

@@ -54,17 +54,12 @@ def analyste(messages, outils) -> Reponse:
     memoire = _memoire(messages)
     if "Tous les actifs sont évalués" in memoire:
         return texte({"evalues": int(re.search(r"(\d+) actifs évalués", memoire).group(1)), "critiques": [], "resume": "Évaluation terminée."})
-    lectures = [r for r in _resultats_outils(messages) if r.startswith("Actifs ")]
-    references = re.search(r"Prochaines références à évaluer : (.+)", memoire).group(1).split(", ")
-    if not lectures or not any(references[0] in r for r in lectures):
-        lues = re.search(r"déjà lues : \[([\d, ]*)\]", memoire)
-        return appel("lister_actifs", page=len(lues.group(1).split(",")) + 1 if lues else 1)
-    lignes = {l.split(" | ")[0]: l for l in lectures[-1].splitlines()[1:]}
     evaluations = []
-    for ref in references:
-        ligne = lignes.get(ref, "")
-        x = 10 if "3650" in ligne or "Factures" in ligne else 5 if "shor" in ligne else 1
-        evaluations.append({"ref": ref, "x": x, "y": 2, "justification": "règle simulée"})
+    for ligne in memoire.splitlines():
+        if ligne.startswith("crypto-"):
+            ref = ligne.split(" | ")[0]
+            x = 10 if "3650" in ligne or "factures" in ligne.lower() else 5 if "shor" in ligne else 1
+            evaluations.append({"ref": ref, "x": x, "y": 2, "justification": "règle simulée"})
     return appel("score_mosca", evaluations=evaluations)
 
 
