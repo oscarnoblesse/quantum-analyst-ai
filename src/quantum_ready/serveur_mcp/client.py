@@ -33,7 +33,7 @@ class ClientOutils:
         """(texte du résultat, True si erreur). Les erreurs d'arguments reviennent comme texte lisible par le modèle."""
         resultat = await self.client.call_tool(nom, arguments)
         texte = "\n".join(c.text for c in resultat.content if getattr(c, "type", "") == "text")
-        return texte, bool(resultat.isError) or texte.startswith("ERREUR")
+        return texte, bool(resultat.isError) or any(ligne.startswith("ERREUR") for ligne in texte.splitlines())
 
 
 @asynccontextmanager
