@@ -27,6 +27,21 @@ jobs:
       - name: Construire, lancer et vérifier le laboratoire TLS
         run: uv run python scripts/demonstrateur.py
 
+  bench-pqc:
+    name: Mesure hybride vs classique (ubuntu, Docker)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Mesurer le handshake (1000 après 100 d'échauffement) et vérifier les propriétés
+        run: uv run python scripts/bench_pqc.py
+      - name: Publier les résultats
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench_pqc
+          path: results/raw/bench_pqc.json
+
   secrets:
     runs-on: ubuntu-latest
     steps:

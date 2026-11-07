@@ -83,6 +83,21 @@ def version_openssl() -> str:
     return docker("run", "--rm", "--entrypoint", "openssl", IMAGE, "version").stdout.strip()
 
 
+def verifier(resultats: dict[str, dict]) -> list[str]:
+    """Propriétés qui doivent toujours être vraies, quelle que soit la machine. Liste des écarts."""
+    problemes = []
+    for nom, cfg in CONFIGURATIONS.items():
+        r = resultats[nom]
+        if r["mesures"] != MESURES:
+            problemes.append(f"{nom} : {r['mesures']} mesures au lieu de {MESURES}")
+        if r["groupe"].lower() != cfg["groupe"].lower():  # OpenSSL écrit « x25519 » en minuscules
+            problemes.append(f"{nom} : groupe négocié {r['groupe']}, attendu {cfg['groupe']}")
+    hybride, classique = resultats["hybride"], resultats["classique"]
+    if hybride["client_hello_octets"] - classique["client_hello_octets"] < 1000:
+        problemes.append("le ClientHello hybride devrait être plus gros d'au moins 1000 octets (clé ML-KEM-768)")
+    return problemes
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     if shutil.which("docker") is None:
@@ -114,9 +129,14 @@ def main() -> int:
         "rapport_mediane": round(hybride["mediane_us"] / classique["mediane_us"], 3),
         "octets_supplementaires_client_hello": hybride["client_hello_octets"] - classique["client_hello_octets"],
     }
+    document["verifications"] = verifier(resultats)
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\nRésultats écrits dans {SORTIE}")
+    if document["verifications"]:
+        print("Vérifications en échec :\n  - " + "\n  - ".join(document["verifications"]), file=sys.stderr)
+        return 1
+    print("Vérifications : toutes conformes.")
     return 0
 
 
