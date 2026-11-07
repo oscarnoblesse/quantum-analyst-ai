@@ -20,11 +20,8 @@ BRUT = RACINE / "results" / "raw"
 SORTIE = RACINE / "results" / "metrics.json"
 
 NON_MESURE = [
-    "RSA-2048 et ECDSA P-256 : taille de la poignée de main et latence (sujet §4.4)",
-    "certificat serveur et signatures ML-DSA-65 (sujet §4.4)",
-    "chaîne ML-DSA racine, intermédiaire, feuille et taille du handshake (sujet §5.2)",
-    "SLH-DSA vs ML-DSA : génération, signature, vérification, tailles, temps (sujet §5.1)",
     "débit des connexions (sujet, métriques)",
+    "discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)",
     "tailles des clés publiques et privées (sujet, métriques)",
     "rappel et précision de l'évaluation par catégorie, validité du CBOM sur 3 répétitions",
     "performance sur la variante non vue du SI (sujet §4)",
@@ -58,6 +55,15 @@ def section_latence(bench: dict | None) -> dict | None:
         "rapport_mediane_hybride_sur_classique": bench["rapport_mediane"],
         "octets_supplementaires_client_hello": bench["octets_supplementaires_client_hello"],
         "verifications": bench.get("verifications", []),
+    }
+
+
+def section_signatures(sig: dict | None) -> dict | None:
+    if sig is None:
+        return None
+    return {
+        "openssl": sig["openssl"], "mesures": sig["mesures"], "repetitions": sig["repetitions"],
+        "algorithmes": sig["algorithmes"], "verifications": sig.get("verifications", []),
     }
 
 
@@ -103,6 +109,7 @@ def construire() -> dict:
         "demonstrateur": {
             "verification": verification,
             "latence_bench_pqc": section_latence(bench),
+            "signatures": section_signatures(lire("bench_signatures.json")),
             "agent": section_agent(runs),
         },
         "avertissements": avertissements,
