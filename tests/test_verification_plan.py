@@ -48,3 +48,12 @@ def test_demonstration_inconnue_echoue_sans_rien_lancer():
 def test_chaque_demonstration_du_plan_a_un_verificateur_reel():
     from quantum_ready.outils import laboratoire
     assert set(vp.DEMONSTRABLES.values()) == set(laboratoire.VERIFICATEURS)
+
+
+def test_cible_decrite_en_langage_libre_est_reconnue():
+    assert vp.cle_de_demonstration("X25519MLKEM768, TLS 1.3") == "tls-hybride"
+    assert vp.cle_de_demonstration("Certificats ML-DSA-65 des serveurs") == "certificat-mldsa65"
+
+
+def test_nom_absent_n_est_pas_devine():
+    assert vp.cle_de_demonstration("RSA-2048 pour l'authentification") is None
