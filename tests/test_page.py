@@ -8,6 +8,7 @@ from quantum_ready.evaluation import page
 def _metriques(avertissement: str) -> dict:
     return {"version": 1, "genere_le": "2026-11-07T00:00:00+00:00", "sources": ["bench_pqc.json"],
             "demonstrateur": {"verification": None, "latence_bench_pqc": None, "signatures": None, "agent": None},
+            "crypto_agilite": None,
             "avertissements": [avertissement], "non_mesure": ["débit"]}
 
 
