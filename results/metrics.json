@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "genere_le": "2026-11-07T18:44:35+00:00",
+  "genere_le": "2026-11-07T19:16:38+00:00",
   "sources": [
     "bench_pqc.json",
     "bench_signatures.json",
@@ -628,6 +628,23 @@
       "modele": [
         "qwen3:4b-instruct-2507-q4_K_M"
       ]
+    }
+  },
+  "crypto_agilite": {
+    "source": "results/cbom_exemple.json",
+    "methode_a_valider": true,
+    "actifs": 77,
+    "niveaux": {
+      "élevée": 20,
+      "moyenne": 5,
+      "faible": 52
+    },
+    "categories": {
+      "configuration": 20,
+      "dépendance": 5,
+      "logiciel": 0,
+      "code": 23,
+      "matériel": 29
     }
   },
   "avertissements": [

@@ -67,6 +67,15 @@ def section_signatures(sig: dict | None) -> dict | None:
     }
 
 
+def section_agilite(cbom: dict | None) -> dict | None:
+    """Indicateur de crypto-agilité sur le CBOM d'exemple versionné. Méthode à valider par l'auteur."""
+    if cbom is None:
+        return None
+    from quantum_ready.outils.crypto_agilite import resumer
+
+    return {"source": "results/cbom_exemple.json", "methode_a_valider": True, **resumer(cbom)}
+
+
 def section_agent(runs: list[dict] | None) -> dict | None:
     if not runs:
         return None
@@ -95,6 +104,8 @@ def construire() -> dict:
     bench = lire("bench_pqc.json")
     verification = lire("demonstrateur_verification.json")
     runs = lire("demonstrateur_agent.json")
+    cbom_exemple = json.loads((RACINE / "results" / "cbom_exemple.json").read_text(encoding="utf-8")) \
+        if (RACINE / "results" / "cbom_exemple.json").is_file() else None
     avertissements = []
     if bench:
         avertissements.append("latence : une seule série de mesures par configuration ; le sujet exige 3 répétitions (moyenne, écart type)")
@@ -112,6 +123,7 @@ def construire() -> dict:
             "signatures": section_signatures(lire("bench_signatures.json")),
             "agent": section_agent(runs),
         },
+        "crypto_agilite": section_agilite(cbom_exemple),
         "avertissements": avertissements,
         "non_mesure": NON_MESURE,
     }

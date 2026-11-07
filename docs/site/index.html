@@ -21,7 +21,7 @@ a { color:var(--accent); }
 <body>
 <main>
 <h1>Quantum-Ready : résultats du laboratoire post-quantique</h1>
-<p class="discret">Généré le 2026-11-07T18:44:35+00:00 à partir de <code>results/metrics.json</code>, version 1.
+<p class="discret">Généré le 2026-11-07T19:16:38+00:00 à partir de <code>results/metrics.json</code>, version 1.
 Aucune valeur n'est saisie à la main ; les fichiers sources sont : bench_pqc.json, bench_signatures.json, demonstrateur_agent.json, demonstrateur_verification.json.</p>
 
 <h2>Vérification du laboratoire</h2>
@@ -32,6 +32,9 @@ Aucune valeur n'est saisie à la main ; les fichiers sources sont : bench_pqc.js
 
 <h2>Signatures : ML-DSA-65 contre SLH-DSA</h2>
 <p>3 répétitions de 100 mesures, OpenSSL : OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026). Temps en microsecondes, moyenne ± écart type entre répétitions.</p><table><thead><tr><th>Algorithme</th><th>Clé publique (o)</th><th>Signature (o)</th><th>Génération (µs)</th><th>Signature (µs)</th><th>Vérification (µs)</th></tr></thead><tbody><tr><td>ML-DSA-65</td><td>1952</td><td>3309</td><td>242.3 ± 14.7</td><td>1068.3 ± 76.5</td><td>235.6 ± 15.4</td></tr><tr><td>SLH-DSA-SHA2-128s</td><td>32</td><td>7856</td><td>66440.2 ± 371.3</td><td>509431 ± 1375.2</td><td>544.4 ± 4.3</td></tr><tr><td>SLH-DSA-SHA2-128f</td><td>32</td><td>17088</td><td>1051.8 ± 3.2</td><td>24203.4 ± 69.4</td><td>1453.8 ± 0.4</td></tr></tbody></table>
+
+<h2>Crypto-agilité par actif (proposition de méthode, à valider)</h2>
+<p>77 actifs du CBOM d'exemple (results/cbom_exemple.json). Un actif présent à plusieurs emplacements prend le niveau le plus rigide.</p><p>Par niveau :</p><ul><li>élevée : 20</li><li>moyenne : 5</li><li>faible : 52</li></ul><p>Par catégorie d'emplacement :</p><ul><li>configuration : 20</li><li>dépendance : 5</li><li>logiciel : 0</li><li>code : 23</li><li>matériel : 29</li></ul>
 
 <h2>Agent Démonstrateur</h2>
 <p>3 exécution(s), 3 terminée(s), 0 appel(s) refusé(s), 0 en double, 0 erreur(s) d'outil. Modèle : qwen3:4b-instruct-2507-q4_K_M.</p><table><thead><tr><th>Groupe</th><th>Médiane (µs), moyenne ± écart type</th><th>ClientHello (o)</th></tr></thead><tbody><tr><td>X25519MLKEM768</td><td>640.6 ± 77</td><td>1397.0</td></tr><tr><td>X25519</td><td>492.7 ± 48.2</td><td>221.0</td></tr></tbody></table>
