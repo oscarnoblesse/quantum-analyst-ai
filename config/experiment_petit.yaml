@@ -1,0 +1,35 @@
+# Paramètres de l'expérience Quantum-Ready : variante « petit modèle » (reproduce-small, CI).
+# Seul le modèle change par rapport à experiment.yaml. Toute exécution enregistre une copie de ce fichier dans sa trace.
+
+modele:
+  # Modèle local servi par Ollama. Il doit avoir la capacité « tools » (`ollama show <nom>`).
+  # FIGER son empreinte (colonne ID de `ollama list`) : le même nom peut désigner un autre
+  # modèle après une mise à jour. Si le modèle raisonne en permanence malgré think=false,
+  # préférer une variante « instruct ».
+  nom: qwen3:0.6b
+  empreinte: 7df6b6e09427       # ID affiché par `ollama list` (0.6B, Q4_K_M) : configuration CI reproduce-small
+  # Variante écartée pour la configuration principale : qwen3:4b (ID 359d7dd4bcda, variante
+  # « thinking ») raisonne malgré think=false et consomme la fenêtre de 4096 jetons.
+  hote: http://localhost:11434
+  contexte: 4096               # num_ctx : 8 Go de mémoire sur le portable de référence
+  temperature: 0
+  graine: 42
+  delai_secondes: 300
+  max_jetons_sortie: 1024       # num_predict ; le budget de contexte d'un agent = contexte - max_jetons_sortie - 200
+
+agents:
+  inventoriste:   {max_etapes: 90, fenetre: 6}
+  cartographe:    {max_etapes: 12, fenetre: 4}
+  analyste_risque: {max_etapes: 40, fenetre: 1}
+  architecte:     {max_etapes: 20, fenetre: 6}
+
+orchestrateur:
+  tentatives_cartographe: 3    # boucle de vérification : CBOM invalide -> le Cartographe recommence
+  tentatives_architecte: 2     # boucle de vérification : plan non conforme -> l'Architecte recommence
+  validation_humaine: demander # demander | accepter (exécution non interactive, ex. make reproduce)
+
+mosca:
+  # z : années avant un ordinateur quantique capable de casser RSA-2048 / ECC-256.
+  # Valeur centrale et scénarios de sensibilité (étude reportée dans le rapport).
+  horizon_menace_annees: 10
+  scenarios: [5, 10, 15]
