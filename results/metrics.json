@@ -1,8 +1,9 @@
 {
   "version": 1,
-  "genere_le": "2026-11-07T18:23:36+00:00",
+  "genere_le": "2026-11-07T18:44:35+00:00",
   "sources": [
     "bench_pqc.json",
+    "bench_signatures.json",
     "demonstrateur_agent.json",
     "demonstrateur_verification.json"
   ],
@@ -31,24 +32,555 @@
         "hybride": {
           "groupe": "X25519MLKEM768",
           "mesures": 1000,
-          "mediane_us": 924.5,
-          "p95_us": 1064.0,
-          "moyenne_us": 970.3,
+          "repetitions_faites": 3,
+          "mediane_us": 924.1,
+          "mediane_ecart_type_us": 0.4,
+          "p95_us": 1050.6,
+          "p95_ecart_type_us": 51.9,
+          "moyenne_us": 949.9,
           "client_hello_octets": 1397,
-          "server_hello_octets": 1210
+          "server_hello_octets": 1210,
+          "certificat_octets": 406,
+          "certificate_verify_octets": 79,
+          "certificat_type": "ecdsa-p256",
+          "repetitions": [
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 924.0,
+              "p95_us": 1085.4,
+              "moyenne_us": 956.1,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 406,
+              "certificate_verify_octets": 79,
+              "certificat_type": "ecdsa-p256"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 924.5,
+              "p95_us": 1075.4,
+              "moyenne_us": 956.4,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 406,
+              "certificate_verify_octets": 79,
+              "certificat_type": "ecdsa-p256"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 923.8,
+              "p95_us": 990.9,
+              "moyenne_us": 937.2,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 406,
+              "certificate_verify_octets": 79,
+              "certificat_type": "ecdsa-p256"
+            }
+          ]
         },
         "classique": {
           "groupe": "x25519",
           "mesures": 1000,
-          "mediane_us": 749.4,
-          "p95_us": 2496.0,
-          "moyenne_us": 1141.7,
+          "repetitions_faites": 3,
+          "mediane_us": 685.3,
+          "mediane_ecart_type_us": 1.7,
+          "p95_us": 806.3,
+          "p95_ecart_type_us": 69.2,
+          "moyenne_us": 706.6,
           "client_hello_octets": 221,
-          "server_hello_octets": 122
+          "server_hello_octets": 122,
+          "certificat_octets": 406,
+          "certificate_verify_octets": 79,
+          "certificat_type": "ecdsa-p256",
+          "repetitions": [
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 686.0,
+              "p95_us": 770.1,
+              "moyenne_us": 703.0,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 406,
+              "certificate_verify_octets": 79,
+              "certificat_type": "ecdsa-p256"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 683.3,
+              "p95_us": 762.7,
+              "moyenne_us": 697.9,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 404,
+              "certificate_verify_octets": 79,
+              "certificat_type": "ecdsa-p256"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 686.5,
+              "p95_us": 886.0,
+              "moyenne_us": 719.0,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 405,
+              "certificate_verify_octets": 79,
+              "certificat_type": "ecdsa-p256"
+            }
+          ]
+        },
+        "hybride_rsa2048": {
+          "groupe": "X25519MLKEM768",
+          "mesures": 1000,
+          "repetitions_faites": 3,
+          "mediane_us": 1746.7,
+          "mediane_ecart_type_us": 9.7,
+          "p95_us": 2151.8,
+          "p95_ecart_type_us": 144.3,
+          "moyenne_us": 1807.3,
+          "client_hello_octets": 1397,
+          "server_hello_octets": 1210,
+          "certificat_octets": 802,
+          "certificate_verify_octets": 264,
+          "certificat_type": "rsa-2048",
+          "repetitions": [
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1757.8,
+              "p95_us": 2318.3,
+              "moyenne_us": 1858.1,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 802,
+              "certificate_verify_octets": 264,
+              "certificat_type": "rsa-2048"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1742.5,
+              "p95_us": 2071.4,
+              "moyenne_us": 1786.5,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 802,
+              "certificate_verify_octets": 264,
+              "certificat_type": "rsa-2048"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1739.8,
+              "p95_us": 2065.6,
+              "moyenne_us": 1777.2,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 802,
+              "certificate_verify_octets": 264,
+              "certificat_type": "rsa-2048"
+            }
+          ]
+        },
+        "classique_rsa2048": {
+          "groupe": "x25519",
+          "mesures": 1000,
+          "repetitions_faites": 3,
+          "mediane_us": 1511.4,
+          "mediane_ecart_type_us": 4.9,
+          "p95_us": 1946.2,
+          "p95_ecart_type_us": 23.7,
+          "moyenne_us": 1564.0,
+          "client_hello_octets": 221,
+          "server_hello_octets": 122,
+          "certificat_octets": 802,
+          "certificate_verify_octets": 264,
+          "certificat_type": "rsa-2048",
+          "repetitions": [
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1506.2,
+              "p95_us": 1937.9,
+              "moyenne_us": 1552.8,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 802,
+              "certificate_verify_octets": 264,
+              "certificat_type": "rsa-2048"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1511.9,
+              "p95_us": 1927.7,
+              "moyenne_us": 1555.0,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 802,
+              "certificate_verify_octets": 264,
+              "certificat_type": "rsa-2048"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1516.0,
+              "p95_us": 1972.9,
+              "moyenne_us": 1584.3,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 802,
+              "certificate_verify_octets": 264,
+              "certificat_type": "rsa-2048"
+            }
+          ]
+        },
+        "hybride_mldsa65": {
+          "groupe": "X25519MLKEM768",
+          "mesures": 1000,
+          "repetitions_faites": 3,
+          "mediane_us": 1923.0,
+          "mediane_ecart_type_us": 12.1,
+          "p95_us": 4130.2,
+          "p95_ecart_type_us": 120.3,
+          "moyenne_us": 2213.0,
+          "client_hello_octets": 1397,
+          "server_hello_octets": 1210,
+          "certificat_octets": 5531,
+          "certificate_verify_octets": 3317,
+          "certificat_type": "mldsa-65",
+          "repetitions": [
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1921.3,
+              "p95_us": 4013.9,
+              "moyenne_us": 2179.9,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 5531,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1935.9,
+              "p95_us": 4122.7,
+              "moyenne_us": 2276.1,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 5531,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1911.9,
+              "p95_us": 4254.1,
+              "moyenne_us": 2182.9,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 5531,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65"
+            }
+          ]
+        },
+        "classique_mldsa65": {
+          "groupe": "x25519",
+          "mesures": 1000,
+          "repetitions_faites": 3,
+          "mediane_us": 1760.2,
+          "mediane_ecart_type_us": 28.1,
+          "p95_us": 3896.3,
+          "p95_ecart_type_us": 174.7,
+          "moyenne_us": 2038.1,
+          "client_hello_octets": 221,
+          "server_hello_octets": 122,
+          "certificat_octets": 5531,
+          "certificate_verify_octets": 3317,
+          "certificat_type": "mldsa-65",
+          "repetitions": [
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1745.4,
+              "p95_us": 3725.0,
+              "moyenne_us": 1993.2,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 5531,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1792.6,
+              "p95_us": 4074.2,
+              "moyenne_us": 2096.4,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 5531,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1742.5,
+              "p95_us": 3889.6,
+              "moyenne_us": 2024.8,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 5531,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65"
+            }
+          ]
+        },
+        "hybride_chaine_mldsa65": {
+          "groupe": "X25519MLKEM768",
+          "mesures": 1000,
+          "repetitions_faites": 3,
+          "mediane_us": 2081.0,
+          "mediane_ecart_type_us": 357.5,
+          "p95_us": 4564.8,
+          "p95_ecart_type_us": 898.1,
+          "moyenne_us": 2416.5,
+          "client_hello_octets": 1397,
+          "server_hello_octets": 1210,
+          "certificat_octets": 11114,
+          "certificate_verify_octets": 3317,
+          "certificat_type": "mldsa-65-chaine",
+          "repetitions": [
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1875.1,
+              "p95_us": 4019.0,
+              "moyenne_us": 2136.3,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 11114,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65-chaine"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 2493.8,
+              "p95_us": 5601.3,
+              "moyenne_us": 2927.4,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 11114,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65-chaine"
+            },
+            {
+              "groupe": "X25519MLKEM768",
+              "mesures": 1000,
+              "mediane_us": 1874.2,
+              "p95_us": 4074.0,
+              "moyenne_us": 2185.8,
+              "client_hello_octets": 1397,
+              "server_hello_octets": 1210,
+              "certificat_octets": 11114,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65-chaine"
+            }
+          ]
+        },
+        "classique_chaine_mldsa65": {
+          "groupe": "x25519",
+          "mesures": 1000,
+          "repetitions_faites": 3,
+          "mediane_us": 1700.3,
+          "mediane_ecart_type_us": 6.0,
+          "p95_us": 3673.3,
+          "p95_ecart_type_us": 23.3,
+          "moyenne_us": 1943.6,
+          "client_hello_octets": 221,
+          "server_hello_octets": 122,
+          "certificat_octets": 11114,
+          "certificate_verify_octets": 3317,
+          "certificat_type": "mldsa-65-chaine",
+          "repetitions": [
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1697.7,
+              "p95_us": 3657.3,
+              "moyenne_us": 1910.2,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 11114,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65-chaine"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1707.2,
+              "p95_us": 3700.1,
+              "moyenne_us": 1993.9,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 11114,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65-chaine"
+            },
+            {
+              "groupe": "x25519",
+              "mesures": 1000,
+              "mediane_us": 1696.1,
+              "p95_us": 3662.6,
+              "moyenne_us": 1926.7,
+              "client_hello_octets": 221,
+              "server_hello_octets": 122,
+              "certificat_octets": 11114,
+              "certificate_verify_octets": 3317,
+              "certificat_type": "mldsa-65-chaine"
+            }
+          ]
         }
       },
-      "rapport_mediane_hybride_sur_classique": 1.234,
+      "rapport_mediane_hybride_sur_classique": 1.348,
       "octets_supplementaires_client_hello": 1176,
+      "verifications": []
+    },
+    "signatures": {
+      "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+      "mesures": 100,
+      "repetitions": 3,
+      "algorithmes": {
+        "ML-DSA-65": {
+          "repetitions": [
+            {
+              "generation_us": 259.25,
+              "signature_us": 1155.4,
+              "verification_us": 253.4,
+              "cle_publique_octets": 1952,
+              "signature_octets": 3309
+            },
+            {
+              "generation_us": 234.65,
+              "signature_us": 1012.35,
+              "verification_us": 227.55,
+              "cle_publique_octets": 1952,
+              "signature_octets": 3309
+            },
+            {
+              "generation_us": 233.05,
+              "signature_us": 1037.1,
+              "verification_us": 225.95,
+              "cle_publique_octets": 1952,
+              "signature_octets": 3309
+            }
+          ],
+          "generation": {
+            "moyenne_us": 242.3,
+            "ecart_type_us": 14.7
+          },
+          "signature": {
+            "moyenne_us": 1068.3,
+            "ecart_type_us": 76.5
+          },
+          "verification": {
+            "moyenne_us": 235.6,
+            "ecart_type_us": 15.4
+          },
+          "cle_publique_octets": 1952,
+          "signature_octets": 3309
+        },
+        "SLH-DSA-SHA2-128s": {
+          "repetitions": [
+            {
+              "generation_us": 66836.54999999999,
+              "signature_us": 510367.85,
+              "verification_us": 546.95,
+              "cle_publique_octets": 32,
+              "signature_octets": 7856
+            },
+            {
+              "generation_us": 66383.45,
+              "signature_us": 510072.3,
+              "verification_us": 546.9,
+              "cle_publique_octets": 32,
+              "signature_octets": 7856
+            },
+            {
+              "generation_us": 66100.55,
+              "signature_us": 507852.0,
+              "verification_us": 539.45,
+              "cle_publique_octets": 32,
+              "signature_octets": 7856
+            }
+          ],
+          "generation": {
+            "moyenne_us": 66440.2,
+            "ecart_type_us": 371.3
+          },
+          "signature": {
+            "moyenne_us": 509430.7,
+            "ecart_type_us": 1375.2
+          },
+          "verification": {
+            "moyenne_us": 544.4,
+            "ecart_type_us": 4.3
+          },
+          "cle_publique_octets": 32,
+          "signature_octets": 7856
+        },
+        "SLH-DSA-SHA2-128f": {
+          "repetitions": [
+            {
+              "generation_us": 1053.25,
+              "signature_us": 24218.8,
+              "verification_us": 1453.5,
+              "cle_publique_octets": 32,
+              "signature_octets": 17088
+            },
+            {
+              "generation_us": 1054.1,
+              "signature_us": 24263.9,
+              "verification_us": 1454.2,
+              "cle_publique_octets": 32,
+              "signature_octets": 17088
+            },
+            {
+              "generation_us": 1048.15,
+              "signature_us": 24127.6,
+              "verification_us": 1453.8,
+              "cle_publique_octets": 32,
+              "signature_octets": 17088
+            }
+          ],
+          "generation": {
+            "moyenne_us": 1051.8,
+            "ecart_type_us": 3.2
+          },
+          "signature": {
+            "moyenne_us": 24203.4,
+            "ecart_type_us": 69.4
+          },
+          "verification": {
+            "moyenne_us": 1453.8,
+            "ecart_type_us": 0.4
+          },
+          "cle_publique_octets": 32,
+          "signature_octets": 17088
+        }
+      },
       "verifications": []
     },
     "agent": {
@@ -99,14 +631,11 @@
     }
   },
   "avertissements": [
-    "latence : une seule série de mesures ; le sujet exige 3 répétitions (moyenne, écart type)"
+    "latence : une seule série de mesures par configuration ; le sujet exige 3 répétitions (moyenne, écart type)"
   ],
   "non_mesure": [
-    "RSA-2048 et ECDSA P-256 : taille de la poignée de main et latence (sujet §4.4)",
-    "certificat serveur et signatures ML-DSA-65 (sujet §4.4)",
-    "chaîne ML-DSA racine, intermédiaire, feuille et taille du handshake (sujet §5.2)",
-    "SLH-DSA vs ML-DSA : génération, signature, vérification, tailles, temps (sujet §5.1)",
     "débit des connexions (sujet, métriques)",
+    "discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)",
     "tailles des clés publiques et privées (sujet, métriques)",
     "rappel et précision de l'évaluation par catégorie, validité du CBOM sur 3 répétitions",
     "performance sur la variante non vue du SI (sujet §4)"
