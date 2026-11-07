@@ -90,8 +90,8 @@ def construire() -> dict:
     verification = lire("demonstrateur_verification.json")
     runs = lire("demonstrateur_agent.json")
     avertissements = []
-    if bench and len(bench.get("configurations", {})) == 2:
-        avertissements.append("latence : une seule série de mesures ; le sujet exige 3 répétitions (moyenne, écart type)")
+    if bench:
+        avertissements.append("latence : une seule série de mesures par configuration ; le sujet exige 3 répétitions (moyenne, écart type)")
     if runs and len(runs) < 3:
         avertissements.append(f"agent Démonstrateur : {len(runs)} exécution(s) ; le sujet exige 3 répétitions")
     if verification is not None and not verification.get("conforme"):
