@@ -163,3 +163,20 @@ Le plan est accepté par le code du premier coup. Restent des défauts que le co
 - le champ `critiques` de la sortie de l'Analyste cite un seul actif, qui n'est même pas critique dans `scores.json` (le modèle résume sans relire) ;
 - le résumé de l'Inventoriste est identique au mot près à celui de la v4 (température 0, graine 42) et affirme toujours « l'utilisation de cryptographie post-quantique » ;
 - étape 5 du plan : la clé RSA-2048 du certificat nginx sert à l'authentification ; elle relève d'un certificat ML-DSA, pas d'un échange de clés hybride.
+
+## Démonstrateur : prompt `demonstrateur.md` (version initiale)
+
+Nouvel agent, sans équivalent dans les versions précédentes : pas de comparaison de version possible.
+
+- Méthode imposée par le prompt : huit étapes fixes (démarrer, scanner, mesurer, arrêter, pour X25519MLKEM768 puis X25519), une seule étape à la fois.
+- Le modèle ne produit aucun chiffre : la réponse finale doit reprendre à l'identique les résultats des outils. Le code vérifie cette reprise et refuse les écarts.
+
+**Effet mesuré** (qwen3:4b-instruct-2507-q4_K_M, graine 42, température 0) : trois runs terminés, 9 tours, 8 appels d'outils chacun, aucun appel refusé ni en double, aucune erreur d'outil.
+
+| Run | Médiane hybride | Médiane classique | Rapport |
+| --- | --- | --- | --- |
+| 1 | 601,5 µs | 464,0 µs | 1,30 |
+| 2 | 591,1 µs | 465,7 µs | 1,27 |
+| 3 | 729,3 µs | 548,3 µs | 1,33 |
+
+Les durées varient d'environ 20 % d'un run à l'autre (charge de la machine) ; le rapport reste entre 1,27 et 1,33.

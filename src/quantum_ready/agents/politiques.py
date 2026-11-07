@@ -63,7 +63,16 @@ def analyste(messages, outils) -> Reponse:
     return appel("score_mosca", evaluations=evaluations)
 
 
-POLITIQUES = {"inventoriste": inventoriste, "cartographe": cartographe, "analyste_risque": analyste}
+def demonstrateur(messages, outils) -> Reponse:
+    memoire = _memoire(messages)
+    suivante = re.search(r"Étape suivante : (\w+) avec (\{.*\})", memoire)
+    if suivante:
+        return appel(suivante.group(1), **json.loads(suivante.group(2)))
+    obtenus = json.loads(re.search(r"Résultats obtenus : (.*)", memoire).group(1))
+    return texte({"resultats": obtenus, "resume": "Mesure réalisée sur le laboratoire local."})
+
+
+POLITIQUES = {"inventoriste": inventoriste, "cartographe": cartographe, "analyste_risque": analyste, "demonstrateur": demonstrateur}
 
 
 THEMES = [  # (motif dans le lieu ou le nom, requête, action, cible, échéance, fiche)
