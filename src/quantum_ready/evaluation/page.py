@@ -97,6 +97,16 @@ def _verification(v: dict | None) -> str:
             f"Client classique refusé : TLS {_e(v['tls']['classique_refuse'])}, SSH {_e(v['ssh']['classique_refuse'])}.</p>")
 
 
+def _agilite(a: dict | None) -> str:
+    if not a:
+        return "<p>Pas de CBOM d'exemple.</p>"
+    niveaux = "".join(f"<li>{_e(n)} : {_e(c)}</li>" for n, c in a["niveaux"].items())
+    categories = "".join(f"<li>{_e(c)} : {_e(n)}</li>" for c, n in a["categories"].items())
+    return (f"<p>{_e(a['actifs'])} actifs du CBOM d'exemple ({_e(a['source'])}). Un actif présent à plusieurs "
+            "emplacements prend le niveau le plus rigide.</p>"
+            f"<p>Par niveau :</p><ul>{niveaux}</ul><p>Par catégorie d'emplacement :</p><ul>{categories}</ul>")
+
+
 def construire(metriques: dict) -> str:
     d = metriques["demonstrateur"]
     avertissements = "".join(f"<li>{_e(a)}</li>" for a in metriques["avertissements"])
@@ -135,6 +145,9 @@ Aucune valeur n'est saisie à la main ; les fichiers sources sont : {_e(', '.joi
 
 <h2>Signatures : ML-DSA-65 contre SLH-DSA</h2>
 {_signatures(d['signatures'])}
+
+<h2>Crypto-agilité par actif (proposition de méthode, à valider)</h2>
+{_agilite(metriques.get('crypto_agilite'))}
 
 <h2>Agent Démonstrateur</h2>
 {_agent(d['agent'])}
