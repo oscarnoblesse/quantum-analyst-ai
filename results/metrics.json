@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "genere_le": "2026-11-07T18:23:36+00:00",
+  "sources": [
+    "bench_pqc.json",
+    "demonstrateur_agent.json",
+    "demonstrateur_verification.json"
+  ],
+  "demonstrateur": {
+    "verification": {
+      "tls": {
+        "groupe_negocie": "X25519MLKEM768",
+        "groupe_attendu": "X25519MLKEM768",
+        "classique_refuse": true,
+        "openssl_serveur": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)"
+      },
+      "ssh": {
+        "kex_negociee": "mlkem768x25519-sha256",
+        "kex_attendue": "mlkem768x25519-sha256",
+        "classique_refuse": true,
+        "openssh_serveur": "OpenSSH_10.0p2 Debian-7+deb13u4, OpenSSL 3.5.7 9 Jun 2026"
+      },
+      "date_utc": "2026-11-07T18:22:58+00:00",
+      "conforme": true
+    },
+    "latence_bench_pqc": {
+      "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+      "echantillons": 1000,
+      "echauffement": 100,
+      "configurations": {
+        "hybride": {
+          "groupe": "X25519MLKEM768",
+          "mesures": 1000,
+          "mediane_us": 924.5,
+          "p95_us": 1064.0,
+          "moyenne_us": 970.3,
+          "client_hello_octets": 1397,
+          "server_hello_octets": 1210
+        },
+        "classique": {
+          "groupe": "x25519",
+          "mesures": 1000,
+          "mediane_us": 749.4,
+          "p95_us": 2496.0,
+          "moyenne_us": 1141.7,
+          "client_hello_octets": 221,
+          "server_hello_octets": 122
+        }
+      },
+      "rapport_mediane_hybride_sur_classique": 1.234,
+      "octets_supplementaires_client_hello": 1176,
+      "verifications": []
+    },
+    "agent": {
+      "executions": 3,
+      "terminees": 3,
+      "appels_refuses_total": 0,
+      "appels_en_double_total": 0,
+      "erreurs_outils_total": 0,
+      "groupes": {
+        "X25519MLKEM768": {
+          "mediane_us": {
+            "n": 3,
+            "moyenne": 640.6,
+            "ecart_type": 77.0
+          },
+          "p95_us": {
+            "n": 3,
+            "moyenne": 956.4,
+            "ecart_type": 137.8
+          },
+          "client_hello_octets": {
+            "n": 3,
+            "moyenne": 1397.0,
+            "ecart_type": 0.0
+          }
+        },
+        "X25519": {
+          "mediane_us": {
+            "n": 3,
+            "moyenne": 492.7,
+            "ecart_type": 48.2
+          },
+          "p95_us": {
+            "n": 3,
+            "moyenne": 830.3,
+            "ecart_type": 247.2
+          },
+          "client_hello_octets": {
+            "n": 3,
+            "moyenne": 221.0,
+            "ecart_type": 0.0
+          }
+        }
+      },
+      "modele": [
+        "qwen3:4b-instruct-2507-q4_K_M"
+      ]
+    }
+  },
+  "avertissements": [
+    "latence : une seule série de mesures ; le sujet exige 3 répétitions (moyenne, écart type)"
+  ],
+  "non_mesure": [
+    "RSA-2048 et ECDSA P-256 : taille de la poignée de main et latence (sujet §4.4)",
+    "certificat serveur et signatures ML-DSA-65 (sujet §4.4)",
+    "chaîne ML-DSA racine, intermédiaire, feuille et taille du handshake (sujet §5.2)",
+    "SLH-DSA vs ML-DSA : génération, signature, vérification, tailles, temps (sujet §5.1)",
+    "débit des connexions (sujet, métriques)",
+    "tailles des clés publiques et privées (sujet, métriques)",
+    "rappel et précision de l'évaluation par catégorie, validité du CBOM sur 3 répétitions",
+    "performance sur la variante non vue du SI (sujet §4)"
+  ]
+}

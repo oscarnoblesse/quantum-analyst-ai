@@ -26,6 +26,8 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - name: Construire, lancer et vérifier le laboratoire TLS
         run: uv run python scripts/demonstrateur.py
+      - name: Générer results/metrics.json
+        run: uv run python -m quantum_ready.evaluation.metriques
 
   bench-pqc:
     name: Mesure hybride vs classique (ubuntu, Docker)

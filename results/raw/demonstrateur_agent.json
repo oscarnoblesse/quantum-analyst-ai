@@ -1,0 +1,83 @@
+[
+  {
+    "session": "traces/demonstrateur_ollama",
+    "modele": "qwen3:4b-instruct-2507-q4_K_M",
+    "arret": "termine",
+    "etapes": 9,
+    "appels_outils": 8,
+    "appels_refuses": 0,
+    "appels_en_double": 0,
+    "erreurs_outils": 0,
+    "duree_ms": 68606,
+    "resultats": [
+      {
+        "groupe": "X25519MLKEM768",
+        "scan_accepte": true,
+        "mediane_us": 601.5,
+        "p95_us": 971.9,
+        "client_hello_octets": 1397
+      },
+      {
+        "groupe": "X25519",
+        "scan_accepte": true,
+        "mediane_us": 464.0,
+        "p95_us": 689.3,
+        "client_hello_octets": 221
+      }
+    ]
+  },
+  {
+    "session": "traces/demonstrateur_ollama_run2",
+    "modele": "qwen3:4b-instruct-2507-q4_K_M",
+    "arret": "termine",
+    "etapes": 9,
+    "appels_outils": 8,
+    "appels_refuses": 0,
+    "appels_en_double": 0,
+    "erreurs_outils": 0,
+    "duree_ms": 54703,
+    "resultats": [
+      {
+        "groupe": "X25519MLKEM768",
+        "scan_accepte": true,
+        "mediane_us": 591.1,
+        "p95_us": 811.6,
+        "client_hello_octets": 1397
+      },
+      {
+        "groupe": "X25519",
+        "scan_accepte": true,
+        "mediane_us": 465.7,
+        "p95_us": 685.8,
+        "client_hello_octets": 221
+      }
+    ]
+  },
+  {
+    "session": "traces/demonstrateur_ollama_run3",
+    "modele": "qwen3:4b-instruct-2507-q4_K_M",
+    "arret": "termine",
+    "etapes": 9,
+    "appels_outils": 8,
+    "appels_refuses": 0,
+    "appels_en_double": 0,
+    "erreurs_outils": 0,
+    "duree_ms": 58894,
+    "resultats": [
+      {
+        "groupe": "X25519MLKEM768",
+        "scan_accepte": true,
+        "mediane_us": 729.3,
+        "p95_us": 1085.8,
+        "client_hello_octets": 1397
+      },
+      {
+        "groupe": "X25519",
+        "scan_accepte": true,
+        "mediane_us": 548.3,
+        "p95_us": 1115.7,
+        "client_hello_octets": 221
+      }
+    ]
+  }
+]
