@@ -1,5 +1,5 @@
 {
-  "date_utc": "2026-11-07T16:38:41+00:00",
+  "date_utc": "2026-11-07T17:20:21+00:00",
   "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
   "echantillons": 1000,
   "echauffement": 100,
@@ -7,22 +7,23 @@
     "hybride": {
       "groupe": "X25519MLKEM768",
       "mesures": 1000,
-      "mediane_us": 929.0,
-      "p95_us": 1114.3,
-      "moyenne_us": 958.3,
+      "mediane_us": 924.5,
+      "p95_us": 1064.0,
+      "moyenne_us": 970.3,
       "client_hello_octets": 1397,
       "server_hello_octets": 1210
     },
     "classique": {
       "groupe": "x25519",
       "mesures": 1000,
-      "mediane_us": 685.3,
-      "p95_us": 815.3,
-      "moyenne_us": 706.3,
+      "mediane_us": 749.4,
+      "p95_us": 2496.0,
+      "moyenne_us": 1141.7,
       "client_hello_octets": 221,
       "server_hello_octets": 122
     }
   },
-  "rapport_mediane": 1.356,
-  "octets_supplementaires_client_hello": 1176
+  "rapport_mediane": 1.234,
+  "octets_supplementaires_client_hello": 1176,
+  "verifications": []
 }
