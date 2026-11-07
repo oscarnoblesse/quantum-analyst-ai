@@ -17,9 +17,11 @@ from __future__ import annotations
 
 import os
 import shutil
+import json
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
@@ -30,6 +32,8 @@ CONTENEUR_SSH = "quantum-ready-ssh"
 DOSSIER_SSH = RACINE / "demonstrateur" / "ssh"
 KEX_HYBRIDE_SSH = "mlkem768x25519-sha256"
 KEX_CLASSIQUE_SSH = "curve25519-sha256"
+SORTIE = RACINE / "results" / "raw" / "demonstrateur_verification.json"
+RESULTAT: dict = {}
 CONTENEUR = "quantum-ready-lab"
 PORT = int(os.environ.get("LAB_PORT", "8443"))
 GROUPE_HYBRIDE = "X25519MLKEM768"
@@ -73,14 +77,16 @@ def verifier() -> bool:
     print("== Handshake avec le groupe hybride", flush=True)
     sortie = client(GROUPE_HYBRIDE)
     reussi = f"Negotiated TLS1.3 group: {GROUPE_HYBRIDE}" in sortie
-    print(f"   {'OK' if reussi else 'ÉCHEC'} : groupe négocié = "
-          f"{next((l.split(':', 1)[1].strip() for l in sortie.splitlines() if 'Negotiated TLS1.3 group' in l), '<aucun>')}")
+    negocie = next((l.split(':', 1)[1].strip() for l in sortie.splitlines() if "Negotiated TLS1.3 group" in l), None)
+    print(f"   {'OK' if reussi else 'ÉCHEC'} : groupe négocié = {negocie or '<aucun>'}")
 
     print("== Client classique seul (X25519) : doit être refusé", flush=True)
     classique = client("X25519")
     refus = "handshake failure" in classique or "Negotiated TLS1.3 group: <NULL>" in classique
     etat = "refusé" if refus else "accepté : le groupe hybride n'est pas imposé"
     print(f"   {'OK' if refus else 'ÉCHEC'} : {etat}")
+    RESULTAT["tls"] = {"groupe_negocie": negocie, "groupe_attendu": GROUPE_HYBRIDE, "classique_refuse": refus,
+                       "openssl_serveur": docker("run", "--rm", "--entrypoint", "openssl", IMAGE, "version", verifier=False).stdout.strip()}
     return reussi and refus
 
 
@@ -128,6 +134,8 @@ def verifier_ssh() -> bool:
         refus = "no matching key exchange method" in classique
         print(f"   {'OK' if refus else 'ÉCHEC'} : client X25519 seul {'refusé' if refus else 'accepté'}", flush=True)
         ok = reussi and refus
+        RESULTAT["ssh"] = {"kex_negociee": negocie, "kex_attendue": KEX_HYBRIDE_SSH, "classique_refuse": refus,
+                           "openssh_serveur": docker("run", "--rm", "--entrypoint", "ssh", IMAGE_SSH, "-V", verifier=False).stderr.strip()}
     finally:
         docker("rm", "-f", CONTENEUR_SSH, verifier=False)
     return ok
@@ -153,6 +161,10 @@ def main() -> int:
         return 1
     finally:
         arreter()
+    RESULTAT["date_utc"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    RESULTAT["conforme"] = ok
+    SORTIE.parent.mkdir(parents=True, exist_ok=True)
+    SORTIE.write_text(json.dumps(RESULTAT, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("\nDémonstrateur vérifié." if ok else "\nDémonstrateur NON conforme.")
     return 0 if ok else 1
 

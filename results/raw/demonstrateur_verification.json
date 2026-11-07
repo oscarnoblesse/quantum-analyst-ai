@@ -1,0 +1,16 @@
+{
+  "tls": {
+    "groupe_negocie": "X25519MLKEM768",
+    "groupe_attendu": "X25519MLKEM768",
+    "classique_refuse": true,
+    "openssl_serveur": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)"
+  },
+  "ssh": {
+    "kex_negociee": "mlkem768x25519-sha256",
+    "kex_attendue": "mlkem768x25519-sha256",
+    "classique_refuse": true,
+    "openssh_serveur": "OpenSSH_10.0p2 Debian-7+deb13u4, OpenSSL 3.5.7 9 Jun 2026"
+  },
+  "date_utc": "2026-11-07T18:22:58+00:00",
+  "conforme": true
+}
