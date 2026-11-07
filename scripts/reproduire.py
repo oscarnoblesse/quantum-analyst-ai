@@ -13,6 +13,7 @@ ni de bash, ni d'un shell particulier. Chaque étape est lancée sans shell
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -54,11 +55,15 @@ def main() -> int:
         print("uv est introuvable. Installez-le : https://docs.astral.sh/uv/getting-started/installation/", file=sys.stderr)
         return 2
 
+    # Mode UTF-8 pour tous les processus Python lancés : sous Windows, la sortie
+    # standard est en cp1252 par défaut et ne sait pas écrire « → » ni « ≥ ».
+    environnement = {**os.environ, "PYTHONUTF8": "1"}
+
     debut = time.monotonic()
     for numero, (libelle, commande) in enumerate(etapes(args.petite), start=1):
         print(f"\n== Étape {numero} : {libelle}", flush=True)
         print("   $ " + " ".join(commande), flush=True)
-        resultat = subprocess.run(commande, cwd=RACINE)
+        resultat = subprocess.run(commande, cwd=RACINE, env=environnement)
         if resultat.returncode != 0:
             print(f"\nÉchec à l'étape {numero} (code {resultat.returncode}).", file=sys.stderr)
             return resultat.returncode
