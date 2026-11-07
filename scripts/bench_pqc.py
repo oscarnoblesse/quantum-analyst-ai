@@ -43,6 +43,8 @@ CONFIGURATIONS = {
     "classique_rsa2048": {"groupe": "X25519", "cert": "rsa-2048", "conteneur": "qr-lab-classique-rsa"},
     "hybride_mldsa65": {"groupe": "X25519MLKEM768", "cert": "mldsa-65", "conteneur": "qr-lab-hybride-mldsa"},
     "classique_mldsa65": {"groupe": "X25519", "cert": "mldsa-65", "conteneur": "qr-lab-classique-mldsa"},
+    "hybride_chaine_mldsa65": {"groupe": "X25519MLKEM768", "cert": "mldsa-65-chaine", "conteneur": "qr-lab-hybride-chaine"},
+    "classique_chaine_mldsa65": {"groupe": "X25519", "cert": "mldsa-65-chaine", "conteneur": "qr-lab-classique-chaine"},
 }
 
 
@@ -110,6 +112,10 @@ def verifier(resultats: dict[str, dict]) -> list[str]:
     if "classique_mldsa65" in resultats and "classique" in resultats:
         if resultats["classique_mldsa65"]["certificat_octets"] - resultats["classique"]["certificat_octets"] < 1000:
             problemes.append("le Certificate ML-DSA-65 devrait être plus gros d'au moins 1000 octets que ECDSA P-256")
+    # Chaîne racine -> intermédiaire -> feuille : deux certificats ML-DSA envoyés, donc plus gros qu'un seul.
+    if "classique_chaine_mldsa65" in resultats and "classique_mldsa65" in resultats:
+        if resultats["classique_chaine_mldsa65"]["certificat_octets"] - resultats["classique_mldsa65"]["certificat_octets"] < 4000:
+            problemes.append("la chaîne ML-DSA-65 (deux certificats) devrait peser au moins 4000 octets de plus qu'un seul")
     if "classique_rsa2048" in resultats and "classique" in resultats:
         if resultats["classique_rsa2048"]["certificat_octets"] - resultats["classique"]["certificat_octets"] < 300:
             problemes.append("le Certificate RSA-2048 devrait être plus gros d'au moins 300 octets que ECDSA P-256")
