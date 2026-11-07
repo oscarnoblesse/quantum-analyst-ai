@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small reference agents agents-regles evaluer
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small reference agents agents-regles evaluer installer-modele
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -8,6 +8,9 @@ help: ## Affiche cette aide
 
 install: ## Installe l'environnement figé (uv.lock)
 	uv sync --locked
+
+installer-modele: ## Installe Ollama et le modèle figé dans config/experiment.yaml
+	uv run python -m quantum_ready.installation_modele
 
 test: ## Lance les tests avec la couverture
 	uv run pytest --cov=quantum_ready --cov-report=term-missing
