@@ -47,6 +47,9 @@ def etapes(petite: bool) -> list[tuple[str, list[str]]]:
 
 
 def main() -> int:
+    # Sous Windows, la sortie standard est en cp1252 : on la passe en UTF-8 pour ce processus aussi.
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
     parseur = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parseur.add_argument("--petite", action="store_true", help="installer et tester sans régénérer le SI")
     args = parseur.parse_args()
