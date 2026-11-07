@@ -137,6 +137,33 @@ def configuration(max_etapes: int = 30, fenetre: int = 6) -> ConfigurationAgent:
     )
 
 
+RESULTATS_RAW = Path("results/raw/demonstrateur_agent.json")
+
+
+def bilan_execution(session: Session, modele_nom: str, arret: str, sortie: dict | None) -> dict:
+    """Une ligne du bilan : compteurs lus dans le journal de l'agent, résultats dans la sortie validée."""
+    fin = {}
+    for ligne in (session.dossier / "journal_agents.jsonl").read_text(encoding="utf-8").splitlines():
+        evenement = json.loads(ligne)
+        if evenement.get("evenement") == "fin":
+            fin = evenement
+    return {
+        "session": session.dossier.as_posix(), "modele": modele_nom, "arret": arret,
+        "etapes": fin.get("etapes"), "appels_outils": fin.get("appels_outils"),
+        "appels_refuses": fin.get("appels_refuses"), "appels_en_double": fin.get("appels_en_double"),
+        "erreurs_outils": fin.get("erreurs_outils"), "duree_ms": fin.get("duree_ms"),
+        "resultats": sortie["resultats"] if sortie else None,
+    }
+
+
+def ajouter_bilan(bilan: dict, fichier: Path = RESULTATS_RAW) -> None:
+    """Ajoute une exécution au fichier de résultats versionné (une liste JSON)."""
+    fichier.parent.mkdir(parents=True, exist_ok=True)
+    existant = json.loads(fichier.read_text(encoding="utf-8")) if fichier.is_file() else []
+    existant.append(bilan)
+    fichier.write_text(json.dumps(existant, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main(argv: list[str] | None = None) -> None:
     analyseur = argparse.ArgumentParser(description="Agent Démonstrateur : mesure le handshake hybride sur le laboratoire local.")
     analyseur.add_argument("--modele", default="ollama", choices=["ollama", "regles"])
@@ -157,6 +184,7 @@ def main(argv: list[str] | None = None) -> None:
         # Le laboratoire ne doit pas rester allumé si l'agent s'arrête en cours de route.
         for groupe in (HYBRIDE, CLASSIQUE):
             laboratoire.arreter(groupe)
+    ajouter_bilan(bilan_execution(session, getattr(modele, "nom", options.modele), resultat.arret, resultat.sortie))
     print(json.dumps({"session": str(session.dossier), "arret": resultat.arret, "sortie": resultat.sortie}, ensure_ascii=False, indent=2))
 
 
