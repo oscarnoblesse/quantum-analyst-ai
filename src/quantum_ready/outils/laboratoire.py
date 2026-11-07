@@ -38,13 +38,13 @@ def _docker(*args: str, verifier: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(["docker", *args], capture_output=True, text=True, encoding="utf-8", check=verifier, timeout=600)
 
 
-def demarrer(groupe: str) -> str:
-    """Construit l'image si besoin et lance le serveur qui n'accepte que `groupe`."""
+def demarrer(groupe: str, cert: str = "ecdsa-p256") -> str:
+    """Construit l'image si besoin et lance le serveur qui n'accepte que `groupe`, avec le certificat `cert`."""
     groupe = _groupe(groupe)
     nom = GROUPES[groupe]
     _docker("build", "-q", "-t", IMAGE, str(DOSSIER_LABORATOIRE))
     _docker("rm", "-f", nom, verifier=False)
-    _docker("run", "-d", "--name", nom, "-p", f"127.0.0.1:{PORT_HOTE}:8443", "-e", f"GROUPES={groupe}", IMAGE)
+    _docker("run", "-d", "--name", nom, "-p", f"127.0.0.1:{PORT_HOTE}:8443", "-e", f"GROUPES={groupe}", "-e", f"CERT={cert}", IMAGE)
     limite = time.monotonic() + ATTENTE_DEMARRAGE_SECONDES
     while time.monotonic() < limite:
         journal = _docker("logs", nom, verifier=False)
@@ -89,3 +89,92 @@ def mesurer(groupe: str, mesures: int = MESURES_MAX) -> dict:
         "client_hello_octets": int(statistics.median(float(l["client_hello"]) for l in lignes)),
         "server_hello_octets": int(statistics.median(float(l["server_hello"]) for l in lignes)),
     }
+
+
+# --- Vérifications de plan (décision de méthode n° 2) : chaque fonction démarre le laboratoire,
+# --- vérifie ce qui est négocié, puis l'arrête. Elles renvoient (réussi, motif).
+
+IMAGE_SSH = "quantum-ready-ssh:dev"
+CONTENEUR_SSH = "qr-lab-ssh"
+DOSSIER_SSH = RACINE / "demonstrateur" / "ssh"
+
+
+MARQUEUR_CERTIFICAT = "---CERTIFICAT---"
+
+
+def _client_tls(groupe: str, *, certificat: bool = False) -> str:
+    """Handshake TLS 1.3 depuis le conteneur du serveur. Avec `certificat`, ajoute le texte du certificat
+    présenté par le serveur (après MARQUEUR_CERTIFICAT)."""
+    commande = f"echo | openssl s_client -connect 127.0.0.1:8443 -tls1_3 -groups {groupe} 2>&1"
+    if certificat:
+        commande += (f"; echo {MARQUEUR_CERTIFICAT}; echo | openssl s_client -connect 127.0.0.1:8443 -tls1_3 2>/dev/null"
+                     " | sed -n '/-----BEGIN/,/-----END/p' | openssl x509 -noout -text 2>&1")
+    return _docker("exec", GROUPES[groupe], "sh", "-c", commande, verifier=False).stdout
+
+
+def verifier_tls_hybride() -> tuple[bool, str]:
+    demarrer("X25519MLKEM768")
+    try:
+        sortie = _client_tls("X25519MLKEM768")
+    finally:
+        arreter("X25519MLKEM768")
+    if "Negotiated TLS1.3 group: X25519MLKEM768" in sortie:
+        return True, ""
+    return False, "le groupe X25519MLKEM768 n'est pas négocié par le serveur du laboratoire"
+
+
+def verifier_certificat_mldsa65() -> tuple[bool, str]:
+    demarrer("X25519MLKEM768", cert="mldsa-65")
+    try:
+        sortie = _client_tls("X25519MLKEM768", certificat=True)
+    finally:
+        arreter("X25519MLKEM768")
+    handshake, _, certificat = sortie.partition(MARQUEUR_CERTIFICAT)
+    if "Negotiated TLS1.3 group: X25519MLKEM768" not in handshake:
+        return False, "handshake hybride non réussi avec le certificat ML-DSA-65"
+    if "Public Key Algorithm: ML-DSA-65" not in certificat:
+        return False, "le certificat présenté n'est pas en ML-DSA-65"
+    return True, ""
+
+
+def verifier_ssh_hybride() -> tuple[bool, str]:
+    """Serveur OpenSSH n'acceptant que mlkem768x25519-sha256 ; client qui propose la même liste."""
+    _docker("build", "-q", "-t", IMAGE_SSH, str(DOSSIER_SSH))
+    _docker("rm", "-f", CONTENEUR_SSH, verifier=False)
+    try:
+        _docker("run", "-d", "--name", CONTENEUR_SSH, "-e", "KEX=mlkem768x25519-sha256", IMAGE_SSH)
+        limite = time.monotonic() + ATTENTE_DEMARRAGE_SECONDES
+        while True:
+            journal = _docker("logs", CONTENEUR_SSH, verifier=False)
+            if "Démarrage" in journal.stdout + journal.stderr:
+                break
+            if time.monotonic() > limite:
+                return False, "le serveur SSH du laboratoire ne s'est pas lancé"
+            time.sleep(1)
+        sortie = _docker("run", "--rm", "--network", f"container:{CONTENEUR_SSH}", "--entrypoint", "ssh", IMAGE_SSH,
+                         "-v", "-p", "2222", "-l", "demo", "-o", "KexAlgorithms=mlkem768x25519-sha256",
+                         "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-o", "BatchMode=yes",
+                         "127.0.0.1", "true", verifier=False)
+        sortie_texte = sortie.stdout + sortie.stderr
+    finally:
+        _docker("rm", "-f", CONTENEUR_SSH, verifier=False)
+    if "kex: algorithm: mlkem768x25519-sha256" in sortie_texte:
+        return True, ""
+    return False, "l'échange mlkem768x25519-sha256 n'est pas négocié par OpenSSH"
+
+
+VERIFICATEURS = {
+    "tls-hybride": verifier_tls_hybride,
+    "certificat-mldsa65": verifier_certificat_mldsa65,
+    "ssh-hybride": verifier_ssh_hybride,
+}
+
+
+def verifier(cle: str) -> tuple[bool, str]:
+    """Lance la démonstration correspondant à une clé de `verification_plan.DEMONSTRABLES`."""
+    if cle not in VERIFICATEURS:
+        return False, f"démonstration inconnue : {cle}"
+    try:
+        return VERIFICATEURS[cle]()
+    except ErreurOutil as erreur:
+        return False, str(erreur)
