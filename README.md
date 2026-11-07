@@ -62,6 +62,21 @@ git clone https://github.com/oscarnoblesse/quantum-analyst-ai.git
 cd quantum-analyst-ai
 ```
 
+## Installer le modèle local (Ollama)
+
+Les agents utilisent un modèle de langage local servi par [Ollama](https://ollama.com). Une seule commande installe Ollama s'il manque, télécharge le modèle figé dans `config/experiment.yaml` (environ 2,5 Go), vérifie son empreinte et sa capacité « tools » :
+
+```bash
+uv run python -m quantum_ready.installation_modele      # ou : make installer-modele
+```
+
+Selon le système, l'installation d'Ollama passe par :
+- **macOS** : Homebrew (`brew install ollama`) ; sans Homebrew, téléchargement sur [ollama.com/download](https://ollama.com/download) ;
+- **Windows** : winget (`winget install Ollama.Ollama`) ; sans winget, même téléchargement ;
+- **Linux** : le script officiel d'Ollama, qui peut demander votre mot de passe administrateur.
+
+Le script est idempotent : relancez-le sans risque. Il n'installe rien tant que tout est en place.
+
 ## Reproduire le projet
 
 Une seule commande, identique sous macOS, Linux et Windows :
