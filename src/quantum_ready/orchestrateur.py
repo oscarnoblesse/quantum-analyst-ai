@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import dataclasses
 import json
 import shutil
 from collections.abc import Callable
@@ -59,6 +60,8 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
     horizon = parametres.get("mosca", {}).get("horizon_menace_annees", 10)
     tentatives_max = parametres.get("orchestrateur", {}).get("tentatives_cartographe", 3)
     tentatives_plan = parametres.get("orchestrateur", {}).get("tentatives_architecte", 2)
+    # Vérification du plan par démonstration au laboratoire : désactivée par défaut (expérience v5 inchangée).
+    demonstrer_plan = parametres.get("orchestrateur", {}).get("verification_demonstration", False)
     modele = parametres.get("modele", {})
     budget = modele.get("contexte", 4096) - modele.get("max_jetons_sortie", 1024) - 200
 
@@ -109,8 +112,17 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
         cle = max((k for k in mise_a_jour["resultats"] if k.startswith("architecte")), key=lambda k: list(mise_a_jour["resultats"]).index(k))
         plan = mise_a_jour["resultats"][cle]["sortie"]
         erreurs = architecte.verifier_plan(plan, session)
+        demonstration = None
+        if not erreurs and demonstrer_plan:
+            # Décision de méthode n° 2 : les étapes démontrables sont démontrées au laboratoire.
+            from quantum_ready import verification_plan
+            from quantum_ready.outils import laboratoire
+            verdicts = verification_plan.classer(plan, laboratoire.verifier)
+            demonstration = [dataclasses.asdict(v) for v in verdicts]
+            erreurs = verification_plan.erreurs_pour_l_architecte(verdicts)
         if plan:
-            ecrire_json(session.dossier / "plan.json", plan | {"verification": erreurs or "plan conforme"})
+            ecrire_json(session.dossier / "plan.json", plan | {"verification": erreurs or "plan conforme",
+                                                              "demonstration": demonstration})
         return mise_a_jour | {"tentatives_architecte": etat.get("tentatives_architecte", 0) + 1, "plan_valide": not erreurs, "erreurs_plan": erreurs}
 
     def apres_architecte(etat) -> str:

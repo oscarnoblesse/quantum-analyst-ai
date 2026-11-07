@@ -31,8 +31,13 @@ class Verdict:
 
 
 def cle_de_demonstration(cible: str) -> str | None:
-    """Clé de démonstration d'une cible du plan, None si elle n'est pas démontrable au laboratoire."""
-    return DEMONSTRABLES.get(cible.strip().lower())
+    """Clé de démonstration d'une cible du plan, None si elle n'est pas démontrable au laboratoire.
+
+    La cible peut être décrite en langage libre (« X25519MLKEM768, TLS 1.3 ») : on cherche le nom
+    de l'algorithme dans le texte. Un nom absent donne None : jamais une correspondance devinée.
+    """
+    texte = cible.strip().lower()
+    return next((cle for nom, cle in DEMONSTRABLES.items() if nom in texte), None)
 
 
 def classer(plan: dict | None, verifier: Callable[[str], tuple[bool, str]]) -> list[Verdict]:
