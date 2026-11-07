@@ -4,8 +4,9 @@ Ce document permet à un tiers de vérifier les résultats publiés, sans les cr
 Chaque étape donne la commande, la valeur attendue et la tolérance.
 
 **Règle des tolérances**
-- **Exacte** : comptes, tailles en octets, identifiants, résultats de vérification. Un écart est
-  une erreur.
+- **Exacte** : comptes, tailles en octets des algorithmes à longueur fixe (clés publiques,
+  signatures ML-DSA et SLH-DSA), identifiants, résultats de vérification. Un écart est une erreur.
+- **± 2 octets** : tailles des certificats générés à chaque démarrage (ECDSA).
 - **Deux écarts types** : temps mesurés. La valeur obtenue doit tomber dans
   `moyenne ± 2 × écart type` des valeurs versionnées dans `results/raw/`. Au-delà, l'écart est à
   signaler, pas à corriger en silence.
@@ -72,8 +73,10 @@ make demonstrateur
 uv run python scripts/bench_pqc.py
 ```
 
-- **Attendu (exact)** : tailles des messages `Certificate` : 407 o (ECDSA P-256), 802 o (RSA-2048),
-  5531 o (ML-DSA-65), 11114 o (chaîne ML-DSA-65). Groupes négociés conformes.
+- **Attendu (exact)** : tailles des messages `Certificate` : 802 o (RSA-2048), 5531 o (ML-DSA-65),
+  11114 o (chaîne ML-DSA-65). Groupes négociés conformes.
+- **Attendu (± 2 octets)** : 406 o pour ECDSA P-256. Le certificat est généré à chaque démarrage, et la
+  longueur de sa signature DER varie d'une clé à l'autre : un écart d'un ou deux octets est normal.
 - **Attendu (deux écarts types)** : médianes par configuration dans `moyenne ± 2 × écart type`
   de `results/raw/bench_pqc.json`. Par exemple, hybride ECDSA : 924 µs, écart type 0,4 µs
   (fenêtre étroite) ; chaîne ML-DSA hybride : 2081 µs, écart type 358 µs (fenêtre large, la
