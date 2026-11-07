@@ -30,7 +30,7 @@ def test_un_seul_run_n_a_pas_d_ecart_type():
 
 def test_aucune_donnee_ne_produit_pas_de_valeur_inventee(brut):
     document = m.construire()
-    assert document["demonstrateur"] == {"verification": None, "latence_bench_pqc": None, "agent": None}
+    assert document["demonstrateur"] == {"verification": None, "latence_bench_pqc": None, "signatures": None, "agent": None}
     assert m.NON_MESURE == document["non_mesure"]
 
 
