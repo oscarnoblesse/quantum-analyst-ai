@@ -230,3 +230,6 @@ si/generated/
 .DS_Store
 .vscode/
 .idea/
+
+# Passation locale pour Claude Code (jamais versionnée)
+CLAUDE.md
