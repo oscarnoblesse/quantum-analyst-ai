@@ -102,3 +102,22 @@ def scan_tls_lab(cible: str, racine: Path) -> Resultat:
     if not acceptes:
         raise ErreurOutil(f"aucun groupe d'échange de clés négocié avec {endroit} : serveur arrêté ou injoignable ?")
     return Resultat(outil=NOM, cible=cible, trouvailles=trouvailles)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Commande : python -m quantum_ready.outils.scan_tls_lab 127.0.0.1:8443"""
+    import sys
+    argv = sys.argv[1:] if argv is None else argv
+    if len(argv) != 1:
+        print("Utilisation : python -m quantum_ready.outils.scan_tls_lab <hôte:port>  (ex. 127.0.0.1:8443)", file=sys.stderr)
+        return 2
+    resultat = scan_tls_lab(argv[0], racine=Path("."))
+    for erreur in resultat.erreurs:
+        print(f"Erreur : {erreur}", file=sys.stderr)
+    for t in resultat.trouvailles:
+        print(f"{t.type_actif:<10} {t.nom:<18} exposition={t.exposition:<9} {t.description}")
+    return 1 if resultat.erreurs else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

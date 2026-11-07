@@ -80,3 +80,21 @@ def test_cible_externe_refusee_avant_toute_connexion(monkeypatch):
     monkeypatch.setattr(tls, "_sonder", interdit)
     resultat = tls.scan_tls_lab("8.8.8.8:443", racine=Path("."))
     assert resultat.erreurs and "n'est pas local" in resultat.erreurs[0]
+
+
+def test_commande_terminal_affiche_les_trouvailles(monkeypatch, capsys):
+    monkeypatch.setattr(tls, "version_openssl", lambda: "OpenSSL 3.5.9")
+    monkeypatch.setattr(tls, "_sonder", _faux_sonde({"X25519MLKEM768": HYBRIDE, "X25519": REFUS}))
+    assert tls.main(["127.0.0.1:8443"]) == 0
+    sortie = capsys.readouterr().out
+    assert "X25519MLKEM768" in sortie and "resistant" in sortie
+
+
+def test_commande_terminal_refuse_une_cible_externe(monkeypatch, capsys):
+    assert tls.main(["8.8.8.8:443"]) == 1
+    assert "n'est pas local" in capsys.readouterr().err
+
+
+def test_commande_terminal_sans_argument_donne_l_aide(capsys):
+    assert tls.main([]) == 2
+    assert "Utilisation" in capsys.readouterr().err
