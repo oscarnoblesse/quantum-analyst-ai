@@ -32,7 +32,9 @@ Ce projet construit une équipe d'agents IA qui, sur un système d'information *
 | Cartographe | Normalise les trouvailles en CBOM CycloneDX 1.6 |
 | Analyste risque | Calcule un score de risque par actif (Mosca) |
 | Architecte | Rédige le plan de migration priorisé |
-| Démonstrateur | Monte le serveur TLS hybride et mesure les performances |
+| Démonstrateur | Monte un laboratoire TLS hybride local (Docker), le sonde et mesure le handshake face au X25519 classique |
+
+Le Démonstrateur se lance avec `make demonstrateur-agent` (modèle local et Docker requis), ou sans modèle avec `make demonstrateur` (vérification du laboratoire seule). Il n'est pas appelé par `make agents` : son rôle dans le graphe reste à décider.
 
 ## Documentation
 

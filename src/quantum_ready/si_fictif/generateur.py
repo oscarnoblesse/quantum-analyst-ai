@@ -130,6 +130,6 @@ def generer(
     ctx = Contexte(racine_si=racine_si, racine_hors_si=racine_hors_si, variante=variante)
     for etape in etapes():
         etape(ctx)
-    # Secrets utiles au démonstrateur (connexion mTLS, ouverture du PKCS#12...), hors du SI.
+    # Secrets gardés hors du SI. Le laboratoire du démonstrateur n'en utilise aucun pour l'instant (TLS serveur seul).
     ctx.ecrire_hors_si("secrets.json", json.dumps(ctx.valeurs, indent=2, ensure_ascii=False) + "\n")
     return ctx

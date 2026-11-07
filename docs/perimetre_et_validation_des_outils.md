@@ -16,7 +16,7 @@ La question posée est donc : *un outil qui lit une configuration nginx lit-il n
 
 ## Ligne de conduite
 
-1. **Un outil analyse un format, pas un SI.** Il est écrit d'après la grammaire et la documentation du format (ou du langage), jamais d'après les noms de fichiers, les valeurs ou la disposition du SI v1.
+1. **Un outil analyse un format, pas un SI.** Il est écrit d'après la grammaire et la documentation du format (ou du langage), jamais d'après les noms de fichiers, les valeurs ou la disposition du SI v1. Seule exception, documentée ci-dessous : la sonde réseau `scan_tls_lab`, qui interroge un serveur TLS du laboratoire local, et les outils qui pilotent ce laboratoire.
 2. **Le périmètre est fermé et explicite.** Seules les technologies présentes dans le SI fictif (liste ci-dessous) disposent d'un analyseur dédié. Le projet ne cherche pas à couvrir tous les formats existants : ce serait divaguer hors du sujet et dégrader la qualité des analyseurs existants.
 3. **Un angle mort est signalé, jamais passé sous silence.** Un fichier dont le format n'a pas d'analyseur dédié est déclaré comme tel par `lister_fichiers` (champ `remarque`) et confié à un outil de repli textuel, `rechercher_algorithmes`, dont les résultats sont des indices à confirmer par l'agent.
 4. **Une valeur par défaut n'est jamais supposée en silence.** Lorsqu'un actif implicite dépend d'une version (OpenSSH, OpenSSL, nginx), la version est lue dans le SI ou fournie par l'agent. À défaut, la trouvaille porte la mention « HYPOTHÈSE ».
@@ -47,7 +47,14 @@ Les formats suivants ne figurent pas dans le SI v1. Ils ont été ajoutés parce
 
 ### Hors périmètre de la version 1.0
 
-Sans analyseur dédié, couverts uniquement par le repli textuel : code Java, Go, C, JavaScript ; dépendances npm (`package.json`) ; Postfix, Dovecot, HAProxy, OpenVPN, WireGuard ; fichiers `.properties` ; configuration du client SSH (`~/.ssh/config`) ; magasins Java (JKS) ; balayage réseau d'un serveur TLS en fonctionnement (`scan_tls_lab`, prévu avec le démonstrateur).
+Sans analyseur dédié, couverts uniquement par le repli textuel : code Java, Go, C, JavaScript ; dépendances npm (`package.json`) ; Postfix, Dovecot, HAProxy, OpenVPN, WireGuard ; fichiers `.properties` ; configuration du client SSH (`~/.ssh/config`) ; magasins Java (JKS) ; balayage réseau d'un serveur TLS en fonctionnement (voir « Sonde réseau et laboratoire » ci-dessous).
+
+### Sonde réseau et laboratoire (démonstrateur)
+
+- `scan_tls_lab` : se connecte à un serveur TLS et relève les groupes d'échange de clés acceptés et la version de TLS. Elle ne lit aucun fichier du SI.
+- `demarrer_laboratoire`, `mesurer_handshake`, `arreter_laboratoire` : pilotent le conteneur du laboratoire (`demonstrateur/`), qui n'accepte que `X25519MLKEM768` ou `X25519`.
+- **Limites** : cible locale uniquement (`127.0.0.1`, `localhost`, `::1`) ; le code refuse toute autre cible avant de se connecter. La sonde utilise l'OpenSSL de la machine : X25519MLKEM768 n'est détecté qu'à partir d'OpenSSL 3.5. Le laboratoire ne mesure que ses propres serveurs ; aucun système réel n'est scanné.
+- Ces outils ne sont exposés qu'à l'agent Démonstrateur, pas à l'Inventoriste (voir `CLAUDE.md`, section Démonstrateur).
 
 ## Démarche de validation
 
