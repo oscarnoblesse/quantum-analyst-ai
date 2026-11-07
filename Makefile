@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small reference agents agents-regles evaluer installer-modele
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small demonstrateur reference agents agents-regles evaluer installer-modele
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -26,6 +26,9 @@ verifier-si: ## Compare le SI généré à la vérité terrain, actif par actif
 
 reproduce: ## Reproduction complète : environnement, vérité terrain, SI, vérification, tests (scripts/reproduire.py)
 	uv run python scripts/reproduire.py
+
+demonstrateur: ## Construit et vérifie le laboratoire TLS hybride (Docker requis)
+	uv run python scripts/demonstrateur.py
 
 reproduce-small: ## Reproduction rapide : environnement et tests, sans régénérer le SI
 	uv run python scripts/reproduire.py --petite

@@ -18,6 +18,15 @@ jobs:
       - name: Reproduire le projet (environnement, SI fictif, vérification, tests)
         run: uv run python scripts/reproduire.py
 
+  demonstrateur:
+    name: Démonstrateur TLS hybride (ubuntu, Docker)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Construire, lancer et vérifier le laboratoire TLS
+        run: uv run python scripts/demonstrateur.py
+
   secrets:
     runs-on: ubuntu-latest
     steps:
