@@ -22,7 +22,7 @@ LISTES_FERMEES: dict[str, tuple[str, ...]] = {
     "cartographe": ("lister_trouvailles", "construire_cbom", "valider_schema"),
     "analyste_risque": ("lister_actifs", "score_mosca"),
     "architecte": ("lister_priorites", "rechercher_standard"),
-    "demonstrateur": (),  # openssl >= 3.5 et bench_pqc : étape du démonstrateur
+    "demonstrateur": ("demarrer_laboratoire", "scan_tls_lab", "mesurer_handshake", "arreter_laboratoire"),
 }
 
 
