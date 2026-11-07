@@ -21,9 +21,11 @@ si: ## Génère le SI fictif dans si/generated/v1 (jamais commité)
 verifier-si: ## Compare le SI généré à la vérité terrain, actif par actif
 	uv run python -m quantum_ready.si_fictif.controles si/generated/v1 $(GT_CSV)
 
-reproduce: install verite-terrain si test ## Reproduction complète (sera complétée au fil du projet)
+reproduce: ## Reproduction complète : environnement, vérité terrain, SI, vérification, tests (scripts/reproduire.py)
+	uv run python scripts/reproduire.py
 
-reproduce-small: install verite-terrain si test ## Reproduction réduite pour la CI (sera complétée au fil du projet)
+reproduce-small: ## Reproduction rapide : environnement et tests, sans régénérer le SI
+	uv run python scripts/reproduire.py --petite
 
 reference: ## Référence d'ablation : outils seuls, sans agent (traces/reference_outils_seuls)
 	uv run python -m quantum_ready.evaluation.reference --racine si/generated/v1 --session traces/reference_outils_seuls

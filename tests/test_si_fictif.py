@@ -2,6 +2,7 @@
 
 import json
 import stat
+import sys
 
 import pytest
 
@@ -32,7 +33,8 @@ def test_remplir_refuse_une_variable_oubliee():
 def test_ecrire_prive_met_les_droits_600(tmp_path):
     ctx = Contexte(racine_si=tmp_path / "si", racine_hors_si=tmp_path / "hors")
     cible = ctx.ecrire("dossier/cle.key", b"x", prive=True)
-    assert stat.S_IMODE(cible.stat().st_mode) == 0o600
+    if sys.platform != "win32":
+        assert stat.S_IMODE(cible.stat().st_mode) == 0o600
     assert ctx.fichiers == ["dossier/cle.key"]
 
 
@@ -85,7 +87,8 @@ def test_cles_hote(si, nom, type_attendu, taille):
     assert isinstance(cle, type_attendu)
     if taille:
         assert cle.key_size == taille
-    assert stat.S_IMODE((si.racine_si / chemin).stat().st_mode) == 0o600
+    if sys.platform != "win32":  # les droits POSIX n'existent pas sous Windows
+        assert stat.S_IMODE((si.racine_si / chemin).stat().st_mode) == 0o600
     publique = (si.racine_si / (chemin + ".pub")).read_text(encoding="utf-8")
     assert publique.startswith(_ligne_publique(cle))
 
@@ -333,7 +336,8 @@ def test_script_sauvegarde(si):
     texte = script.read_text(encoding="utf-8")
     assert "--encrypt --recipient backup@lab.local" in texte
     assert "keys/backup_pub.asc" in texte.replace('$CLES/', "keys/")
-    assert stat.S_IMODE(script.stat().st_mode) & stat.S_IXUSR
+    if sys.platform != "win32":  # pas de bit d'exécution sous Windows
+        assert stat.S_IMODE(script.stat().st_mode) & stat.S_IXUSR
 
 
 def test_cle_privee_des_sauvegardes_hors_si(si):
