@@ -33,6 +33,7 @@ JOURNAL_AGENTS = "journal_agents.jsonl"
 JOURNAL_OUTILS = "journal_outils.jsonl"
 MAX_APPELS_PAR_TOUR = 5
 MAX_CORRECTIONS = 2
+DELAI_OUTIL_SECONDES = 120  # un outil qui ne répond pas dans ce délai compte comme une erreur, l'agent continue
 
 
 @dataclass
@@ -254,7 +255,9 @@ async def _executer_appel(nom: str, arguments: dict, outils: ClientOutils, sessi
         return Appel(nom, arguments, "(Appel déjà fait avec ces arguments : résultat rappelé, inutile de recommencer.)\n" + precedent.texte,
                      precedent.erreur, double=True)
     try:
-        texte, erreur = await outils.appeler(nom, arguments)
+        texte, erreur = await asyncio.wait_for(outils.appeler(nom, arguments), timeout=DELAI_OUTIL_SECONDES)
+    except asyncio.TimeoutError:  # hors délai : l'agent reçoit une erreur lisible et peut se replier
+        texte, erreur = f"ERREUR : l'outil {nom} n'a pas répondu en {DELAI_OUTIL_SECONDES} s", True
     except Exception as exception:  # robustesse : une panne d'outil ne tue pas l'agent
         texte, erreur = f"ERREUR : l'appel a échoué ({type(exception).__name__}) : {exception}", True
     appel = Appel(nom, arguments, texte, erreur)
