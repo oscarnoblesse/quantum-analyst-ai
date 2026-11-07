@@ -44,6 +44,15 @@ jobs:
           name: bench_pqc
           path: results/raw/bench_pqc.json
 
+  reproduce-small-modele:
+    name: Chaîne complète avec un très petit modèle (qwen3:0.6b, ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Reproduire la chaîne avec qwen3:0.6b (journal et rejeu vérifiés)
+        run: uv run python scripts/reproduce_petit_modele.py
+
   secrets:
     runs-on: ubuntu-latest
     steps:
