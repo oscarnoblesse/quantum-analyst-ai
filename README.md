@@ -43,7 +43,62 @@ Ce projet construit une équipe d'agents IA qui, sur un système d'information *
 
 ## Installation
 
-*À venir.*
+Seul prérequis : [uv](https://docs.astral.sh/uv/) et Git. uv installe lui-même le Python 3.12 du projet ; il n'est pas nécessaire d'en avoir un.
+
+```bash
+# macOS / Linux : installer uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+```powershell
+# Windows (PowerShell) : installer uv
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Puis, sur les trois systèmes :
+
+```bash
+git clone https://github.com/oscarnoblesse/quantum-analyst-ai.git
+cd quantum-analyst-ai
+```
+
+## Installer le modèle local (Ollama)
+
+Les agents utilisent un modèle de langage local servi par [Ollama](https://ollama.com). Une seule commande installe Ollama s'il manque, télécharge le modèle figé dans `config/experiment.yaml` (environ 2,5 Go), vérifie son empreinte et sa capacité « tools » :
+
+```bash
+uv run python -m quantum_ready.installation_modele      # ou : make installer-modele
+```
+
+Selon le système, l'installation d'Ollama passe par :
+- **macOS** : Homebrew (`brew install ollama`) ; sans Homebrew, téléchargement sur [ollama.com/download](https://ollama.com/download) ;
+- **Windows** : winget (`winget install Ollama.Ollama`) ; sans winget, même téléchargement ;
+- **Linux** : le script officiel d'Ollama, qui peut demander votre mot de passe administrateur.
+
+Le script est idempotent : relancez-le sans risque. Il n'installe rien tant que tout est en place.
+
+## Reproduire le projet
+
+Une seule commande, identique sous macOS, Linux et Windows :
+
+```bash
+uv run python scripts/reproduire.py
+```
+
+Elle installe l'environnement figé (`uv.lock`), valide la vérité terrain, génère le SI fictif, vérifie qu'il correspond à la vérité terrain et lance les tests avec un seuil de couverture de 70 %. Durée : environ une minute.
+
+Pour une vérification rapide (environnement et tests, sans régénérer le SI) :
+
+```bash
+uv run python scripts/reproduire.py --petite
+```
+
+Sur macOS et Linux, `make reproduce` et `make reproduce-small` font la même chose. Sous Windows, utilisez les commandes `uv run` ci-dessus.
+
+Notes :
+- Le SI généré (`si/generated/v1`) est fictif, produit localement et jamais commité.
+- Certains tests sont ignorés selon le système, sans que cela soit une erreur : droits POSIX et liens symboliques (Windows), `ssh-keygen` ou `openssl` absents, clés DSA refusées par OpenSSH récent.
+- Si vous lancez un module à la main sous Windows (`uv run python -m quantum_ready...`), activez d'abord le mode UTF-8 : `$env:PYTHONUTF8 = "1"`.
 
 ## Cadre éthique
 

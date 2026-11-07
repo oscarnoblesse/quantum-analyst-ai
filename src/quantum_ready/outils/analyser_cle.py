@@ -177,7 +177,7 @@ def cle_pem_chiffree_pkcs8(der: bytes, fichier: str) -> tuple[Trouvaille, Piste]
         description="Clé privée chiffrée par phrase de passe : son algorithme n'est pas lisible sans elle",
         exposition="inconnue", proprietes=props, preuve="-----BEGIN ENCRYPTED PRIVATE KEY-----",
     )
-    piste = Piste(vers=str(Path(fichier).parent) + "/", raison="chercher le certificat associé à cette clé chiffrée pour connaître son algorithme")
+    piste = Piste(vers=Path(fichier).parent.as_posix() + "/", raison="chercher le certificat associé à cette clé chiffrée pour connaître son algorithme")
     return trouvaille, piste
 
 
