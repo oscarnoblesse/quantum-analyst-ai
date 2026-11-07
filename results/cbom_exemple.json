@@ -1,0 +1,3041 @@
+{
+ "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+ "bomFormat": "CycloneDX",
+ "specVersion": "1.6",
+ "serialNumber": "urn:uuid:51de2c27-8512-57d0-a04a-45914c7f060c",
+ "version": 1,
+ "metadata": {
+  "timestamp": "2026-11-07T19:12:27Z",
+  "tools": {
+   "components": [
+    {
+     "type": "application",
+     "name": "quantum-ready",
+     "version": "0.1.0"
+    }
+   ]
+  },
+  "component": {
+   "type": "application",
+   "bom-ref": "systeme-analyse",
+   "name": "SI fictif (v1)"
+  }
+ },
+ "components": [
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-708faef0c086",
+   "name": "Mot de passe de connexion (secret en clair)",
+   "description": "Mot de passe de « lab_app » vers db.lab.local, en clair dans l'URL DATABASE_URL",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "password"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 2
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "DATABASE_URL"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-e20f040f2931",
+   "name": "sslmode=require",
+   "description": "Mode TLS de la connexion postgresql vers db.lab.local",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 2
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "certificat du serveur non vérifié : homme du milieu possible"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "DATABASE_URL"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-60e606720aba",
+   "name": "HS256",
+   "description": "Algorithme choisi par configuration (JWT_ALGORITHM)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 4
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "JWT_ALGORITHM"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-ca2392cabca5",
+   "name": "Secret faible (JWT_SECRET)",
+   "description": "Secret JWT_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 5
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "secret court ou prévisible (mot du dictionnaire, année...)"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "JWT_SECRET"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-fce5e089ea3b",
+   "name": "Secret aléatoire de 256 bits (WEBHOOK_SECRET)",
+   "description": "Secret WEBHOOK_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key",
+     "format": "hexadécimal, 256 bits"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 7
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "WEBHOOK_SECRET"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-c29d59680863",
+   "name": "Clé Fernet 256 bits (FIELD_ENCRYPTION_KEY)",
+   "description": "Secret FIELD_ENCRYPTION_KEY stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key",
+     "format": "clé Fernet (base64, 32 octets : 128 bits AES + 128 bits HMAC)"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 8
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "FIELD_ENCRYPTION_KEY"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-82e7246bd97c",
+   "name": "Secret en clair (KEYSTORE_PASS)",
+   "description": "Secret KEYSTORE_PASS stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "password"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 9
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "KEYSTORE_PASS"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-9836593aaf0a",
+   "name": "Argon2id",
+   "description": "Hachage de mots de passe Argon2id",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "kdf"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/auth.py",
+      "line": 6
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Authentification des utilisateurs (v2, depuis 2024)."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-ed8c76589176",
+   "name": "MD5",
+   "description": "Empreinte MD5 (hashlib) dans cle_de_cache()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "hash"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/cache.py",
+      "line": 9
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "MD5 est cassé (collisions)"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "cle_de_cache"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Cache des traitements de documents (évite de retraiter un fichier déjà reçu)."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-74c67a65d6de",
+   "name": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab Root CA,O=Lab,C=FR",
+     "issuerName": "CN=Lab Root CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-06T00:00:00Z",
+     "notValidAfter": "2046-11-01T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-1edfac132f63",
+     "subjectPublicKeyRef": "crypto-438e027bd5f5",
+     "certificateExtension": "pem"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     },
+     {
+      "location": "certs/ca/racine.crt"
+     },
+     {
+      "location": "db/tls/root.crt"
+     },
+     {
+      "location": "nginx/ssl/ca_clients.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-438e027bd5f5",
+   "name": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 4096
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     },
+     {
+      "location": "certs/ca/racine.crt"
+     },
+     {
+      "location": "db/tls/root.crt"
+     },
+     {
+      "location": "nginx/ssl/ca_clients.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-1edfac132f63",
+   "name": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     },
+     {
+      "location": "certs/ca/racine.crt"
+     },
+     {
+      "location": "db/tls/root.crt"
+     },
+     {
+      "location": "nginx/ssl/ca_clients.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-32077c9d856f",
+   "name": "Certificat « Lab CA 2015 »",
+   "description": "Certificat d'autorité « Lab CA 2015 », émis par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab CA 2015,O=Lab,C=FR",
+     "issuerName": "CN=Lab CA 2015,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2015-03-01T00:00:00Z",
+     "notValidAfter": "2035-03-01T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-047725dc9576",
+     "subjectPublicKeyRef": "crypto-9d545ba26016",
+     "certificateExtension": "pem"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-9d545ba26016",
+   "name": "RSA-1024",
+   "description": "Clé publique du certificat « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 1024
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "taille insuffisante aujourd'hui (1024 bits)"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-047725dc9576",
+   "name": "sha1WithRSAEncryption",
+   "description": "Signature du certificat « Lab CA 2015 » par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "fonction de hachage cassée (collisions)"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-e7833942eba2",
+   "name": "Fernet (AES-128-CBC + HMAC-SHA256)",
+   "description": "Chiffrement symétrique authentifié Fernet",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "mac"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/crypto_fields.py",
+      "line": 7
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Chiffrement des colonnes sensibles (IBAN des clients) avant écriture en base."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-ee0a2ade0893",
+   "name": "SHA-256",
+   "description": "Empreinte SHA-256 (hashlib) dans checksum_document()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "hash"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/files.py",
+      "line": 8
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "checksum_document"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Empreinte stockée en base à côté du document, pour détecter une corruption."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-670254f53042",
+   "name": "SHA-256",
+   "description": "Empreinte SHA-256 (hashlib) dans hash_password_v1()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "hash"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/legacy_auth.py",
+      "line": 7
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "hachage rapide d'un mot de passe, sans sel ni itérations : à remplacer par Argon2id"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "hash_password_v1"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Ancienne authentification (v1), remplacée par auth.py en 2024."
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-547d7a1f5aad",
+   "name": "argon2-cffi",
+   "description": "Bibliothèque argon2-cffi (hachage de mots de passe Argon2), déclarée",
+   "version": "25.1.0",
+   "purl": "pkg:pypi/argon2-cffi@25.1.0",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/pyproject.toml"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-38902bdd87a5",
+   "name": "argon2-cffi-bindings",
+   "description": "Bibliothèque argon2-cffi-bindings (liaison C de la bibliothèque de référence Argon2), transitive, tirée par argon2-cffi",
+   "version": "26.1.0",
+   "purl": "pkg:pypi/argon2-cffi-bindings@26.1.0",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/uv.lock"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-3b8d95774591",
+   "name": "bcrypt",
+   "description": "Bibliothèque bcrypt (hachage de mots de passe bcrypt), transitive, tirée par paramiko",
+   "version": "5.0.0",
+   "purl": "pkg:pypi/bcrypt@5.0.0",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/uv.lock"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-f43db540f1cc",
+   "name": "cryptography",
+   "description": "Bibliothèque cryptography (primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels), déclarée",
+   "version": "50.0.2",
+   "purl": "pkg:pypi/cryptography@50.0.2",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/pyproject.toml"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-c17caa680a54",
+   "name": "paramiko",
+   "description": "Bibliothèque paramiko (client et serveur SSH en Python pur), déclarée",
+   "version": "5.0.0",
+   "purl": "pkg:pypi/paramiko@5.0.0",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/pyproject.toml"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-7dfd279570e3",
+   "name": "pycryptodome",
+   "description": "Bibliothèque pycryptodome (primitives cryptographiques (successeur de PyCrypto)), déclarée",
+   "version": "3.9.9",
+   "purl": "pkg:pypi/pycryptodome@3.9.9",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/pyproject.toml"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "déclarée mais importée nulle part : dépendance morte ; version 3.9.9 antérieure à 3.19.1 — CVE-2023-52323 : fuite par canal auxiliaire dans le déchiffrement OAEP"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-52487501555a",
+   "name": "pyjwt",
+   "description": "Bibliothèque pyjwt (signature et vérification des jetons JWT), déclarée",
+   "version": "2.15.1",
+   "purl": "pkg:pypi/pyjwt@2.15.1",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/pyproject.toml"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-c55b4c59d4bc",
+   "name": "pynacl",
+   "description": "Bibliothèque pynacl (liaison de libsodium (Curve25519, Ed25519, XSalsa20)), transitive, tirée par paramiko",
+   "version": "1.6.2",
+   "purl": "pkg:pypi/pynacl@1.6.2",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/uv.lock"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_dependances"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-65a20ee91417",
+   "name": "Mersenne Twister (module random)",
+   "description": "Aléa du module random (choice) dans generer_jeton_reinitialisation()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "drbg"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/reset.py",
+      "line": 11
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "générateur NON cryptographique : ses sorties sont prévisibles"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "generer_jeton_reinitialisation"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Jeton envoyé par courriel pour réinitialiser le mot de passe."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-97ebb345fa6e",
+   "name": "JWT (algorithme à déterminer)",
+   "description": "Signature des jetons JWT (pyjwt) dans creer_jeton()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/tokens.py",
+      "line": 15
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "inconnue"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "creer_jeton"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Jetons de session JWT."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-03628d22f62b",
+   "name": "random.SystemRandom (os.urandom)",
+   "description": "Aléa du système d'exploitation",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "drbg"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/utils/codes.py",
+      "line": 6
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Codes d'invitation des nouveaux utilisateurs."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-8cdcf557a98d",
+   "name": "HMAC-SHA-256",
+   "description": "Code d'authentification HMAC-SHA-256 dans signature_valide()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "mac"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/webhooks.py",
+      "line": 11
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "tag comparé avec == : attaque temporelle possible, utiliser hmac.compare_digest"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "signature_valide"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Réception des webhooks du prestataire de paiement."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-37497903a3fb",
+   "name": "Certificat « Lab Intermediate CA »",
+   "description": "Certificat d'autorité « Lab Intermediate CA », émis par « Lab Root CA »",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "issuerName": "CN=Lab Root CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-06T00:00:00Z",
+     "notValidAfter": "2036-11-03T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-ccf57477099a",
+     "subjectPublicKeyRef": "crypto-8c3ebdf8eb85",
+     "certificateExtension": "crt"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "certs/ca/intermediaire.crt"
+     },
+     {
+      "location": "nginx/ssl/fullchain.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-8c3ebdf8eb85",
+   "name": "ECDSA P-384",
+   "description": "Clé publique du certificat « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 384
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "certs/ca/intermediaire.crt"
+     },
+     {
+      "location": "nginx/ssl/fullchain.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-ccf57477099a",
+   "name": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Intermediate CA » par « Lab Root CA »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "certs/ca/intermediaire.crt"
+     },
+     {
+      "location": "nginx/ssl/fullchain.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-bf8b3d8f8fb1",
+   "name": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "format": "OpenSSH"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/.ssh/id_ed25519"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-8c263bcad928",
+   "name": "Ed25519",
+   "description": "Clé publique SSH Ed25519 mémorisée pour l'hôte « ssh.lab.local »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/.ssh/known_hosts",
+      "line": 1
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-06baa430e819",
+   "name": "Certificat « admin »",
+   "description": "Certificat d'entité finale « admin », émis par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=admin,O=Lab,C=FR",
+     "issuerName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-06T00:00:00Z",
+     "notValidAfter": "2027-11-06T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-b45f6086cd00",
+     "subjectPublicKeyRef": "crypto-b35cde4ab4ea",
+     "certificateExtension": "crt"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-b35cde4ab4ea",
+   "name": "ECDSA P-256",
+   "description": "Clé publique du certificat « admin »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 256
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-b45f6086cd00",
+   "name": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « admin » par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-2e280df75180",
+   "name": "Clé privée (type masqué)",
+   "description": "Clé privée chiffrée par phrase de passe : son algorithme n'est pas lisible sans elle",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "format": "PKCS#8 chiffré"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.key"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "inconnue"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-5ec2d83b817c",
+   "name": "md5",
+   "description": "Authentification des connexions à la base : défi-réponse MD5 sur une empreinte MD5 du mot de passe",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "other"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/pg_hba.conf",
+      "line": 3
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "MD5 est cassé ; une empreinte volée suffit pour se connecter"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-7052728128d5",
+   "name": "TLSv1.2",
+   "description": "Version TLS minimale du serveur PostgreSQL",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls",
+     "version": "1.2"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/postgresql.conf",
+      "line": 16
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-2f69dd54eb88",
+   "name": "HIGH:MEDIUM:+3DES:!aNULL",
+   "description": "Suites de chiffrement TLS 1.2 du serveur PostgreSQL : paramètre absent, valeur par défaut",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls",
+     "cipherSuites": [
+      {
+       "name": "AES256-GCM-SHA384"
+      },
+      {
+       "name": "AES256-CCM"
+      },
+      {
+       "name": "ARIA256-GCM-SHA384"
+      },
+      {
+       "name": "AES128-GCM-SHA256"
+      },
+      {
+       "name": "AES128-CCM"
+      },
+      {
+       "name": "ARIA128-GCM-SHA256"
+      },
+      {
+       "name": "AES256-SHA256"
+      },
+      {
+       "name": "CAMELLIA256-SHA256"
+      },
+      {
+       "name": "AES128-SHA256"
+      },
+      {
+       "name": "CAMELLIA128-SHA256"
+      },
+      {
+       "name": "AES256-SHA"
+      },
+      {
+       "name": "CAMELLIA256-SHA"
+      },
+      {
+       "name": "AES128-SHA"
+      },
+      {
+       "name": "CAMELLIA128-SHA"
+      },
+      {
+       "name": "AES256-CCM8"
+      },
+      {
+       "name": "AES128-CCM8"
+      }
+     ]
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "implicite : valeur par défaut de PostgreSQL 12 à 17"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "true"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "MEDIUM et 3DES autorisés"
+    },
+    {
+     "name": "quantum-ready:source",
+     "value": "valeur par défaut de PostgreSQL 12 à 17"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-b29adf9988e5",
+   "name": "prime256v1",
+   "description": "Groupe d'échange de clés (ECDHE) du serveur PostgreSQL",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "key-agree",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/postgresql.conf",
+      "line": 17
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-b53ca6ecbfe2",
+   "name": "Certificat « db.lab.local »",
+   "description": "Certificat d'entité finale « db.lab.local », émis par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=db.lab.local,O=Lab,C=FR",
+     "issuerName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-06T00:00:00Z",
+     "notValidAfter": "2028-11-05T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-f7fd2aa7494a",
+     "subjectPublicKeyRef": "crypto-990a52691594",
+     "certificateExtension": "crt"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/tls/server.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-990a52691594",
+   "name": "RSA-3072",
+   "description": "Clé publique du certificat « db.lab.local »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 3072
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/tls/server.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-f7fd2aa7494a",
+   "name": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « db.lab.local » par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/tls/server.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-aa0095b4ea30",
+   "name": "RSA-3072",
+   "description": "Clé privée RSA-3072, NON chiffrée (PKCS#8)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "size": 3072,
+     "format": "PKCS#8"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "db/tls/server.key"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-38b09f045b1f",
+   "name": "ECDSA P-384",
+   "description": "Clé privée ECDSA P-384, NON chiffrée (PKCS#8)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "size": 384,
+     "format": "PKCS#8"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "deploy/old/backup_2024/inter.key"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-c3302e0351db",
+   "name": "Certificat « Lab Factures »",
+   "description": "Certificat d'entité finale « Lab Factures », émis par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab Factures,O=Lab,C=FR",
+     "issuerName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-06T00:00:00Z",
+     "notValidAfter": "2029-11-05T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-11134a4802ed",
+     "subjectPublicKeyRef": "crypto-04b1d56aa024",
+     "certificateExtension": "crt"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "factures/keys/factures.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-04b1d56aa024",
+   "name": "ECDSA P-256",
+   "description": "Clé publique du certificat « Lab Factures »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 256
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "factures/keys/factures.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-11134a4802ed",
+   "name": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « Lab Factures » par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "factures/keys/factures.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-af6aba86badb",
+   "name": "pbeWithSHA1And3-KeyTripleDES-CBC ; MAC SHA-1",
+   "description": "Chiffrement par mot de passe du conteneur PKCS#12 (clé et certificats) et son MAC d'intégrité",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "factures/keys/factures.p12"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_pkcs12"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "algorithmes anciens : pbeWithSHA1And3-KeyTripleDES-CBC, SHA-1"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-39a64876dbf6",
+   "name": "ECDSA avec SHA-256",
+   "description": "Signature ECDSA avec SHA-256 dans signer_facture()",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "factures/signer.py",
+      "line": 23
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "scanner_code_crypto"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:fonction",
+     "value": "signer_facture"
+    },
+    {
+     "name": "quantum-ready:contexte",
+     "value": "Signature électronique des factures émises (conservées 10 ans)."
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-a0b096d035fb",
+   "name": "TLSv1.2 TLSv1.3",
+   "description": "Versions de TLS acceptées par nginx",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls",
+     "version": "1.2 1.3"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/nginx.conf",
+      "line": 31
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-058aae532b1a",
+   "name": "HIGH:!aNULL:!MD5",
+   "description": "Suites de chiffrement TLS 1.2 acceptées par nginx",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls",
+     "cipherSuites": [
+      {
+       "name": "AES256-GCM-SHA384"
+      },
+      {
+       "name": "AES256-CCM"
+      },
+      {
+       "name": "ARIA256-GCM-SHA384"
+      },
+      {
+       "name": "AES128-GCM-SHA256"
+      },
+      {
+       "name": "AES128-CCM"
+      },
+      {
+       "name": "ARIA128-GCM-SHA256"
+      },
+      {
+       "name": "AES256-SHA256"
+      },
+      {
+       "name": "CAMELLIA256-SHA256"
+      },
+      {
+       "name": "AES128-SHA256"
+      },
+      {
+       "name": "CAMELLIA128-SHA256"
+      },
+      {
+       "name": "AES256-SHA"
+      },
+      {
+       "name": "CAMELLIA256-SHA"
+      },
+      {
+       "name": "AES128-SHA"
+      },
+      {
+       "name": "CAMELLIA128-SHA"
+      }
+     ]
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/nginx.conf",
+      "line": 32
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-e6634e48eae5",
+   "name": "Échange de clés RSA (Kx=RSA) : 14 suites",
+   "description": "Suites TLS 1.2 sans confidentialité persistante activées par la chaîne ssl_ciphers : la clé RSA du certificat chiffre directement le secret de session",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls",
+     "cipherSuites": [
+      {
+       "name": "AES256-GCM-SHA384"
+      },
+      {
+       "name": "AES256-CCM"
+      },
+      {
+       "name": "ARIA256-GCM-SHA384"
+      },
+      {
+       "name": "AES128-GCM-SHA256"
+      },
+      {
+       "name": "AES128-CCM"
+      },
+      {
+       "name": "ARIA128-GCM-SHA256"
+      },
+      {
+       "name": "AES256-SHA256"
+      },
+      {
+       "name": "CAMELLIA256-SHA256"
+      },
+      {
+       "name": "AES128-SHA256"
+      },
+      {
+       "name": "CAMELLIA128-SHA256"
+      },
+      {
+       "name": "AES256-SHA"
+      },
+      {
+       "name": "CAMELLIA256-SHA"
+      },
+      {
+       "name": "AES128-SHA"
+      },
+      {
+       "name": "CAMELLIA128-SHA"
+      }
+     ]
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/nginx.conf",
+      "line": 32
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "pas de confidentialité persistante"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-660e54c4dae6",
+   "name": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
+   "description": "Suites de chiffrement TLS 1.3 : aucune directive ne les fixe, nginx applique celles d'OpenSSL",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls",
+     "cipherSuites": [
+      {
+       "name": "TLS_AES_256_GCM_SHA384"
+      },
+      {
+       "name": "TLS_CHACHA20_POLY1305_SHA256"
+      },
+      {
+       "name": "TLS_AES_128_GCM_SHA256"
+      }
+     ]
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "implicite : valeur par défaut d'OpenSSL 3 (SSL_CTX_set_ciphersuites)"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "true"
+    },
+    {
+     "name": "quantum-ready:source",
+     "value": "valeur par défaut d'OpenSSL 3 (SSL_CTX_set_ciphersuites)"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-07cf9f7a5e95",
+   "name": "X25519:secp256r1",
+   "description": "Groupes d'échange de clés (ECDHE) proposés par nginx",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "key-agree",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/nginx.conf",
+      "line": 33
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-08fc5e15ba25",
+   "name": "Clé des tickets de session TLS",
+   "description": "Clé symétrique générée par nginx pour chiffrer les tickets de reprise de session",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/nginx.conf",
+      "line": 36
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-36c5c98cc7b8",
+   "name": "DH-2048",
+   "description": "Paramètres Diffie-Hellman sur corps fini, 2048 bits (groupe standard de type RFC 3526 / 7919)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "key-agree",
+     "parameterSetIdentifier": "2048",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/ssl/dhparam.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-01d9b0183774",
+   "name": "Certificat « app.lab.local »",
+   "description": "Certificat d'entité finale « app.lab.local », émis par « Lab Intermediate CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=app.lab.local,O=Lab,C=FR",
+     "issuerName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-06T00:00:00Z",
+     "notValidAfter": "2027-11-06T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-dd8c06b85aff",
+     "subjectPublicKeyRef": "crypto-781478cbb23f",
+     "certificateExtension": "pem"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/ssl/fullchain.pem"
+     },
+     {
+      "location": "nginx/ssl/server.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-781478cbb23f",
+   "name": "RSA-2048",
+   "description": "Clé publique du certificat « app.lab.local » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 2048
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/ssl/fullchain.pem"
+     },
+     {
+      "location": "nginx/ssl/server.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-dd8c06b85aff",
+   "name": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « app.lab.local » par « Lab Intermediate CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/ssl/fullchain.pem"
+     },
+     {
+      "location": "nginx/ssl/server.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-a7c6d67fbf1c",
+   "name": "RSA-2048",
+   "description": "Clé privée RSA-2048, NON chiffrée (PKCS#8)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "size": 2048,
+     "format": "PKCS#8"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "nginx/ssl/server.key"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-44fa65b82b49",
+   "name": "Chiffrement OpenPGP à clé publique",
+   "description": "Données chiffrées par gpg pour la clé de « backup@lab.local »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "pke",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "scripts/backup.sh",
+      "line": 12
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "--trust-model always : la clé du destinataire n'est pas vérifiée"
+    },
+    {
+     "name": "quantum-ready:duree-conservation-jours",
+     "value": "3650"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-472ccdeab2a1",
+   "name": "RSA-3072",
+   "description": "Clé publique OpenPGP RSA-3072 de « Sauvegardes Lab <backup@lab.local> »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 3072,
+     "format": "OpenPGP v4"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "scripts/keys/backup_pub.asc"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "library",
+   "bom-ref": "crypto-91825788d4af",
+   "name": "OpenSSH",
+   "description": "OpenSSH installé dans l'image (openssh-server)",
+   "version": "9.6p1",
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/Dockerfile",
+      "line": 4
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "aucune"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-90f2bb2a1a76",
+   "name": "Ed25519",
+   "description": "Clé publique SSH Ed25519 (« admin@poste-admin »)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/home/admin/.ssh/authorized_keys",
+      "line": 1
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-4e3d0c6c7b77",
+   "name": "DSA-1024",
+   "description": "Clé privée DSA-1024, NON chiffrée (PEM traditionnel)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "size": 1024,
+     "format": "PEM traditionnel"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/old/ssh_host_dsa_key"
+     },
+     {
+      "location": "ssh/server/old/ssh_host_dsa_key.pub",
+      "line": 1
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "DSA est obsolète"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-247c4649d309",
+   "name": "ECDSA P-256",
+   "description": "Clé privée SSH ECDSA P-256, NON chiffrée",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "format": "OpenSSH"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/ssh_host_ecdsa_key"
+     },
+     {
+      "location": "ssh/server/ssh_host_ecdsa_key.pub",
+      "line": 1
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-ab99fc4ab67a",
+   "name": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "format": "OpenSSH"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/ssh_host_ed25519_key"
+     },
+     {
+      "location": "ssh/server/ssh_host_ed25519_key.pub",
+      "line": 1
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-49c1cf3eca18",
+   "name": "RSA-3072",
+   "description": "Clé privée SSH RSA-3072, NON chiffrée",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "size": 3072,
+     "format": "OpenSSH"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/ssh_host_rsa_key"
+     },
+     {
+      "location": "ssh/server/ssh_host_rsa_key.pub",
+      "line": 1
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-c0e5e241e453",
+   "name": "curve25519-sha256,diffie-hellman-group14-sha256",
+   "description": "Échange de clés (KexAlgorithms) du serveur SSH",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "key-agree",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/sshd_config",
+      "line": 10
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:regression",
+     "value": "la liste écrite retire l'échange post-quantique hybride proposé par défaut par OpenSSH"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-12d4eda85d11",
+   "name": "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-ctr",
+   "description": "Chiffrement de la session (Ciphers) du serveur SSH",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "ae"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/sshd_config",
+      "line": 11
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-53a4ac9c42c6",
+   "name": "hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com",
+   "description": "Intégrité des messages (MACs) du serveur SSH",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "mac"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/sshd_config",
+      "line": 12
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-462da4ddef98",
+   "name": "ssh-ed25519,rsa-sha2-512,ecdsa-sha2-nistp256",
+   "description": "Algorithmes de signature des clés d'hôte (HostKeyAlgorithms) du serveur SSH",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "ssh/server/sshd_config",
+      "line": 13
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-742773857ff2",
+   "name": "ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256",
+   "description": "Algorithmes acceptés pour les clés des utilisateurs (PubkeyAcceptedAlgorithms) : directive absente, OpenSSH applique sa liste par défaut",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "implicite : valeur par défaut d'OpenSSH 9.6 (sshd_config(5))"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "true"
+    },
+    {
+     "name": "quantum-ready:source",
+     "value": "valeur par défaut d'OpenSSH 9.6 (sshd_config(5))"
+    }
+   ]
+  }
+ ]
+}
