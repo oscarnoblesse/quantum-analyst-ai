@@ -1,0 +1,22 @@
+"""Point d'entrée de l'API du laboratoire : assemble les services."""
+
+import os
+
+from api import auth, cache, crypto_fields, files, reset, tokens, webhooks
+from api.utils import codes
+from factures import signer
+
+# Utilisée par la couche d'accès aux données (connexion PostgreSQL).
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+SERVICES = {
+    "authentification": auth,
+    "jetons": tokens,
+    "reinitialisation": reset,
+    "invitations": codes,
+    "webhooks": webhooks,
+    "documents": files,
+    "cache": cache,
+    "donnees_sensibles": crypto_fields,
+    "factures": signer,
+}

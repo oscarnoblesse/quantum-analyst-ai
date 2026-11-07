@@ -1,0 +1,32 @@
+"""Signature électronique des factures émises (conservées 10 ans)."""
+
+import os
+from pathlib import Path
+
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.serialization import pkcs12
+
+_CONTENEUR = Path(__file__).parent / "keys" / "factures.p12"
+
+
+def _charger():
+    """Ouvre le conteneur de la clé de signature avec le mot de passe du magasin."""
+    mot_de_passe = os.environ["KEYSTORE_PASS"].encode()
+    cle, certificat, _ = pkcs12.load_key_and_certificates(_CONTENEUR.read_bytes(), mot_de_passe)
+    return cle, certificat
+
+
+def signer_facture(contenu: bytes) -> bytes:
+    cle, _ = _charger()
+    return cle.sign(contenu, ec.ECDSA(hashes.SHA256()))
+
+
+def verifier_facture(contenu: bytes, signature: bytes) -> bool:
+    _, certificat = _charger()
+    try:
+        certificat.public_key().verify(signature, contenu, ec.ECDSA(hashes.SHA256()))
+    except InvalidSignature:
+        return False
+    return True

@@ -1,0 +1,18 @@
+"""Déploiement de l'API sur le serveur applicatif (lancé depuis le poste d'exploitation)."""
+
+import paramiko
+
+
+def deployer(hote: str = "ssh.lab.local", utilisateur: str = "deploy") -> str:
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.connect(hote, username=utilisateur)
+    try:
+        _, sortie, _ = client.exec_command("cd /srv/lab-api && git pull && systemctl restart lab-api")
+        return sortie.read().decode()
+    finally:
+        client.close()
+
+
+if __name__ == "__main__":
+    print(deployer())

@@ -1,0 +1,19 @@
+"""Jetons de session JWT."""
+
+import os
+import time
+
+import jwt
+
+_ALGORITHME = os.environ["JWT_ALGORITHM"]
+_SECRET = os.environ["JWT_SECRET"]
+
+
+def creer_jeton(utilisateur: str, duree: int = 3600) -> str:
+    maintenant = int(time.time())
+    charge = {"sub": utilisateur, "iat": maintenant, "exp": maintenant + duree}
+    return jwt.encode(charge, _SECRET, algorithm=_ALGORITHME)
+
+
+def verifier_jeton(jeton: str) -> dict:
+    return jwt.decode(jeton, _SECRET, algorithms=[_ALGORITHME])
