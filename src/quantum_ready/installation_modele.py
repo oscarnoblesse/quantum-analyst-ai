@@ -108,9 +108,12 @@ def ollama_list() -> str:
 def main(argv: list[str] | None = None) -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
-    argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter).parse_args(argv)
+    analyseur = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    analyseur.add_argument("--configuration", type=Path, default=CONFIG,
+                           help="fichier de paramètres dont le modèle est installé (défaut : config/experiment.yaml)")
+    options = analyseur.parse_args(argv)
 
-    nom, empreinte, hote = lire_modele()
+    nom, empreinte, hote = lire_modele(options.configuration)
     systeme = platform.system()
     try:
         print("== Étape 1 : Ollama")

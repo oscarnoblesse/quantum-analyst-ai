@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -32,6 +32,9 @@ demonstrateur: ## Construit et vérifie le laboratoire TLS hybride (Docker requi
 
 demonstrateur-agent: ## Agent Démonstrateur avec le modèle local (Docker et Ollama requis)
 	uv run python -m quantum_ready.agents.demonstrateur --modele ollama
+
+reproduce-small-modele: ## Chaîne complète avec un très petit modèle (qwen3:0.6b, Ollama requis) : journal et rejeu
+	uv run python scripts/reproduce_petit_modele.py
 
 reproduce-small: ## Reproduction rapide : environnement et tests, sans régénérer le SI
 	uv run python scripts/reproduire.py --petite
