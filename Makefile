@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -47,6 +47,9 @@ agents-regles: ## Agents à règles fixes, sans modèle (ablation) (traces/regle
 
 metriques: ## Génère results/metrics.json à partir de results/raw/ (aucune valeur saisie à la main)
 	uv run python -m quantum_ready.evaluation.metriques
+
+rejeu: ## Affiche une session et rejoue ses appels purs : make rejeu SESSION=traces/<dossier>
+	uv run python -m quantum_ready.rejeu $(SESSION) --racine si/generated/v1
 
 evaluer: ## Évalue et compare des sessions : make evaluer SESSIONS="traces/a traces/b"
 	uv run python -m quantum_ready.evaluation $(SESSIONS)
