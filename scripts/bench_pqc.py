@@ -34,6 +34,7 @@ SORTIE = RACINE / "results" / "raw" / "bench_pqc.json"
 IMAGE = "quantum-ready-lab:dev"
 ECHAUFFEMENT = 100
 MESURES = 1000
+REPETITIONS = 3
 # Quatre configurations : échange de clés (hybride ou classique) x certificat serveur (ECDSA P-256 ou RSA-2048).
 # Les clés « hybride » et « classique » sont celles du rapport de latence de référence (certificat ECDSA P-256).
 CONFIGURATIONS = {
@@ -122,6 +123,30 @@ def verifier(resultats: dict[str, dict]) -> list[str]:
     return problemes
 
 
+def agreger(repetitions: list[dict]) -> dict:
+    """Moyenne et écart type sur les répétitions. Les tailles sont identiques d'une répétition à l'autre."""
+    premiere = repetitions[0]
+    medianes = [r["mediane_us"] for r in repetitions]
+    p95 = [r["p95_us"] for r in repetitions]
+    moyennes = [r["moyenne_us"] for r in repetitions]
+    return {
+        "groupe": premiere["groupe"],
+        "mesures": premiere["mesures"],
+        "repetitions_faites": len(repetitions),
+        "mediane_us": round(statistics.fmean(medianes), 1),
+        "mediane_ecart_type_us": round(statistics.stdev(medianes), 1) if len(medianes) >= 2 else None,
+        "p95_us": round(statistics.fmean(p95), 1),
+        "p95_ecart_type_us": round(statistics.stdev(p95), 1) if len(p95) >= 2 else None,
+        "moyenne_us": round(statistics.fmean(moyennes), 1),
+        "client_hello_octets": premiere["client_hello_octets"],
+        "server_hello_octets": premiere["server_hello_octets"],
+        "certificat_octets": premiere["certificat_octets"],
+        "certificate_verify_octets": premiere["certificate_verify_octets"],
+        "certificat_type": premiere["certificat_type"],
+        "repetitions": repetitions,
+    }
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     if shutil.which("docker") is None:
@@ -130,26 +155,30 @@ def main() -> int:
 
     print("== Construction de l'image", flush=True)
     docker("build", "-t", IMAGE, str(DOSSIER))
-    resultats: dict[str, dict] = {}
+    par_repetition: dict[str, list[dict]] = {nom: [] for nom in CONFIGURATIONS}
     try:
-        for nom, cfg in CONFIGURATIONS.items():
-            print(f"== Serveur {nom} ({cfg['groupe']})", flush=True)
-            demarrer_serveur(cfg["conteneur"], cfg["groupe"], cfg["cert"])
-            print(f"== Mesure : {ECHAUFFEMENT} d'échauffement, {MESURES} handshakes", flush=True)
-            resultats[nom] = resumer(mesurer(cfg["conteneur"], cfg["groupe"]))
-            resultats[nom]["certificat_type"] = cfg["cert"]
-            print(f"   médiane {resultats[nom]['mediane_us']} µs, p95 {resultats[nom]['p95_us']} µs, "
-                  f"ClientHello {resultats[nom]['client_hello_octets']} o", flush=True)
+        # Les configurations sont alternées à chaque répétition : une dérive de la machine touche toutes les mêmes fois.
+        for numero in range(1, REPETITIONS + 1):
+            for nom, cfg in CONFIGURATIONS.items():
+                print(f"== Répétition {numero}/{REPETITIONS} : serveur {nom} ({cfg['groupe']}, {cfg['cert']})", flush=True)
+                demarrer_serveur(cfg["conteneur"], cfg["groupe"], cfg["cert"])
+                resume = resumer(mesurer(cfg["conteneur"], cfg["groupe"]))
+                resume["certificat_type"] = cfg["cert"]
+                par_repetition[nom].append(resume)
+                print(f"   médiane {resume['mediane_us']} µs, p95 {resume['p95_us']} µs, "
+                      f"ClientHello {resume['client_hello_octets']} o", flush=True)
     finally:
         for cfg in CONFIGURATIONS.values():
             docker("rm", "-f", cfg["conteneur"], verifier=False)
 
+    resultats = {nom: agreger(reps) for nom, reps in par_repetition.items()}
     hybride, classique = resultats["hybride"], resultats["classique"]
     document = {
         "date_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "openssl": version_openssl(),
         "echantillons": MESURES,
         "echauffement": ECHAUFFEMENT,
+        "repetitions": REPETITIONS,
         "configurations": resultats,
         "rapport_mediane": round(hybride["mediane_us"] / classique["mediane_us"], 3),
         "octets_supplementaires_client_hello": hybride["client_hello_octets"] - classique["client_hello_octets"],
