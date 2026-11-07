@@ -1,5 +1,5 @@
 {
-  "date_utc": "2026-11-07T17:20:21+00:00",
+  "date_utc": "2026-11-07T18:36:14+00:00",
   "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
   "echantillons": 1000,
   "echauffement": 100,
@@ -7,23 +7,49 @@
     "hybride": {
       "groupe": "X25519MLKEM768",
       "mesures": 1000,
-      "mediane_us": 924.5,
-      "p95_us": 1064.0,
-      "moyenne_us": 970.3,
+      "mediane_us": 931.5,
+      "p95_us": 1292.0,
+      "moyenne_us": 983.1,
       "client_hello_octets": 1397,
-      "server_hello_octets": 1210
+      "server_hello_octets": 1210,
+      "certificat_octets": 406,
+      "certificat_type": "ecdsa-p256"
     },
     "classique": {
       "groupe": "x25519",
       "mesures": 1000,
-      "mediane_us": 749.4,
-      "p95_us": 2496.0,
-      "moyenne_us": 1141.7,
+      "mediane_us": 693.2,
+      "p95_us": 1025.3,
+      "moyenne_us": 740.3,
       "client_hello_octets": 221,
-      "server_hello_octets": 122
+      "server_hello_octets": 122,
+      "certificat_octets": 405,
+      "certificat_type": "ecdsa-p256"
+    },
+    "hybride_rsa2048": {
+      "groupe": "X25519MLKEM768",
+      "mesures": 1000,
+      "mediane_us": 1753.5,
+      "p95_us": 2212.0,
+      "moyenne_us": 1817.3,
+      "client_hello_octets": 1397,
+      "server_hello_octets": 1210,
+      "certificat_octets": 802,
+      "certificat_type": "rsa-2048"
+    },
+    "classique_rsa2048": {
+      "groupe": "x25519",
+      "mesures": 1000,
+      "mediane_us": 1529.6,
+      "p95_us": 2443.0,
+      "moyenne_us": 1692.1,
+      "client_hello_octets": 221,
+      "server_hello_octets": 122,
+      "certificat_octets": 802,
+      "certificat_type": "rsa-2048"
     }
   },
-  "rapport_mediane": 1.234,
+  "rapport_mediane": 1.344,
   "octets_supplementaires_client_hello": 1176,
   "verifications": []
 }

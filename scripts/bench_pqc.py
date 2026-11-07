@@ -34,9 +34,13 @@ SORTIE = RACINE / "results" / "raw" / "bench_pqc.json"
 IMAGE = "quantum-ready-lab:dev"
 ECHAUFFEMENT = 100
 MESURES = 1000
+# Quatre configurations : échange de clés (hybride ou classique) x certificat serveur (ECDSA P-256 ou RSA-2048).
+# Les clés « hybride » et « classique » sont celles du rapport de latence de référence (certificat ECDSA P-256).
 CONFIGURATIONS = {
-    "hybride": {"groupe": "X25519MLKEM768", "conteneur": "qr-lab-hybride"},
-    "classique": {"groupe": "X25519", "conteneur": "qr-lab-classique"},
+    "hybride": {"groupe": "X25519MLKEM768", "cert": "ecdsa-p256", "conteneur": "qr-lab-hybride"},
+    "classique": {"groupe": "X25519", "cert": "ecdsa-p256", "conteneur": "qr-lab-classique"},
+    "hybride_rsa2048": {"groupe": "X25519MLKEM768", "cert": "rsa-2048", "conteneur": "qr-lab-hybride-rsa"},
+    "classique_rsa2048": {"groupe": "X25519", "cert": "rsa-2048", "conteneur": "qr-lab-classique-rsa"},
 }
 
 
@@ -44,9 +48,9 @@ def docker(*args: str, verifier: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(["docker", *args], capture_output=True, text=True, encoding="utf-8", check=verifier)
 
 
-def demarrer_serveur(nom: str, groupe: str) -> None:
+def demarrer_serveur(nom: str, groupe: str, cert: str) -> None:
     docker("rm", "-f", nom, verifier=False)
-    docker("run", "-d", "--name", nom, "-e", f"GROUPES={groupe}", IMAGE)
+    docker("run", "-d", "--name", nom, "-e", f"GROUPES={groupe}", "-e", f"CERT={cert}", IMAGE)
     limite = time.monotonic() + 30
     while time.monotonic() < limite:
         journal = docker("logs", nom, verifier=False)
@@ -76,6 +80,7 @@ def resumer(lignes: list[dict]) -> dict:
         "moyenne_us": round(statistics.fmean(temps), 1),
         "client_hello_octets": int(statistics.median(float(l["client_hello"]) for l in lignes)),
         "server_hello_octets": int(statistics.median(float(l["server_hello"]) for l in lignes)),
+        "certificat_octets": int(statistics.median(float(l["certificat"]) for l in lignes)),
     }
 
 
@@ -86,15 +91,21 @@ def version_openssl() -> str:
 def verifier(resultats: dict[str, dict]) -> list[str]:
     """Propriétés qui doivent toujours être vraies, quelle que soit la machine. Liste des écarts."""
     problemes = []
-    for nom, cfg in CONFIGURATIONS.items():
-        r = resultats[nom]
+    for nom, r in resultats.items():
+        cfg = CONFIGURATIONS[nom]
         if r["mesures"] != MESURES:
             problemes.append(f"{nom} : {r['mesures']} mesures au lieu de {MESURES}")
         if r["groupe"].lower() != cfg["groupe"].lower():  # OpenSSL écrit « x25519 » en minuscules
             problemes.append(f"{nom} : groupe négocié {r['groupe']}, attendu {cfg['groupe']}")
+        if r.get("certificat_octets") is not None and r["certificat_octets"] <= 0:
+            problemes.append(f"{nom} : message Certificate absent")
     hybride, classique = resultats["hybride"], resultats["classique"]
     if hybride["client_hello_octets"] - classique["client_hello_octets"] < 1000:
         problemes.append("le ClientHello hybride devrait être plus gros d'au moins 1000 octets (clé ML-KEM-768)")
+    # RSA-2048 : clé publique et signature plus grosses que ECDSA P-256 ; le certificat doit le refléter.
+    if "classique_rsa2048" in resultats and "classique" in resultats:
+        if resultats["classique_rsa2048"]["certificat_octets"] - resultats["classique"]["certificat_octets"] < 300:
+            problemes.append("le Certificate RSA-2048 devrait être plus gros d'au moins 300 octets que ECDSA P-256")
     return problemes
 
 
@@ -110,9 +121,10 @@ def main() -> int:
     try:
         for nom, cfg in CONFIGURATIONS.items():
             print(f"== Serveur {nom} ({cfg['groupe']})", flush=True)
-            demarrer_serveur(cfg["conteneur"], cfg["groupe"])
+            demarrer_serveur(cfg["conteneur"], cfg["groupe"], cfg["cert"])
             print(f"== Mesure : {ECHAUFFEMENT} d'échauffement, {MESURES} handshakes", flush=True)
             resultats[nom] = resumer(mesurer(cfg["conteneur"], cfg["groupe"]))
+            resultats[nom]["certificat_type"] = cfg["cert"]
             print(f"   médiane {resultats[nom]['mediane_us']} µs, p95 {resultats[nom]['p95_us']} µs, "
                   f"ClientHello {resultats[nom]['client_hello_octets']} o", flush=True)
     finally:
