@@ -62,7 +62,12 @@ def test_known_hosts_et_authorized_keys(racine_si):
 @pytest.mark.parametrize("nom", ["ssh_host_ed25519_key.pub", "ssh_host_rsa_key.pub", "ssh_host_ecdsa_key.pub", "old/ssh_host_dsa_key.pub"])
 def test_empreinte_identique_a_ssh_keygen(racine_si, nom):
     chemin = racine_si / "ssh/server" / nom
-    sortie = subprocess.run(["ssh-keygen", "-lf", str(chemin)], capture_output=True, text=True, check=True).stdout
+    resultat = subprocess.run(["ssh-keygen", "-lf", str(chemin)], capture_output=True, text=True)
+    if resultat.returncode != 0 and "dsa" in nom:
+        # OpenSSH récent (ex. runners GitHub) refuse les clés DSA : rien à comparer.
+        pytest.skip(f"ssh-keygen refuse la clé DSA : {resultat.stderr.strip()}")
+    resultat.check_returncode()
+    sortie = resultat.stdout
     taille, empreinte = sortie.split()[:2]
     cle = _unique(analyser_cle(f"ssh/server/{nom}", racine=racine_si))
     assert cle.proprietes["empreinte"] == empreinte
