@@ -1,0 +1,28 @@
+{
+  "date_utc": "2026-11-07T16:38:41+00:00",
+  "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+  "echantillons": 1000,
+  "echauffement": 100,
+  "configurations": {
+    "hybride": {
+      "groupe": "X25519MLKEM768",
+      "mesures": 1000,
+      "mediane_us": 929.0,
+      "p95_us": 1114.3,
+      "moyenne_us": 958.3,
+      "client_hello_octets": 1397,
+      "server_hello_octets": 1210
+    },
+    "classique": {
+      "groupe": "x25519",
+      "mesures": 1000,
+      "mediane_us": 685.3,
+      "p95_us": 815.3,
+      "moyenne_us": 706.3,
+      "client_hello_octets": 221,
+      "server_hello_octets": 122
+    }
+  },
+  "rapport_mediane": 1.356,
+  "octets_supplementaires_client_hello": 1176
+}
