@@ -37,3 +37,14 @@ def test_le_verificateur_n_est_appele_qu_une_fois_par_cible():
 def test_plan_vide_ou_absent():
     assert vp.classer(None, lambda cle: (True, "")) == []
     assert vp.classer({"etapes": []}, lambda cle: (True, "")) == []
+
+
+def test_demonstration_inconnue_echoue_sans_rien_lancer():
+    from quantum_ready.outils import laboratoire
+    reussi, motif = laboratoire.verifier("cle-inventee")
+    assert reussi is False and "inconnue" in motif
+
+
+def test_chaque_demonstration_du_plan_a_un_verificateur_reel():
+    from quantum_ready.outils import laboratoire
+    assert set(vp.DEMONSTRABLES.values()) == set(laboratoire.VERIFICATEURS)
