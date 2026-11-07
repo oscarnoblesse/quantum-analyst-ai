@@ -1,5 +1,7 @@
 """Socle des outils : périmètre, gestion des erreurs, secrets, classification."""
 
+import sys
+
 import pytest
 
 from quantum_ready.outils.classification import exposition, exposition_la_pire
@@ -17,6 +19,7 @@ def test_resoudre_refuse_ce_qui_sort_du_si(tmp_path, chemin):
         resoudre(chemin, tmp_path.resolve())
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="créer un lien symbolique exige des droits spéciaux sous Windows")
 def test_resoudre_refuse_un_lien_symbolique_vers_l_exterieur(tmp_path):
     dehors = tmp_path / "dehors.txt"
     dehors.write_text("secret")
