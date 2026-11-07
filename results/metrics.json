@@ -1,8 +1,9 @@
 {
   "version": 1,
-  "genere_le": "2026-11-07T18:38:26+00:00",
+  "genere_le": "2026-11-07T18:42:47+00:00",
   "sources": [
     "bench_pqc.json",
+    "bench_signatures.json",
     "demonstrateur_agent.json",
     "demonstrateur_verification.json"
   ],
@@ -129,6 +130,131 @@
       "octets_supplementaires_client_hello": 1176,
       "verifications": []
     },
+    "signatures": {
+      "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+      "mesures": 100,
+      "repetitions": 3,
+      "algorithmes": {
+        "ML-DSA-65": {
+          "repetitions": [
+            {
+              "generation_us": 259.25,
+              "signature_us": 1155.4,
+              "verification_us": 253.4,
+              "cle_publique_octets": 1952,
+              "signature_octets": 3309
+            },
+            {
+              "generation_us": 234.65,
+              "signature_us": 1012.35,
+              "verification_us": 227.55,
+              "cle_publique_octets": 1952,
+              "signature_octets": 3309
+            },
+            {
+              "generation_us": 233.05,
+              "signature_us": 1037.1,
+              "verification_us": 225.95,
+              "cle_publique_octets": 1952,
+              "signature_octets": 3309
+            }
+          ],
+          "generation": {
+            "moyenne_us": 242.3,
+            "ecart_type_us": 14.7
+          },
+          "signature": {
+            "moyenne_us": 1068.3,
+            "ecart_type_us": 76.5
+          },
+          "verification": {
+            "moyenne_us": 235.6,
+            "ecart_type_us": 15.4
+          },
+          "cle_publique_octets": 1952,
+          "signature_octets": 3309
+        },
+        "SLH-DSA-SHA2-128s": {
+          "repetitions": [
+            {
+              "generation_us": 66836.54999999999,
+              "signature_us": 510367.85,
+              "verification_us": 546.95,
+              "cle_publique_octets": 32,
+              "signature_octets": 7856
+            },
+            {
+              "generation_us": 66383.45,
+              "signature_us": 510072.3,
+              "verification_us": 546.9,
+              "cle_publique_octets": 32,
+              "signature_octets": 7856
+            },
+            {
+              "generation_us": 66100.55,
+              "signature_us": 507852.0,
+              "verification_us": 539.45,
+              "cle_publique_octets": 32,
+              "signature_octets": 7856
+            }
+          ],
+          "generation": {
+            "moyenne_us": 66440.2,
+            "ecart_type_us": 371.3
+          },
+          "signature": {
+            "moyenne_us": 509430.7,
+            "ecart_type_us": 1375.2
+          },
+          "verification": {
+            "moyenne_us": 544.4,
+            "ecart_type_us": 4.3
+          },
+          "cle_publique_octets": 32,
+          "signature_octets": 7856
+        },
+        "SLH-DSA-SHA2-128f": {
+          "repetitions": [
+            {
+              "generation_us": 1053.25,
+              "signature_us": 24218.8,
+              "verification_us": 1453.5,
+              "cle_publique_octets": 32,
+              "signature_octets": 17088
+            },
+            {
+              "generation_us": 1054.1,
+              "signature_us": 24263.9,
+              "verification_us": 1454.2,
+              "cle_publique_octets": 32,
+              "signature_octets": 17088
+            },
+            {
+              "generation_us": 1048.15,
+              "signature_us": 24127.6,
+              "verification_us": 1453.8,
+              "cle_publique_octets": 32,
+              "signature_octets": 17088
+            }
+          ],
+          "generation": {
+            "moyenne_us": 1051.8,
+            "ecart_type_us": 3.2
+          },
+          "signature": {
+            "moyenne_us": 24203.4,
+            "ecart_type_us": 69.4
+          },
+          "verification": {
+            "moyenne_us": 1453.8,
+            "ecart_type_us": 0.4
+          },
+          "cle_publique_octets": 32,
+          "signature_octets": 17088
+        }
+      },
+      "verifications": []
+    },
     "agent": {
       "executions": 3,
       "terminees": 3,
@@ -180,11 +306,8 @@
     "latence : une seule série de mesures par configuration ; le sujet exige 3 répétitions (moyenne, écart type)"
   ],
   "non_mesure": [
-    "RSA-2048 et ECDSA P-256 : taille de la poignée de main et latence (sujet §4.4)",
-    "certificat serveur et signatures ML-DSA-65 (sujet §4.4)",
-    "chaîne ML-DSA racine, intermédiaire, feuille et taille du handshake (sujet §5.2)",
-    "SLH-DSA vs ML-DSA : génération, signature, vérification, tailles, temps (sujet §5.1)",
     "débit des connexions (sujet, métriques)",
+    "discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)",
     "tailles des clés publiques et privées (sujet, métriques)",
     "rappel et précision de l'évaluation par catégorie, validité du CBOM sur 3 répétitions",
     "performance sur la variante non vue du SI (sujet §4)"

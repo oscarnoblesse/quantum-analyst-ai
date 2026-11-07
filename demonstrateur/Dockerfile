@@ -8,6 +8,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY bench_pqc.c /src/bench_pqc.c
 RUN gcc -O2 -Wall -Wextra -o /usr/local/bin/bench_pqc /src/bench_pqc.c -lssl -lcrypto
+COPY bench_signatures.c /src/bench_signatures.c
+RUN gcc -O2 -Wall -Wextra -o /usr/local/bin/bench_signatures /src/bench_signatures.c -lcrypto
 
 # Étape 2 : image d'exécution (serveur et client de mesure).
 FROM debian:trixie-slim
@@ -15,6 +17,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl ca-certificates libssl3t64 \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=constructeur /usr/local/bin/bench_pqc /usr/local/bin/bench_pqc
+COPY --from=constructeur /usr/local/bin/bench_signatures /usr/local/bin/bench_signatures
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod 0755 /usr/local/bin/entrypoint.sh
