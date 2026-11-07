@@ -59,8 +59,8 @@ d'échauffement, sur un ordinateur portable, dans une VM Docker) :
 
 | Échange | Certificat | Médiane (µs) | Message Certificate (octets) |
 | --- | --- | --- | --- |
-| X25519MLKEM768 | ECDSA P-256 | ≈ 924 | 407 |
-| X25519 | ECDSA P-256 | ≈ 685 | 407 |
+| X25519MLKEM768 | ECDSA P-256 | ≈ 924 | 406 |
+| X25519 | ECDSA P-256 | ≈ 685 | 406 |
 | X25519MLKEM768 | RSA-2048 | ≈ 1747 | 802 |
 | X25519 | RSA-2048 | ≈ 1511 | 802 |
 | X25519MLKEM768 | ML-DSA-65 | ≈ 1923 | 5531 |
