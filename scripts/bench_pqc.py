@@ -41,6 +41,8 @@ CONFIGURATIONS = {
     "classique": {"groupe": "X25519", "cert": "ecdsa-p256", "conteneur": "qr-lab-classique"},
     "hybride_rsa2048": {"groupe": "X25519MLKEM768", "cert": "rsa-2048", "conteneur": "qr-lab-hybride-rsa"},
     "classique_rsa2048": {"groupe": "X25519", "cert": "rsa-2048", "conteneur": "qr-lab-classique-rsa"},
+    "hybride_mldsa65": {"groupe": "X25519MLKEM768", "cert": "mldsa-65", "conteneur": "qr-lab-hybride-mldsa"},
+    "classique_mldsa65": {"groupe": "X25519", "cert": "mldsa-65", "conteneur": "qr-lab-classique-mldsa"},
 }
 
 
@@ -81,6 +83,7 @@ def resumer(lignes: list[dict]) -> dict:
         "client_hello_octets": int(statistics.median(float(l["client_hello"]) for l in lignes)),
         "server_hello_octets": int(statistics.median(float(l["server_hello"]) for l in lignes)),
         "certificat_octets": int(statistics.median(float(l["certificat"]) for l in lignes)),
+        "certificate_verify_octets": int(statistics.median(float(l["certificate_verify"]) for l in lignes)),
     }
 
 
@@ -103,6 +106,10 @@ def verifier(resultats: dict[str, dict]) -> list[str]:
     if hybride["client_hello_octets"] - classique["client_hello_octets"] < 1000:
         problemes.append("le ClientHello hybride devrait être plus gros d'au moins 1000 octets (clé ML-KEM-768)")
     # RSA-2048 : clé publique et signature plus grosses que ECDSA P-256 ; le certificat doit le refléter.
+    # ML-DSA-65 : certificat et signature nettement plus gros qu'ECDSA P-256 (clé publique 1952 o, signature 3309 o).
+    if "classique_mldsa65" in resultats and "classique" in resultats:
+        if resultats["classique_mldsa65"]["certificat_octets"] - resultats["classique"]["certificat_octets"] < 1000:
+            problemes.append("le Certificate ML-DSA-65 devrait être plus gros d'au moins 1000 octets que ECDSA P-256")
     if "classique_rsa2048" in resultats and "classique" in resultats:
         if resultats["classique_rsa2048"]["certificat_octets"] - resultats["classique"]["certificat_octets"] < 300:
             problemes.append("le Certificate RSA-2048 devrait être plus gros d'au moins 300 octets que ECDSA P-256")

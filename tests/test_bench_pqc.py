@@ -50,3 +50,9 @@ def test_certificat_rsa_trop_proche_du_ecdsa_est_signale():
 
 def test_certificat_rsa_plus_gros_est_accepte():
     assert bench.verifier(_resultats(cert_rsa=802)) == []
+
+
+def test_certificat_mldsa_trop_proche_du_ecdsa_est_signale():
+    r = _resultats()
+    r["classique_mldsa65"] = {"groupe": "X25519", "mesures": 1000, "client_hello_octets": 221, "certificat_octets": 500}
+    assert any("ML-DSA-65" in p for p in bench.verifier(r))

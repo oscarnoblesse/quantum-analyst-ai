@@ -30,7 +30,8 @@
 typedef struct {
     size_t client_hello;
     size_t server_hello;
-    size_t certificat;  /* message Certificate envoyé par le serveur */
+    size_t certificat;         /* message Certificate envoyé par le serveur */
+    size_t certificate_verify; /* signature du serveur (CertificateVerify) */
 } Tailles;
 
 static void msg_callback(int write_p, int version, int content_type, const void *buf, size_t len, SSL *ssl, void *arg) {
@@ -41,6 +42,7 @@ static void msg_callback(int write_p, int version, int content_type, const void 
     if (write_p && b[0] == 1) t->client_hello = len;   /* ClientHello */
     if (!write_p && b[0] == 2) t->server_hello = len;  /* ServerHello */
     if (!write_p && b[0] == 11) t->certificat = len;   /* Certificate */
+    if (!write_p && b[0] == 15) t->certificate_verify = len;  /* CertificateVerify */
 }
 
 static double maintenant_us(void) {
@@ -88,18 +90,18 @@ int main(int argc, char **argv) {
     }
     SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
 
-    Tailles tailles = {0, 0, 0};
+    Tailles tailles = {0, 0, 0, 0};
     SSL_CTX_set_msg_callback(ctx, msg_callback);
     SSL_CTX_set_msg_callback_arg(ctx, &tailles);
 
-    printf("iteration,microsecondes,client_hello,server_hello,certificat,groupe\n");
+    printf("iteration,microsecondes,client_hello,server_hello,certificat,certificate_verify,groupe\n");
     for (int i = 0; i < echauffement + mesures; i++) {
         int fd = connecter_tcp(hote, port);
         if (fd < 0) { perror("connect"); return 1; }
 
         SSL *ssl = SSL_new(ctx);
         SSL_set_fd(ssl, fd);
-        tailles.client_hello = tailles.server_hello = tailles.certificat = 0;
+        tailles.client_hello = tailles.server_hello = tailles.certificat = tailles.certificate_verify = 0;
 
         double debut = maintenant_us();
         int ok = SSL_connect(ssl);
@@ -111,8 +113,9 @@ int main(int argc, char **argv) {
         }
 
         if (i >= echauffement) {
-            printf("%d,%.1f,%zu,%zu,%zu,%s\n", i - echauffement, fin - debut,
-                   tailles.client_hello, tailles.server_hello, tailles.certificat, SSL_get0_group_name(ssl));
+            printf("%d,%.1f,%zu,%zu,%zu,%zu,%s\n", i - echauffement, fin - debut,
+                   tailles.client_hello, tailles.server_hello, tailles.certificat, tailles.certificate_verify,
+                   SSL_get0_group_name(ssl));
         }
         SSL_shutdown(ssl);
         SSL_free(ssl);
