@@ -206,8 +206,10 @@ def main(argv: list[str] | None = None) -> None:
     analyseur.add_argument("--session", help="dossier de trace (par défaut traces/<horodatage>_<modèle>)")
     analyseur.add_argument("--modele", default="ollama", choices=["ollama", "regles"])
     analyseur.add_argument("--validation", choices=["demander", "accepter"])
+    analyseur.add_argument("--configuration", type=Path, default=CONFIGURATION,
+                           help="fichier de paramètres (par défaut config/experiment.yaml ; experiment_petit.yaml pour la CI)")
     options = analyseur.parse_args(argv)
-    rapport = executer(options.racine, options.session, options.modele, options.validation)
+    rapport = executer(options.racine, options.session, options.modele, options.validation, configuration=options.configuration)
     print(json.dumps({k: rapport[k] for k in ("session", "arret", "cbom_valide", "validation")}, ensure_ascii=False))
 
 
