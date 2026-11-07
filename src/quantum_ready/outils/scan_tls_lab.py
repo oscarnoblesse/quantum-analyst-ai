@@ -25,6 +25,8 @@ HOTES_LOCAUX = ("127.0.0.1", "localhost", "::1")
 GROUPES_TESTES = ("X25519MLKEM768", "X25519")
 DELAI_SECONDES = 10
 _GROUPE_NEGOCIE = re.compile(r"Negotiated TLS1\.3 group: (\S+)")
+# OpenSSL n'écrit « Negotiated TLS1.3 group » que pour certains groupes ; pour X25519 il écrit « Peer Temp Key ».
+_CLE_TEMPORAIRE = re.compile(r"Peer Temp Key: ([\w.]+)")
 _VERSION_NEGOCIEE = re.compile(r"^\s*Protocol\s*:\s*(\S+)", re.M)
 
 
@@ -41,9 +43,10 @@ def separer_cible(cible: str) -> tuple[str, int]:
 def groupe_negocie(sortie: str) -> str | None:
     """Groupe d'échange de clés de la sortie d'un `openssl s_client`, None si aucun n'a été négocié."""
     correspondance = _GROUPE_NEGOCIE.search(sortie)
-    if correspondance is None or correspondance.group(1) == "<NULL>":
-        return None
-    return correspondance.group(1)
+    if correspondance is not None and correspondance.group(1) != "<NULL>":
+        return correspondance.group(1)
+    cle = _CLE_TEMPORAIRE.search(sortie)
+    return cle.group(1) if cle else None
 
 
 def version_negociee(sortie: str) -> str | None:

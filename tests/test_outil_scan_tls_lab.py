@@ -26,6 +26,12 @@ def test_groupe_negocie_lu_dans_la_sortie():
     assert tls.version_negociee(sortie) == "TLSv1.3"
 
 
+def test_groupe_classique_lu_dans_peer_temp_key():
+    # Sortie réelle d'OpenSSL 3.5 pour X25519 : pas de ligne « Negotiated TLS1.3 group ».
+    sortie = "Peer Temp Key: X25519, 253 bits\nNo ALPN negotiated\n"
+    assert tls.groupe_negocie(sortie) == "X25519"
+
+
 def test_groupe_absent_quand_le_serveur_refuse():
     sortie = "40ECE0F101000000:error:...:ssl/tls alert handshake failure\nNegotiated TLS1.3 group: <NULL>\n"
     assert tls.groupe_negocie(sortie) is None

@@ -10,6 +10,7 @@ jamais la racine du SI ni le dossier de session.
 """
 
 
+import json
 from collections.abc import Callable
 
 from pydantic import BaseModel, Field
@@ -79,6 +80,9 @@ def creer_outils(session: Session, agent: str, horizon_menace: float = 10) -> di
     from quantum_ready.outils import lister_fichiers as _lister
     from quantum_ready.outils import rechercher_algorithmes as _textuel
     from quantum_ready.outils import scanner_code_crypto as _code
+    from quantum_ready.outils import laboratoire as _labo
+    from quantum_ready.outils import scan_tls_lab as _tls
+    from quantum_ready.outils.commun import ErreurOutil
 
     racine = session.racine_si
 
@@ -231,8 +235,40 @@ def creer_outils(session: Session, agent: str, horizon_menace: float = 10) -> di
             return "\n".join(f"ERREUR : {e}" for e in resultat.erreurs)
         return "\n".join(f"[{e.fiche}] {_court(e.texte, 420)}" for e in resultat.extraits)
 
+    def demarrer_laboratoire(groupe: str) -> str:
+        """Démarre le laboratoire TLS avec un seul groupe accepté : X25519MLKEM768 (hybride) ou X25519 (classique). Un seul laboratoire à la fois."""
+        try:
+            return _labo.demarrer(groupe)
+        except ErreurOutil as erreur:
+            return f"ERREUR : {erreur}"
+
+    def arreter_laboratoire(groupe: str) -> str:
+        """Arrête le laboratoire du groupe donné."""
+        try:
+            return _labo.arreter(groupe)
+        except ErreurOutil as erreur:
+            return f"ERREUR : {erreur}"
+
+    def mesurer_handshake(groupe: str, mesures: int = 1000) -> str:
+        """Mesure le temps et la taille du handshake TLS 1.3 du laboratoire démarré avec ce groupe (100 d'échauffement)."""
+        try:
+            return json.dumps(_labo.mesurer(groupe, mesures), ensure_ascii=False)
+        except ErreurOutil as erreur:
+            return f"ERREUR : {erreur}"
+
+    def scan_tls_lab(cible: str, groupe: str) -> str:
+        """Interroge le serveur TLS du laboratoire démarré avec ce groupe : groupes acceptés et version de TLS. Cible locale uniquement."""
+        demarre = _labo.groupe_demarre()
+        if demarre != groupe:
+            return f"ERREUR : le laboratoire tourne avec le groupe {demarre}, pas {groupe}"
+        resultat = _tls.scan_tls_lab(cible, racine=session.racine_si)
+        if resultat.erreurs:
+            return "\n".join(f"ERREUR : {e}" for e in resultat.erreurs)
+        return "\n".join(f"{t.type_actif} | {t.nom} | {t.exposition} | {t.proprietes.get('endroit', '')}" for t in resultat.trouvailles)
+
     return {f.__name__: f for f in (
         lister_priorites, rechercher_standard,
         lister_fichiers, analyser_x509, analyser_cle, analyser_pkcs12, analyser_configuration, scanner_code_crypto,
         analyser_dependances, rechercher_algorithmes, lister_trouvailles, construire_cbom, valider_schema, lister_actifs, score_mosca,
+        demarrer_laboratoire, arreter_laboratoire, mesurer_handshake, scan_tls_lab,
     )}
