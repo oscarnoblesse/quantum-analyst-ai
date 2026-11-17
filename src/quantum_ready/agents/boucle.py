@@ -208,7 +208,8 @@ async def executer_agent(config: ConfigurationAgent, modele: Modele, outils: Cli
                 resultat.appels_outils += not (appel.refuse or appel.double)
                 resultat.appels_refuses += appel.refuse
                 resultat.appels_en_double += appel.double
-                resultat.erreurs_outils += appel.erreur and not appel.refuse
+                # Un appel en double ne s'exécute pas : il n'est pas une erreur nouvelle (il rappelle le résultat précédent).
+                resultat.erreurs_outils += appel.erreur and not (appel.refuse or appel.double)
                 echange.append({"role": "tool", "content": appel.texte, "tool_name": demande.nom})
             if len(reponse.appels) > MAX_APPELS_PAR_TOUR:
                 echange.append({"role": "user", "content": f"Seuls les {MAX_APPELS_PAR_TOUR} premiers appels ont été exécutés."})

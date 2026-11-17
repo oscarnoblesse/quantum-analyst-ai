@@ -1,0 +1,70 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-38b09f045b1f",
+    "crypto-9d9f2f22e569",
+    "crypto-c3302e0351db"
+   ],
+   "action": "Migrer les clés ECDSA P-384, P-256 et les certificats de signature des factures vers des algorithmes post-quantiques conformes à NIST-FIPS-204.",
+   "cible": "ML-DSA-65",
+   "echeance": "2025-06-30",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-058aae532b1a",
+    "crypto-07cf9f7a5e95",
+    "crypto-11134a4802ed",
+    "crypto-1edfac132f63",
+    "crypto-36c5c98cc7b8",
+    "crypto-438e027bd5f5",
+    "crypto-462da4ddef98",
+    "crypto-49c1cf3eca18",
+    "crypto-4e3d0c6c7b77"
+   ],
+   "action": "Migrer les échanges de clés TLS et SSH vers des algorithmes post-quantiques en utilisant X25519MLKEM768 dans les configurations TLS et SSH.",
+   "cible": "X25519MLKEM768",
+   "echeance": "2025-12-31",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-44fa65b82b49",
+    "crypto-742773857ff2"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées avec OpenPGP en utilisant une clé hybride post-quantique conformément à GNUPG-PQ, pour garantir la sécurité à long terme.",
+   "cible": "GNUPG-PQ",
+   "echeance": "2026-03-31",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  },
+  {
+   "ordre": 4,
+   "actifs": [
+    "crypto-39a64876dbf6",
+    "crypto-247c4649d309",
+    "crypto-32077c9d856f",
+    "crypto-36c5c98cc7b8",
+    "crypto-74c67a65d6de"
+   ],
+   "action": "Migrer les certificats et autorités de certification vers des certificats X.509 post-quantiques conformes à NIST-FIPS-204, en remplaçant les certificats obsolètes ou périmés.",
+   "cible": "ML-DSA-65",
+   "echeance": "2026-06-30",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord les signatures critiques et les échanges de clés exposés à la menace Shor. Il inclut une étape spécifique pour les sauvegardes à long terme. Les migrations suivent une progression logique de la sécurité des données à court terme à celle des infrastructures de confiance.",
+ "verification": "plan conforme",
+ "demonstration": null
+}

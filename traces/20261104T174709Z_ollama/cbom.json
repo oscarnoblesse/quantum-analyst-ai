@@ -1,0 +1,785 @@
+{
+ "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+ "bomFormat": "CycloneDX",
+ "specVersion": "1.6",
+ "serialNumber": "urn:uuid:3543e5aa-0c47-5a85-a281-faa5df69d4e4",
+ "version": 1,
+ "metadata": {
+  "timestamp": "2026-11-04T17:56:41Z",
+  "tools": {
+   "components": [
+    {
+     "type": "application",
+     "name": "quantum-ready",
+     "version": "0.1.0"
+    }
+   ]
+  },
+  "component": {
+   "type": "application",
+   "bom-ref": "systeme-analyse",
+   "name": "SI fictif (v1)"
+  }
+ },
+ "components": [
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-708faef0c086",
+   "name": "Mot de passe de connexion (secret en clair)",
+   "description": "Mot de passe de « lab_app » vers db.lab.local, en clair dans l'URL DATABASE_URL",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "password"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 2
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "DATABASE_URL"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-e20f040f2931",
+   "name": "sslmode=require",
+   "description": "Mode TLS de la connexion postgresql vers db.lab.local",
+   "cryptoProperties": {
+    "assetType": "protocol",
+    "protocolProperties": {
+     "type": "tls"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 2
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "certificat du serveur non vérifié : homme du milieu possible"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "DATABASE_URL"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-60e606720aba",
+   "name": "HS256",
+   "description": "Algorithme choisi par configuration (JWT_ALGORITHM)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 4
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "JWT_ALGORITHM"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-ca2392cabca5",
+   "name": "Secret faible (JWT_SECRET)",
+   "description": "Secret JWT_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 5
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "secret court ou prévisible (mot du dictionnaire, année...)"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "JWT_SECRET"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-fce5e089ea3b",
+   "name": "Secret aléatoire de 256 bits (WEBHOOK_SECRET)",
+   "description": "Secret WEBHOOK_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key",
+     "format": "hexadécimal, 256 bits"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 7
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "WEBHOOK_SECRET"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-c29d59680863",
+   "name": "Clé Fernet 256 bits (FIELD_ENCRYPTION_KEY)",
+   "description": "Secret FIELD_ENCRYPTION_KEY stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "secret-key",
+     "format": "clé Fernet (base64, 32 octets : 128 bits AES + 128 bits HMAC)"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 8
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "FIELD_ENCRYPTION_KEY"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-82e7246bd97c",
+   "name": "Secret en clair (KEYSTORE_PASS)",
+   "description": "Secret KEYSTORE_PASS stocké en clair dans un fichier de variables d'environnement",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "password"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/.env",
+      "line": 9
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "grover"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_configuration"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:variable",
+     "value": "KEYSTORE_PASS"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-37b324072d4a",
+   "name": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab Root CA,O=Lab,C=FR",
+     "issuerName": "CN=Lab Root CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-03T00:00:00Z",
+     "notValidAfter": "2046-10-29T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-67c55da46f1b",
+     "subjectPublicKeyRef": "crypto-556843550dde",
+     "certificateExtension": "pem"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     },
+     {
+      "location": "certs/ca/racine.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-556843550dde",
+   "name": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 4096
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     },
+     {
+      "location": "certs/ca/racine.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-67c55da46f1b",
+   "name": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA » (certificat 1/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     },
+     {
+      "location": "certs/ca/racine.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-6d2fbc155247",
+   "name": "Certificat « Lab CA 2015 »",
+   "description": "Certificat d'autorité « Lab CA 2015 », émis par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab CA 2015,O=Lab,C=FR",
+     "issuerName": "CN=Lab CA 2015,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2015-03-01T00:00:00Z",
+     "notValidAfter": "2035-03-01T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-125889948c37",
+     "subjectPublicKeyRef": "crypto-49071935d022",
+     "certificateExtension": "pem"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-49071935d022",
+   "name": "RSA-1024",
+   "description": "Clé publique du certificat « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 1024
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "taille insuffisante aujourd'hui (1024 bits)"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-125889948c37",
+   "name": "sha1WithRSAEncryption",
+   "description": "Signature du certificat « Lab CA 2015 » par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "api/config/ca_bundle.pem"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    },
+    {
+     "name": "quantum-ready:faiblesse-classique",
+     "value": "fonction de hachage cassée (collisions)"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-e119d45acee6",
+   "name": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "private-key",
+     "format": "OpenSSH"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/.ssh/id_ed25519"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_cle"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-c0ac9ce84070",
+   "name": "Certificat « admin »",
+   "description": "Certificat d'entité finale « admin », émis par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=admin,O=Lab,C=FR",
+     "issuerName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-03T00:00:00Z",
+     "notValidAfter": "2027-11-03T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-009dcaf82fb9",
+     "subjectPublicKeyRef": "crypto-c381a0077d18",
+     "certificateExtension": "crt"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-c381a0077d18",
+   "name": "ECDSA P-256",
+   "description": "Clé publique du certificat « admin »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 256
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-009dcaf82fb9",
+   "name": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « admin » par « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "clients/admin/admin.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-d7f881a7a323",
+   "name": "Certificat « Lab Intermediate CA »",
+   "description": "Certificat d'autorité « Lab Intermediate CA », émis par « Lab Root CA »",
+   "cryptoProperties": {
+    "assetType": "certificate",
+    "certificateProperties": {
+     "subjectName": "CN=Lab Intermediate CA,O=Lab,C=FR",
+     "issuerName": "CN=Lab Root CA,O=Lab,C=FR",
+     "certificateFormat": "X.509",
+     "notValidBefore": "2026-11-03T00:00:00Z",
+     "notValidAfter": "2036-10-31T00:00:00Z",
+     "signatureAlgorithmRef": "crypto-5ec51f4c1384",
+     "subjectPublicKeyRef": "crypto-98e902a5514f",
+     "certificateExtension": "crt"
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "certs/ca/intermediaire.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-98e902a5514f",
+   "name": "ECDSA P-384",
+   "description": "Clé publique du certificat « Lab Intermediate CA »",
+   "cryptoProperties": {
+    "assetType": "related-crypto-material",
+    "relatedCryptoMaterialProperties": {
+     "type": "public-key",
+     "size": 384
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "certs/ca/intermediaire.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "type": "cryptographic-asset",
+   "bom-ref": "crypto-5ec51f4c1384",
+   "name": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Intermediate CA » par « Lab Root CA »",
+   "cryptoProperties": {
+    "assetType": "algorithm",
+    "algorithmProperties": {
+     "primitive": "signature",
+     "nistQuantumSecurityLevel": 0
+    }
+   },
+   "evidence": {
+    "occurrences": [
+     {
+      "location": "certs/ca/intermediaire.crt"
+     }
+    ]
+   },
+   "properties": [
+    {
+     "name": "quantum-ready:exposition-quantique",
+     "value": "shor"
+    },
+    {
+     "name": "quantum-ready:outil",
+     "value": "analyser_x509"
+    },
+    {
+     "name": "quantum-ready:implicite",
+     "value": "false"
+    }
+   ]
+  }
+ ]
+}

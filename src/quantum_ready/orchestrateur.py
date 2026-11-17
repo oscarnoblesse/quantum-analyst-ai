@@ -122,7 +122,8 @@ def construire_graphe(modeles: Callable[[str], Modele], session: Session, parame
             erreurs = verification_plan.erreurs_pour_l_architecte(verdicts)
         if plan:
             ecrire_json(session.dossier / "plan.json", plan | {"verification": erreurs or "plan conforme",
-                                                              "demonstration": demonstration})
+                                                              "demonstration": demonstration,
+                                                              "date_verification": architecte.aujourdhui().isoformat()})
         return mise_a_jour | {"tentatives_architecte": etat.get("tentatives_architecte", 0) + 1, "plan_valide": not erreurs, "erreurs_plan": erreurs}
 
     def apres_architecte(etat) -> str:

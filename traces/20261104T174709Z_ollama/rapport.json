@@ -1,0 +1,230 @@
+{
+ "session": "traces/20261104T174709Z_ollama",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "refuse_par_l_humain",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 2,
+ "plan_valide": false,
+ "erreurs_plan": [
+  "1 actif(s) critique(s) non couvert(s) : crypto-d7f881a7a323"
+ ],
+ "validation": "refusee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "erreur_modele",
+   "etapes": 8,
+   "appels_outils": 7,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 20553,
+   "jetons_sortie": 200,
+   "duree_ms": 529873,
+   "message": "Ollama injoignable sur http://localhost:11434 (ReadTimeout) : est-il lancé, le modèle qwen3:4b-instruct-2507-q4_K_M est-il téléchargé ?",
+   "sortie": null
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 6627,
+   "jetons_sortie": 172,
+   "duree_ms": 67358,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 20,
+    "exclusions": [],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé sans exclusion. Il inclut 20 composants issus de 23 trouvailles, avec 3 fusions identifiées entre fichiers similaires."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 4,
+   "appels_outils": 2,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 10446,
+   "jetons_sortie": 2144,
+   "duree_ms": 467570,
+   "message": "",
+   "sortie": {
+    "evalues": 20,
+    "critiques": [
+     "crypto-e20f040f2931",
+     "crypto-37b324072d4a",
+     "crypto-556843550dde",
+     "crypto-67c55da46f1b",
+     "crypto-6d2fbc155247",
+     "crypto-49071935d022",
+     "crypto-125889948c37",
+     "crypto-e119d45acee6",
+     "crypto-c0ac9ce84070",
+     "crypto-c381a0077d18",
+     "crypto-009dcaf82fb9",
+     "crypto-d7f881a7a323",
+     "crypto-98e902a5514f",
+     "crypto-5ec51f4c1384"
+    ],
+    "resume": "Les 14 actifs critiques sont principalement liés à des algorithmes vulnérables à l'attaque quantique (Grover ou Shor) ou à des clés obsolètes. La priorité est de migrer ces actifs rapidement, en particulier les certificats PKI et les signatures basées sur RSA ou SHA1, pour garantir la sécurité à long terme."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 3,
+   "appels_outils": 2,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 4715,
+   "jetons_sortie": 794,
+   "duree_ms": 157543,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-125889948c37",
+       "crypto-49071935d022",
+       "crypto-5ec51f4c1384",
+       "crypto-67c55da46f1b",
+       "crypto-6d2fbc155247",
+       "crypto-98e902a5514f",
+       "crypto-c381a0077d18",
+       "crypto-e119d45acee6"
+      ],
+      "action": "Désactiver les échanges de clés RSA (et SHA1) dans les protocoles TLS",
+      "cible": "TLS 1.2",
+      "echeance": "immédiate",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-009dcaf82fb9",
+       "crypto-556843550dde",
+       "crypto-d7f881a7a323",
+       "crypto-c0ac9ce84070"
+      ],
+      "action": "Migrer les certificats à base de RSA-4096 ou ECDSA P-384 ou P-256 avec hachage SHA-256 ou SHA-384",
+      "cible": "certificats de serveur (ca_bundle.pem, intermediaire.crt)",
+      "echeance": "dans les 6 mois",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-e20f040f2931"
+      ],
+      "action": "Migrer le mode SSL à require vers un mode sécurisé avec validation de certificat et hachage robuste",
+      "cible": "api/.env",
+      "echeance": "dans les 3 mois",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 4,
+      "actifs": [
+       "crypto-e119d45acee6"
+      ],
+      "action": "Migrer les clés Ed25519 vers des clés post-quantiques (ex. NIST P-521 ou Kyber)",
+      "cible": "clients/admin/.ssh/id_ed25519",
+      "echeance": "dans les 12 mois",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise la désactivation des échanges de clés RSA et SHA1 dans TLS, puis la migration des certificats vers des algorithmes résistants à l'attaque quantique. Les clés SSH Ed25519 sont ciblées pour une transition vers des algorithmes post-quantiques. Tous les actifs critiques sont couverts dans un calendrier progressif."
+   }
+  },
+  "architecte_2": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 3,
+   "appels_outils": 2,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 5181,
+   "jetons_sortie": 851,
+   "duree_ms": 162279,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-37b324072d4a",
+       "crypto-49071935d022",
+       "crypto-556843550dde",
+       "crypto-5ec51f4c1384",
+       "crypto-67c55da46f1b",
+       "crypto-6d2fbc155247",
+       "crypto-98e902a5514f",
+       "crypto-c0ac9ce84070",
+       "crypto-c381a0077d18",
+       "crypto-e119d45acee6"
+      ],
+      "action": "Migrer les échanges de clés TLS et SSH vers des algorithmes post-quantiques (ML-KEM) en utilisant ML-KEM-768 comme standard, en conformité avec NIST-FIPS-203.",
+      "cible": "échange de clés TLS, SSH",
+      "echeance": "2026",
+      "references": [
+       "NIST-FIPS-203",
+       "NIST-IR-8547"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-009dcaf82fb9",
+       "crypto-125889948c37",
+       "crypto-5ec51f4c1384",
+       "crypto-67c55da46f1b",
+       "crypto-6d2fbc155247",
+       "crypto-98e902a5514f",
+       "crypto-c0ac9ce84070",
+       "crypto-c381a0077d18"
+      ],
+      "action": "Migrer les certificats PKI (CA, intermédiaires, administrateurs) vers des algorithmes post-quantiques (ML-DSA ou SLH-DSA) pour l'authentification, en conformité avec NIST-FIPS-203.",
+      "cible": "certificats PKI",
+      "echeance": "2027",
+      "references": [
+       "NIST-FIPS-203",
+       "NIST-IR-8547"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-e20f040f2931"
+      ],
+      "action": "Valider la configuration SSL avec un certificat vérifié et sécurisé, en intégrant un échange de clés post-quantique pour le mode SSL require.",
+      "cible": "configuration SSL",
+      "echeance": "2028",
+      "references": [
+       "NIST-IR-8547"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise les échanges de clés TLS/SSH et les certificats PKI, en s'appuyant sur NIST-FIPS-203 et NIST-IR-8547. Les algorithmes vulnérables (RSA, ECDSA) sont remplacés par des solutions post-quantiques. La migration s'inscrit dans un calendrier de transition défini par NIST, avec une fin de vie prévue après 2035 pour les algorithmes faibles."
+   }
+  }
+ }
+}

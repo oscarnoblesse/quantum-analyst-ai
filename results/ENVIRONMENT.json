@@ -1,0 +1,16 @@
+{
+  "genere_le": "2026-11-08T14:31:43Z",
+  "systeme": "macOS-26.2-arm64-arm-64bit",
+  "python": "3.12.15",
+  "uv": "uv 0.13.5 (Homebrew 2026-10-22 aarch64-apple-darwin)",
+  "docker": "Docker version 29.0.1, build eedd969",
+  "openssl_hote": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+  "openssl_laboratoire": "voir results/raw/demonstrateur_verification.json (version dans le conteneur)",
+  "ollama": {
+    "version": "0.40.15",
+    "modele": "qwen3:4b-instruct-2507-q4_K_M",
+    "empreinte": "0edcdef34593"
+  },
+  "configuration_sha256": "2b7bdb4a50e0aba2b115e23ec70a174f6063ba58d7c772733ac31ab95ec7ba98",
+  "commit": "d5009d949a05165011412431c10c84b064bf6ea5"
+}

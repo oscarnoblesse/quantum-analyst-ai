@@ -11,6 +11,7 @@ Usage : uv run python scripts/reproduce_petit_modele.py
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -50,6 +51,12 @@ def main() -> int:
     if code != 0:
         print("Installation du modèle échouée", file=sys.stderr)
         return code
+    # Session neuve à chaque exécution : une session existante (par exemple la trace publiée dans le dépôt)
+    # recevrait les nouveaux journaux à la suite des anciens, et le rejeu comparerait aussi les anciens appels,
+    # faits sur un autre SI fictif (clés générées aléatoirement) : il échouerait à tort.
+    if (RACINE / SESSION).exists():
+        print(f"== Session {SESSION} existante : remplacée par une session neuve", flush=True)
+        shutil.rmtree(RACINE / SESSION)
     code = lancer("Exécution du système multi-agents avec le petit modèle", "uv", "run", "python", "-m", "quantum_ready.orchestrateur",
                   "--racine", "si/generated/v1", "--modele", "ollama", "--configuration", CONFIGURATION,
                   "--validation", "accepter", "--session", SESSION)
