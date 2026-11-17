@@ -1,0 +1,167 @@
+{
+ "session": "traces/20261104T182150Z_ollama",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "refuse_par_l_humain",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 1,
+ "plan_valide": true,
+ "erreurs_plan": [],
+ "validation": "refusee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "termine",
+   "etapes": 76,
+   "appels_outils": 58,
+   "appels_refuses": 0,
+   "appels_en_double": 17,
+   "erreurs_outils": 9,
+   "jetons_entree": 170906,
+   "jetons_sortie": 2641,
+   "duree_ms": 1016649,
+   "message": "",
+   "sortie": {
+    "resume": "Le système contient plusieurs actifs cryptographiques, notamment un certificat admin avec un algorithme vulnérable (SHOR), et un conteneur PKCS#12 contenant des clés ECDSA P-256 et un algorithme faible (PBE avec Triple DES). Une clé ECDSA P-256 est également présente dans un certificat de factures. Les algorithmes utilisés sont sensibles à l'attaque quantique, notamment SHA-1 et Triple DES. Les pistes entre fichiers montrent une chaîne de confiance entre les certificats et les clés de gestion.",
+    "exclusions": [
+     {
+      "id": "T0034",
+      "raison": "algorithme SHOR détecté dans un certificat, donc à exclure"
+     },
+     {
+      "id": "T0096",
+      "raison": "algorithme pbeWithSHA1And3-KeyTripleDES-CBC désactivé ou anciennement utilisé, donc à exclure"
+     }
+    ],
+    "liens": [
+     {
+      "de": "clients/admin/admin.crt",
+      "vers": "T0035",
+      "explication": "le certificat admin contient une clé privée liée à un algorithme vulnérable"
+     },
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "T0097",
+      "explication": "le conteneur PKCS#12 contient une clé ECDSA P-256 utilisée dans un certificat de factures"
+     }
+    ],
+    "fichiers_non_analyses": []
+   }
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 8334,
+   "jetons_sortie": 289,
+   "duree_ms": 80089,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 76,
+    "exclusions": [
+     {
+      "id": "T0034",
+      "raison": "algorithme SHOR détecté dans un certificat, donc à exclure"
+     },
+     {
+      "id": "T0096",
+      "raison": "algorithme pbeWithSHA1And3-KeyTripleDES-CBC désactivé ou anciennement utilisé, donc à exclure"
+     }
+    ],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé avec 76 composants. Deux trouvailles ont été exclues selon les raisons fournies par l'Inventoriste, et 16 fusions ont été détectées pour des composants similaires."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 4,
+   "appels_outils": 3,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 8837,
+   "jetons_sortie": 1316,
+   "duree_ms": 273601,
+   "message": "",
+   "sortie": {
+    "evalues": 15,
+    "critiques": [
+     "crypto-37b324072d4a",
+     "crypto-556843550dde",
+     "crypto-67c55da46f1b",
+     "crypto-6d2fbc155247",
+     "crypto-49071935d022",
+     "crypto-125889948c37"
+    ],
+    "resume": "Les actifs critiques concernent des clés de certification (RSA-4096, CA obsolètes) ou des algorithmes cassés (SHA-1, SHA-256WithRSA), dont la sécurité doit rester valide pendant 5 ans. La migration est urgente pour ces éléments, car ils sont exposés à la menace post-quantique dans un horizon de 10 ans. Les actifs d'authentification ou de configuration (comme les bibliothèques d'authentification) ont une priorité moindre, avec une durée de sécurité de 1 an."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "jetons_entree": 9668,
+   "jetons_sortie": 764,
+   "duree_ms": 187282,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-125889948c37",
+       "crypto-37b324072d4a",
+       "crypto-49071935d022",
+       "crypto-556843550dde",
+       "crypto-67c55da46f1b",
+       "crypto-6d2fbc155247"
+      ],
+      "action": "Migrer les certificats et clés de signature (RSA-1024, RSA-4096, sha1WithRSAEncryption, sha256WithRSAEncryption) vers des algorithmes post-quantiques conformes à NIST-FIPS-204.",
+      "cible": "api/config/ca_bundle.pem",
+      "echeance": "6 mois",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-e20f040f2931"
+      ],
+      "action": "Activer l'échange de clés TLS hybride (X25519MLKEM768) sur nginx via mise à jour d'OpenSSL et configuration du groupe de courbes.",
+      "cible": "api/config/ca_bundle.pem",
+      "echeance": "3 mois",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-c29d59680863",
+       "crypto-708faef0c086",
+       "crypto-82e7246bd97c"
+      ],
+      "action": "Rechiffrer les sauvegardes chiffrées pour une clé publique (RSA) en utilisant une clé hybride post-quantique, conformément à GNUPG-PQ, pour éviter la menace « enregistrer maintenant, déchiffrer plus tard ».",
+      "cible": "api/.env",
+      "echeance": "12 mois",
+      "references": [
+       "GNUPG-PQ"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise d'abord la migration des certificats critiques vers NIST-FIPS-204, puis l'activation de l'échange de clés TLS hybride, enfin le rechiffrement des sauvegardes sensibles. Les actifs critiques sont couverts dès les premiers mois, avec une attention particulière à la préservation des données longues de vie."
+   }
+  }
+ }
+}

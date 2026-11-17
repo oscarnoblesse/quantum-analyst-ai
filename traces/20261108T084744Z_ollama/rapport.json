@@ -1,0 +1,199 @@
+{
+ "session": "traces/20261108T084744Z_ollama",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "termine",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 1,
+ "plan_valide": true,
+ "erreurs_plan": [],
+ "validation": "acceptee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "termine",
+   "etapes": 58,
+   "appels_outils": 54,
+   "appels_refuses": 0,
+   "appels_en_double": 3,
+   "erreurs_outils": 3,
+   "fins_refusees": 0,
+   "jetons_entree": 138526,
+   "jetons_sortie": 2213,
+   "duree_ms": 1353459,
+   "message": "",
+   "sortie": {
+    "resume": "L'inventaire a révélé un conteneur PKCS#12 contenant des clés ECDSA P-256 et un algorithme ancien PBE avec SHA-1. Des certificats X.509 sont associés à des clés ECDSA P-256 et un algorithme de signature évolué (ECDSA avec SHA-384). Ces éléments sont liés à un système de gestion des factures. Les pistes cryptographiques sont clairement identifiées et suivies.",
+    "exclusions": [],
+    "liens": [
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "api/.env",
+      "explication": "Le mot de passe KEYSTORE_PASS dans api/.env est utilisé pour ouvrir le conteneur PKCS#12 factures/keys/factures.p12."
+     },
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "T0073",
+      "explication": "Le conteneur contient un algorithme ancien (PBE avec SHA-1 et 3-Key Triple DES), classé comme faible et sujet à Grover."
+     },
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "T0074",
+      "explication": "La clé ECDSA P-256 est présente dans le conteneur, exposée à la menace Shor."
+     },
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "T0075",
+      "explication": "Un certificat X.509 est associé à la clé ECDSA P-256, utilisé pour authentifier le système de factures."
+     },
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "T0076",
+      "explication": "Une autre clé ECDSA P-256 est détectée, indiquant une répétition ou une configuration multiple."
+     },
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "T0077",
+      "explication": "Une clé ECDSA avec SHA-384 est présente, offrant une meilleure sécurité, mais reste vulnérable à Shor."
+     }
+    ],
+    "fichiers_non_analyses": []
+   }
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 6,
+   "appels_outils": 5,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 10004,
+   "jetons_sortie": 189,
+   "duree_ms": 207712,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 79,
+    "exclusions": [],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé sans exclusion, avec 79 composants issus de 101 trouvailles et 16 fusions détectées."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 18,
+   "appels_outils": 17,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 34546,
+   "jetons_sortie": 4406,
+   "duree_ms": 1234001,
+   "message": "",
+   "sortie": {
+    "evalues": 79,
+    "critiques": [
+     "crypto-44fa65b82b49",
+     "crypto-472ccdeab2a1"
+    ],
+    "resume": "Les signatures conservées 10 ans sont critiques. Les actifs de chiffrement long terme doivent être priorisés."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 10885,
+   "jetons_sortie": 1082,
+   "duree_ms": 312602,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-39a64876dbf6",
+       "crypto-44fa65b82b49",
+       "crypto-472ccdeab2a1",
+       "crypto-9d9f2f22e569",
+       "crypto-c3302e0351db"
+      ],
+      "action": "Migrer les signatures de factures et les certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+      "cible": "ML-DSA-65",
+      "echeance": "2025-12-31",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-058aae532b1a",
+       "crypto-07cf9f7a5e95",
+       "crypto-36c5c98cc7b8"
+      ],
+      "action": "Migrer les échanges de clés TLS vers un échange hybride avec X25519MLKEM768 dans nginx",
+      "cible": "X25519MLKEM768",
+      "echeance": "2025-06-30",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-247c4649d309",
+       "crypto-2e280df75180",
+       "crypto-49c1cf3eca18"
+      ],
+      "action": "Rechiffrer les sauvegardes chiffrées avec des clés RSA pour une clé publique hybride conformément à GNUPG-PQ",
+      "cible": "GNUPG-PQ",
+      "echeance": "2026-03-31",
+      "references": [
+       "GNUPG-PQ"
+      ]
+     },
+     {
+      "ordre": 4,
+      "actifs": [
+       "crypto-04b1d56aa024",
+       "crypto-11134a4802ed",
+       "crypto-1edfac132f63",
+       "crypto-32077c9d856f",
+       "crypto-438e027bd5f5"
+      ],
+      "action": "Migrer les certificats et clés de signature vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+      "cible": "ML-DSA-65",
+      "echeance": "2026-09-30",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 5,
+      "actifs": [
+       "crypto-2f69dd54eb88",
+       "crypto-7052728128d5"
+      ],
+      "action": "Migrer les configurations de sécurité obsolètes (3DES, TLSv1.2) vers des protocoles modernes et post-quantiques",
+      "cible": "TLS 1.3 avec X25519MLKEM768",
+      "echeance": "2027-06-30",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise d'abord les signatures critiques et les échanges de clés exposés, puis les sauvegardes à long terme. Il s'appuie sur NIST-FIPS-204 pour les signatures et IETF-TLS-HYBRIDE pour les échanges de clés. Tous les actifs critiques sont couverts, avec des délais réalistes et une progression claire."
+   }
+  }
+ }
+}

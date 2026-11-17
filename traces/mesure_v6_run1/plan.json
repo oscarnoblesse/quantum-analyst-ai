@@ -1,0 +1,73 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-39a64876dbf6",
+    "crypto-44fa65b82b49",
+    "crypto-472ccdeab2a1",
+    "crypto-49c1cf3eca18",
+    "crypto-9d9f2f22e569",
+    "crypto-c3302e0351db"
+   ],
+   "action": "Migrer les signatures de factures et les certificats de clés de signature vers des algorithmes post-quantiques résistants, en priorité ML-DSA-65 selon NIST-FIPS-204.",
+   "cible": "ML-DSA-65",
+   "echeance": "2027-11-08",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-36c5c98cc7b8",
+    "crypto-7052728128d5",
+    "crypto-74c67a65d6de",
+    "crypto-438e027bd5f5",
+    "crypto-4e3d0c6c7b77"
+   ],
+   "action": "Migrer les échanges de clés TLS et les certificats de serveurs vers un échange hybride avec X25519MLKEM768, en utilisant IETF-TLS-HYBRIDE pour les serveurs nginx.",
+   "cible": "X25519MLKEM768",
+   "echeance": "2027-11-08",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-44fa65b82b49",
+    "crypto-2e280df75180"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées avec des clés publiques (OpenPGP) en utilisant des clés hybrides post-quantiques, conformément à la norme GNUPG-PQ.",
+   "cible": "GNUPG-PQ",
+   "echeance": "2028-11-08",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord les signatures critiques avec ML-DSA-65, puis les échanges de clés TLS avec X25519MLKEM768, enfin les sauvegardes chiffrées avec GNUPG-PQ. Tous les actifs critiques sont couverts. La stratégie suit l'ordre des menaces : enregistrer maintenant, déchiffrer plus tard, puis sécuriser les flux et les certificats.",
+ "verification": "plan conforme",
+ "demonstration": [
+  {
+   "ordre": 1,
+   "cible": "ML-DSA-65",
+   "statut": "démontrée",
+   "motif": ""
+  },
+  {
+   "ordre": 2,
+   "cible": "X25519MLKEM768",
+   "statut": "démontrée",
+   "motif": ""
+  },
+  {
+   "ordre": 3,
+   "cible": "GNUPG-PQ",
+   "statut": "non vérifiée",
+   "motif": "cible non démontrable au laboratoire (GnuPG, PKI hors laboratoire, etc.)"
+  }
+ ],
+ "date_verification": "2026-11-08"
+}

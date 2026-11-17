@@ -1,0 +1,191 @@
+{
+ "session": "traces/20261104T213437Z_ollama",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "refuse_par_l_humain",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 1,
+ "plan_valide": true,
+ "erreurs_plan": [],
+ "validation": "refusee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "termine",
+   "etapes": 61,
+   "appels_outils": 48,
+   "appels_refuses": 0,
+   "appels_en_double": 12,
+   "erreurs_outils": 5,
+   "fins_refusees": 0,
+   "jetons_entree": 143607,
+   "jetons_sortie": 2231,
+   "duree_ms": 393132,
+   "message": "",
+   "sortie": {
+    "resume": "L'inventaire a révélé plusieurs actifs cryptographiques, notamment des certificats X.509 utilisant ECDSA P-256 avec SHA384, des clés SSH Ed25519 et des algorithmes SSH comme curve25519-sha256. Un conteneur PKCS#12 a été identifié comme présent dans le SI, mais le fichier est introuvable. Les pistes vers les clés d'hôte SSH et les certificats d'administration ont été suivies, confirmant l'utilisation de cryptographie post-quantique dans plusieurs composants.",
+    "exclusions": [],
+    "liens": [
+     {
+      "de": "clients/admin/admin.crt",
+      "vers": "T0043",
+      "explication": "Certificat d'administration contenant une clé ECDSA P-256, lié à l'émetteur 'Lab Intermediate CA'."
+     },
+     {
+      "de": "ssh/server/ssh_host_ed25519_key",
+      "vers": "T0075",
+      "explication": "Clé d'hôte SSH Ed25519, correspondant à l'algorithme ssh-ed25519 dans sshd_config."
+     },
+     {
+      "de": "ssh/server/sshd_config",
+      "vers": "T0099",
+      "explication": "Configuration SSH listant ssh-ed25519 comme algorithme de connexion, confirmant l'utilisation de la clé Ed25519."
+     },
+     {
+      "de": "ssh/server/authorized_keys",
+      "vers": "T0095",
+      "explication": "Clé Ed25519 dans le fichier d'autorisation, utilisée pour l'authentification SSH des utilisateurs."
+     }
+    ],
+    "fichiers_non_analyses": [
+     "docker-compose.yml"
+    ]
+   }
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 6,
+   "appels_outils": 5,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 9970,
+   "jetons_sortie": 190,
+   "duree_ms": 34692,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 78,
+    "exclusions": [],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé sans exclusion, avec 78 composants issus de 100 trouvailles et 16 fusions de certificats."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 19,
+   "appels_outils": 18,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 35786,
+   "jetons_sortie": 4240,
+   "duree_ms": 414565,
+   "message": "",
+   "sortie": {
+    "evalues": 78,
+    "critiques": [
+     "crypto-742773857ff2"
+    ],
+    "resume": "Les échanges de clés sont critiques. La migration doit être rapide."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 10994,
+   "jetons_sortie": 1143,
+   "duree_ms": 114990,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-39a64876dbf6",
+       "crypto-4509e64cc6fe",
+       "crypto-53e95ce80840",
+       "crypto-9b89469504e9",
+       "crypto-9d9f2f22e569"
+      ],
+      "action": "Migrer les signatures de factures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+      "cible": "ML-DSA-65",
+      "echeance": "6 mois",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-44fa65b82b49",
+       "crypto-472ccdeab2a1",
+       "crypto-2c9685759616",
+       "crypto-8a15b6093bf0"
+      ],
+      "action": "Rechiffrer les sauvegardes chiffrées avec des clés publiques (OpenPGP) en utilisant une clé hybride post-quantique, conformément à GNUPG-PQ",
+      "cible": "X25519MLKEM768",
+      "echeance": "12 mois",
+      "references": [
+       "GNUPG-PQ"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-07cf9f7a5e95",
+       "crypto-152accd85e63",
+       "crypto-20a43b008913",
+       "crypto-97ef8f87af7f",
+       "crypto-98e902a5514f"
+      ],
+      "action": "Migrer les échanges de clés TLS et SSH vers un échange hybride basé sur X25519MLKEM768, conformément à IETF-TLS-HYBRIDE",
+      "cible": "X25519MLKEM768",
+      "echeance": "18 mois",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 4,
+      "actifs": [
+       "crypto-37b324072d4a",
+       "crypto-49071935d022",
+       "crypto-67c55da46f1b",
+       "crypto-6d2fbc155247"
+      ],
+      "action": "Migrer les certificats de PKI (racines et intermédiaires) vers des certificats post-quantiques conformes à NIST-FIPS-204",
+      "cible": "ML-DSA-65",
+      "echeance": "24 mois",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 5,
+      "actifs": [
+       "crypto-9539ae30117f"
+      ],
+      "action": "Migrer la clé RSA-2048 de nginx vers un échange de clés hybride post-quantique pour garantir la sécurité des connexions TLS",
+      "cible": "X25519MLKEM768",
+      "echeance": "36 mois",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise d'abord les signatures critiques et les sauvegardes exposées à la menace « enregistrer maintenant, déchiffrer plus tard ». Ensuite, il migre les échanges de clés TLS et SSH vers des algorithmes hybrides post-quantiques. Les certificats de PKI suivent, puis les derniers composants de sécurité. Tous les actifs critiques sont couverts par au moins une étape, conformément aux normes NIST-FIPS-204, GNUPG-PQ et IETF-TLS-HYBRIDE."
+   }
+  }
+ }
+}
