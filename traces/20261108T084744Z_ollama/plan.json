@@ -1,0 +1,80 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-39a64876dbf6",
+    "crypto-44fa65b82b49",
+    "crypto-472ccdeab2a1",
+    "crypto-9d9f2f22e569",
+    "crypto-c3302e0351db"
+   ],
+   "action": "Migrer les signatures de factures et les certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2025-12-31",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-058aae532b1a",
+    "crypto-07cf9f7a5e95",
+    "crypto-36c5c98cc7b8"
+   ],
+   "action": "Migrer les échanges de clés TLS vers un échange hybride avec X25519MLKEM768 dans nginx",
+   "cible": "X25519MLKEM768",
+   "echeance": "2025-06-30",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-247c4649d309",
+    "crypto-2e280df75180",
+    "crypto-49c1cf3eca18"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées avec des clés RSA pour une clé publique hybride conformément à GNUPG-PQ",
+   "cible": "GNUPG-PQ",
+   "echeance": "2026-03-31",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  },
+  {
+   "ordre": 4,
+   "actifs": [
+    "crypto-04b1d56aa024",
+    "crypto-11134a4802ed",
+    "crypto-1edfac132f63",
+    "crypto-32077c9d856f",
+    "crypto-438e027bd5f5"
+   ],
+   "action": "Migrer les certificats et clés de signature vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2026-09-30",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 5,
+   "actifs": [
+    "crypto-2f69dd54eb88",
+    "crypto-7052728128d5"
+   ],
+   "action": "Migrer les configurations de sécurité obsolètes (3DES, TLSv1.2) vers des protocoles modernes et post-quantiques",
+   "cible": "TLS 1.3 avec X25519MLKEM768",
+   "echeance": "2027-06-30",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord les signatures critiques et les échanges de clés exposés, puis les sauvegardes à long terme. Il s'appuie sur NIST-FIPS-204 pour les signatures et IETF-TLS-HYBRIDE pour les échanges de clés. Tous les actifs critiques sont couverts, avec des délais réalistes et une progression claire.",
+ "verification": "plan conforme",
+ "demonstration": null
+}
