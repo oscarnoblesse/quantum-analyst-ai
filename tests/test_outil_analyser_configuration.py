@@ -1,6 +1,7 @@
 """analyser_configuration : un test par format, avec les actifs visibles, cachés et implicites."""
 
 import shutil
+import subprocess
 
 import pytest
 
@@ -109,6 +110,21 @@ def test_format_non_pris_en_charge(racine_si):
 @openssl_present
 def test_chaine_invalide():
     assert developper_suites("CECI_N_EXISTE_PAS") == []
+
+
+def test_openssl_ne_recoit_pas_le_stdin_du_serveur(monkeypatch):
+    # Sous le serveur MCP (stdio), l'openssl de Git for Windows se bloque s'il hérite de stdin.
+    from quantum_ready.outils.configurations import tls
+    appels = []
+
+    def run(commande, **options):
+        appels.append(options.get("stdin"))
+        return subprocess.CompletedProcess(commande, 0, stdout="AES256-GCM-SHA384 TLSv1.2 Kx=RSA Au=RSA Enc=AESGCM(256) Mac=AEAD\n", stderr="")
+
+    monkeypatch.setattr(tls.shutil, "which", lambda _: "openssl")
+    monkeypatch.setattr(tls.subprocess, "run", run)
+    tls.resume_suites("HIGH")
+    assert appels and all(s is subprocess.DEVNULL for s in appels)
 
 
 def test_sans_openssl(monkeypatch):

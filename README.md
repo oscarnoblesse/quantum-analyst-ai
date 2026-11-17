@@ -34,7 +34,7 @@ Ce projet construit une équipe d'agents IA qui, sur un système d'information *
 | Architecte | Rédige le plan de migration priorisé |
 | Démonstrateur | Monte un laboratoire TLS hybride local (Docker), le sonde et mesure le handshake face au X25519 classique |
 
-Le Démonstrateur se lance avec `make demonstrateur-agent` (modèle local et Docker requis), ou sans modèle avec `make demonstrateur` (vérification du laboratoire seule). Il n'est pas appelé par `make agents` : son rôle dans le graphe reste à décider.
+Le Démonstrateur se lance avec `make demonstrateur-agent` (modèle local et Docker requis), ou sans modèle avec `make demonstrateur` (vérification du laboratoire seule). Il n'est pas appelé par `make agents` : son rôle dans le graphe reste à décider. En revanche, `make agents` utilise le même laboratoire pour vérifier le plan de l'Architecte quand Docker est présent (voir [Docker](#docker-facultatif)).
 
 ## Documentation
 
@@ -84,6 +84,20 @@ Selon le système, l'installation d'Ollama passe par :
 - **Linux** : le script officiel d'Ollama, qui peut demander votre mot de passe administrateur.
 
 Le script est idempotent : relancez-le sans risque. Il n'installe rien tant que tout est en place.
+
+## Docker (facultatif)
+
+[Docker](https://docs.docker.com/get-docker/) fait tourner le laboratoire TLS hybride local. Il n'est pas nécessaire pour reproduire le projet (`scripts/reproduire.py`), ni pour lancer les agents.
+
+| Commande | Sans Docker |
+|---|---|
+| `scripts/reproduire.py` | fonctionne : Docker n'est pas utilisé |
+| `make agents` | fonctionne ; les étapes du plan démontrables au laboratoire (TLS hybride, certificat ML-DSA-65, SSH hybride) sont marquées « non vérifiées » (motif : Docker introuvable) au lieu d'être démontrées |
+| `make demonstrateur`, `make demonstrateur-agent`, `make reproduce-complet` | impossible : Docker requis |
+
+La démonstration du plan au laboratoire est réglée par `verification_demonstration` dans `config/experiment.yaml`.
+
+Installation : Docker Desktop sous macOS et Windows (`winget install Docker.DockerDesktop`), paquet `docker.io` ou [Docker Engine](https://docs.docker.com/engine/install/) sous Linux.
 
 ## Reproduire le projet
 
