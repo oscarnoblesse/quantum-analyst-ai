@@ -45,7 +45,13 @@ Le Démonstrateur se lance avec `make demonstrateur-agent` (modèle local et Doc
 
 ## Installation
 
-Seul prérequis : [uv](https://docs.astral.sh/uv/) et Git. uv installe lui-même le Python 3.12 du projet ; il n'est pas nécessaire d'en avoir un.
+Prérequis : [uv](https://docs.astral.sh/uv/), Git et OpenSSL 3. uv installe lui-même le Python 3.12 du projet ; il n'est pas nécessaire d'en avoir un.
+
+OpenSSL sert à développer la macro TLS `HIGH` de nginx : sans lui, l'actif caché QR-015 n'est pas détecté et `scripts/reproduire.py` refuse de démarrer. Il est déjà présent sous macOS et Linux. Sous Windows, Git for Windows en fournit un, hors du PATH :
+
+```powershell
+$env:Path += ";C:\Program Files\Git\usr\bin"
+```
 
 ```bash
 # macOS / Linux : installer uv
@@ -99,7 +105,7 @@ Sur macOS et Linux, `make reproduce` et `make reproduce-small` font la même cho
 
 Notes :
 - Le SI généré (`si/generated/v1`) est fictif, produit localement et jamais commité.
-- Certains tests sont ignorés selon le système, sans que cela soit une erreur : droits POSIX et liens symboliques (Windows), `ssh-keygen` ou `openssl` absents, clés DSA refusées par OpenSSH récent.
+- Certains tests sont ignorés selon le système, sans que cela soit une erreur : droits POSIX et liens symboliques (Windows), `ssh-keygen` absent, clés DSA refusées par OpenSSH récent. `openssl`, lui, est obligatoire (voir Installation).
 - Si vous lancez un module à la main sous Windows (`uv run python -m quantum_ready...`), activez d'abord le mode UTF-8 : `$env:PYTHONUTF8 = "1"`.
 
 ## Cadre éthique

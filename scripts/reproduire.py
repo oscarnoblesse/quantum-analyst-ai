@@ -46,6 +46,35 @@ def etapes(petite: bool) -> list[tuple[str, list[str]]]:
     return liste
 
 
+def openssl_de_git() -> Path | None:
+    """openssl.exe livré avec Git for Windows (Git\\usr\\bin), absent du PATH par défaut."""
+    git = shutil.which("git")
+    if git is None:
+        return None
+    candidat = Path(git).resolve().parent.parent / "usr" / "bin" / "openssl.exe"
+    return candidat if candidat.is_file() else None
+
+
+def openssl_manquant() -> str | None:
+    """Message d'erreur si openssl est introuvable, None sinon.
+
+    Sans openssl, la macro HIGH de nginx n'est pas développée : l'actif caché QR-015
+    (suite TLS 1.2 à échange RSA) n'est pas détecté et les tests qui l'attendent
+    échouent. On s'arrête donc avant de lancer quoi que ce soit.
+    """
+    if shutil.which("openssl") is not None:
+        return None
+    message = ("openssl est introuvable. Il sert à développer la macro TLS « HIGH » de nginx ; "
+               "sans lui, l'actif caché QR-015 n'est pas détecté et des tests échouent.")
+    git = openssl_de_git() if os.name == "nt" else None
+    if git is not None:
+        message += (f"\nGit for Windows en fournit un. Ajoutez son dossier au PATH, puis relancez :"
+                    f'\n    $env:Path += ";{git.parent}"')
+    else:
+        message += "\nInstallez OpenSSL 3 (paquet « openssl » sous Linux, Homebrew sous macOS, Git for Windows sous Windows)."
+    return message
+
+
 def main() -> int:
     # Sous Windows, la sortie standard est en cp1252 : on la passe en UTF-8 pour ce processus aussi.
     sys.stdout.reconfigure(encoding="utf-8")
@@ -56,6 +85,9 @@ def main() -> int:
 
     if shutil.which("uv") is None:
         print("uv est introuvable. Installez-le : https://docs.astral.sh/uv/getting-started/installation/", file=sys.stderr)
+        return 2
+    if (erreur := openssl_manquant()) is not None:
+        print(erreur, file=sys.stderr)
         return 2
 
     # Mode UTF-8 pour tous les processus Python lancés : sous Windows, la sortie
