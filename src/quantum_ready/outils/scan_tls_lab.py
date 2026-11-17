@@ -57,7 +57,7 @@ def version_negociee(sortie: str) -> str | None:
 def version_openssl() -> str | None:
     if shutil.which("openssl") is None:
         return None
-    return subprocess.run(["openssl", "version"], capture_output=True, text=True, timeout=10).stdout.strip()
+    return subprocess.run(["openssl", "version"], stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=10).stdout.strip()
 
 
 def _sonder(hote: str, port: int, groupes: str) -> str:

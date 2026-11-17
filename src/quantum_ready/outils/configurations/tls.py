@@ -11,18 +11,21 @@ from __future__ import annotations
 import shutil
 import subprocess
 
+# stdin=DEVNULL : sous le serveur MCP (stdio), un autre fil lit déjà stdin. Sous Windows, l'openssl
+# de Git for Windows (MSYS2) qui hérite de ce canal se bloque jusqu'au délai : on ne le lui transmet pas.
+
 
 def version_openssl() -> str | None:
     if shutil.which("openssl") is None:
         return None
-    return subprocess.run(["openssl", "version"], capture_output=True, text=True, timeout=10).stdout.strip()
+    return subprocess.run(["openssl", "version"], stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=10).stdout.strip()
 
 
 def developper_suites(chaine: str) -> list[dict[str, str]] | None:
     """Suites TLS 1.2 (et antérieures) activées par une chaîne ; None si openssl est absent."""
     if shutil.which("openssl") is None:
         return None
-    sortie = subprocess.run(["openssl", "ciphers", "-v", chaine], capture_output=True, text=True, timeout=10)
+    sortie = subprocess.run(["openssl", "ciphers", "-v", chaine], stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=10)
     if sortie.returncode != 0:
         return []
     suites = []

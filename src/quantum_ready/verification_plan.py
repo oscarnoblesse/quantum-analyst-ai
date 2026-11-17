@@ -40,8 +40,11 @@ def cle_de_demonstration(cible: str) -> str | None:
     return next((cle for nom, cle in DEMONSTRABLES.items() if nom in texte), None)
 
 
-def classer(plan: dict | None, verifier: Callable[[str], tuple[bool, str]]) -> list[Verdict]:
-    """Un verdict par étape. `verifier(clé)` renvoie (réussi, motif) ; il n'est appelé qu'une fois par clé."""
+def classer(plan: dict | None, verifier: Callable[[str], tuple[bool | None, str]]) -> list[Verdict]:
+    """Un verdict par étape. `verifier(clé)` renvoie (réussi, motif) ; il n'est appelé qu'une fois par clé.
+
+    réussi = None : le laboratoire est indisponible ; l'étape est « non vérifiée » (jamais validée, pas en échec).
+    """
     verdicts: list[Verdict] = []
     resultats: dict[str, tuple[bool, str]] = {}
     for etape in (plan or {}).get("etapes", []):
@@ -54,6 +57,9 @@ def classer(plan: dict | None, verifier: Callable[[str], tuple[bool, str]]) -> l
         if cle not in resultats:
             resultats[cle] = verifier(cle)
         reussi, motif = resultats[cle]
+        if reussi is None:
+            verdicts.append(Verdict(etape.get("ordre", 0), cible, "non vérifiée", motif))
+            continue
         verdicts.append(Verdict(etape.get("ordre", 0), cible, "démontrée" if reussi else "échec", "" if reussi else motif))
     return verdicts
 
