@@ -180,3 +180,25 @@ Nouvel agent, sans équivalent dans les versions précédentes : pas de comparai
 | 3 | 729,3 µs | 548,3 µs | 1,33 |
 
 Les durées varient d'environ 20 % d'un run à l'autre (charge de la machine) ; le rapport reste entre 1,27 et 1,33.
+
+## Version 6 — 8 novembre 2026 (prompt `inventoriste.md`)
+
+Changement : une règle ajoutée. L'Inventoriste ne donne à un outil que des chemins présents dans la sortie de `lister_fichiers`, ou déjà cités par un outil (piste, `fichier_env`).
+
+**Motif** : sur la session `20261107T214549Z_ollama`, 6 appels sur 83 échouaient en « Fichier introuvable » : le modèle supposait des fichiers absents du SI (`docker-compose.yml`, `config.env`, `keystore.p12`, `clients/admin/admin.py`). Le travail de découverte reste celui de l'Inventoriste : le prompt ne contient aucune liste de fichiers.
+
+**Effet mesuré** (trois exécutions `traces/mesure_v6_run1` à `run3`, configuration finale : démonstration activée, validation automatique) :
+
+| Mesure | v5 (`20261107T214549Z`) | v6, trois exécutions |
+| --- | --- | --- |
+| Appels d'outils | 83 | 84 chacune |
+| Erreurs d'outils | 5 au journal, 6 comptées | 7 au journal, 7 comptées |
+| Tours de l'Inventoriste | 62 | 70 chacune |
+| Plan | 4 étapes, conforme | 3 étapes, conforme ; démonstration : ML-DSA-65 et X25519MLKEM768 démontrées, GNUPG-PQ non vérifiée |
+
+**Lecture** :
+- Les trois exécutions donnent la même séquence d'appels (journaux d'outils identiques hors horodatage) : le modèle est déterministe ici, la variance entre exécutions est nulle pour l'inventaire.
+- La règle de la v6 **n'a pas réduit les erreurs** : elles ont augmenté. Une exécution v6 intermédiaire, avant le message « fichiers au nom proche », donnait 3 erreurs et 58 tours (même prompt). La cause la plus probable de la hausse est ce message : il suggère des noms réels proches (`api/.env`), et le modèle enchaîne ensuite des variantes devinées (`api/docker-compose.yml`). Non démontré : il faudrait une exécution sans ce message.
+- Le comptage d'erreurs de la boucle est corrigé (les appels en double ne comptent plus) : il coïncide désormais avec le journal d'outils.
+- La démonstration au laboratoire est exécutée dans le graphe et renvoie des verdicts réels ; aucune étape démontrable n'est validée sans preuve.
+
