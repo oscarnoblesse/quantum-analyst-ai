@@ -392,3 +392,20 @@ def test_rapport_en_ligne_de_commande(si, capsys):
     assert "actifs conformes" in sortie
     pki_ecrite = (si.racine_si / "certs/ca/racine.crt").exists()
     assert code == (0 if pki_ecrite else 1)
+
+
+def test_secret_aleatoire_retire_les_mots_previsibles(monkeypatch):
+    """Un tirage contenant « dev » serait classé « Secret faible » : il doit être refait."""
+    from quantum_ready.si_fictif import generateur
+
+    tirages = iter(["AbcDEVxyz0123456789_-Kp", "Qz7Lm2Rt9Wx4Ys1Np8Vb3Hc6"])
+    monkeypatch.setattr(generateur.secrets, "token_urlsafe", lambda n: next(tirages))
+    assert generateur.secret_aleatoire(18) == "Qz7Lm2Rt9Wx4Ys1Np8Vb3Hc6"
+
+
+def test_secret_aleatoire_reste_un_secret_en_clair():
+    from quantum_ready.outils.configurations.env import forme_du_secret
+    from quantum_ready.si_fictif.generateur import secret_aleatoire
+
+    for _ in range(2000):
+        assert forme_du_secret(secret_aleatoire(18))[0] == "Secret en clair"

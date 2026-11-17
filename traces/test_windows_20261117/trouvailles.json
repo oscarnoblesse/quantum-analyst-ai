@@ -1,0 +1,2606 @@
+[
+ {
+  "id": "T0001",
+  "agent": "inventoriste",
+  "empreinte": "7b69fa34f05c2489",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 2,
+   "type_actif": "related-crypto-material",
+   "nom": "Mot de passe de connexion (secret en clair)",
+   "description": "Mot de passe de « lab_app » vers db.lab.local, en clair dans l'URL DATABASE_URL",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "24 caractères (minuscules, majuscules, chiffres, symboles)",
+    "variable": "DATABASE_URL",
+    "utilisateur": "lab_app",
+    "hote": "db.lab.local"
+   },
+   "preuve": "DATABASE_URL=postgresql://lab_app:<masqué>@db.lab.local"
+  }
+ },
+ {
+  "id": "T0002",
+  "agent": "inventoriste",
+  "empreinte": "4d6082098030de78",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 2,
+   "type_actif": "protocol",
+   "nom": "sslmode=require",
+   "description": "Mode TLS de la connexion postgresql vers db.lab.local",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "variable": "DATABASE_URL",
+    "effet": "chiffrement, mais le certificat du serveur n'est PAS vérifié",
+    "faiblesse_classique": "certificat du serveur non vérifié : homme du milieu possible"
+   },
+   "preuve": "DATABASE_URL=...?sslmode=require"
+  }
+ },
+ {
+  "id": "T0003",
+  "agent": "inventoriste",
+  "empreinte": "74e33e618e4aa5a9",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 4,
+   "type_actif": "algorithm",
+   "nom": "HS256",
+   "description": "Algorithme choisi par configuration (JWT_ALGORITHM)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "variable": "JWT_ALGORITHM",
+    "usage": "valeur lue par l'application : chercher le code qui l'utilise"
+   },
+   "preuve": "JWT_ALGORITHM=HS256"
+  }
+ },
+ {
+  "id": "T0004",
+  "agent": "inventoriste",
+  "empreinte": "3562bcdb87f290e5",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 5,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret faible (JWT_SECRET)",
+   "description": "Secret JWT_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "15 caractères (minuscules, chiffres, symboles)",
+    "faiblesse_classique": "secret court ou prévisible (mot du dictionnaire, année...)",
+    "variable": "JWT_SECRET"
+   },
+   "preuve": "JWT_SECRET=<masqué>"
+  }
+ },
+ {
+  "id": "T0005",
+  "agent": "inventoriste",
+  "empreinte": "a0b7a840df96cb9b",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 7,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret aléatoire de 256 bits (WEBHOOK_SECRET)",
+   "description": "Secret WEBHOOK_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "64 caractères (minuscules, chiffres)",
+    "format": "hexadécimal, 256 bits",
+    "variable": "WEBHOOK_SECRET"
+   },
+   "preuve": "WEBHOOK_SECRET=<masqué>"
+  }
+ },
+ {
+  "id": "T0006",
+  "agent": "inventoriste",
+  "empreinte": "edcbeba8f6090b63",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 8,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé Fernet 256 bits (FIELD_ENCRYPTION_KEY)",
+   "description": "Secret FIELD_ENCRYPTION_KEY stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "44 caractères (minuscules, majuscules, chiffres, symboles)",
+    "format": "clé Fernet (base64, 32 octets : 128 bits AES + 128 bits HMAC)",
+    "variable": "FIELD_ENCRYPTION_KEY"
+   },
+   "preuve": "FIELD_ENCRYPTION_KEY=<masqué>"
+  }
+ },
+ {
+  "id": "T0007",
+  "agent": "inventoriste",
+  "empreinte": "8391257a1b2ef9f7",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 9,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret en clair (KEYSTORE_PASS)",
+   "description": "Secret KEYSTORE_PASS stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "16 caractères (minuscules, majuscules, chiffres)",
+    "variable": "KEYSTORE_PASS"
+   },
+   "preuve": "KEYSTORE_PASS=<masqué>"
+  }
+ },
+ {
+  "id": "T0008",
+  "agent": "inventoriste",
+  "empreinte": "c5b474a22b6b60c2",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/auth.py",
+   "ligne": 6,
+   "type_actif": "algorithm",
+   "nom": "Argon2id",
+   "description": "Hachage de mots de passe Argon2id",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "contexte": "Authentification des utilisateurs (v2, depuis 2024).",
+    "t": 2,
+    "m_kio": 19456,
+    "p": 1,
+    "variante": "Argon2id (défaut d'argon2-cffi)"
+   },
+   "preuve": "PasswordHasher(time_cost=2, memory_cost=19456, parallelism=1)"
+  }
+ },
+ {
+  "id": "T0009",
+  "agent": "inventoriste",
+  "empreinte": "5bd7ae22e42e23b3",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Root CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "76aee12e0ae204dff71a7853a7abf4ff10062434",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2046-11-11",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-4096",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Root CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0010",
+  "agent": "inventoriste",
+  "empreinte": "a5c263df4836858a",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 4096,
+    "empreinte_spki_sha256": "44ca50f2f1c9d45f605f9a470e63c532c5367cec655f7233cd768bdc24a6f5fa",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Public Key Algorithm: RSA-4096"
+  }
+ },
+ {
+  "id": "T0011",
+  "agent": "inventoriste",
+  "empreinte": "aa25277dd652eeb9",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": true,
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0012",
+  "agent": "inventoriste",
+  "empreinte": "38543c52717d48c3",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab CA 2015 »",
+   "description": "Certificat d'autorité « Lab CA 2015 », émis par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab CA 2015,O=Lab,C=FR",
+    "emetteur": "CN=Lab CA 2015,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "324fd42365122e12a7e24d9b85fd309db3007cf5",
+    "debut_validite": "2015-03-01",
+    "fin_validite": "2035-03-01",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "3d349d2d97fab62dfeaca63b853e399d479447f9ac5c8605c09256ae7ef610f3",
+    "certificat_sha256": "3d349d2d97fab62dfeaca63b853e399d479447f9ac5c8605c09256ae7ef610f3",
+    "rang_dans_fichier": 2,
+    "cle_publique": "RSA-1024",
+    "algorithme_signature": "sha1WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab CA 2015,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0013",
+  "agent": "inventoriste",
+  "empreinte": "439034b00df74151",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-1024",
+   "description": "Clé publique du certificat « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 1024,
+    "faiblesse_classique": "taille insuffisante aujourd'hui (1024 bits)",
+    "empreinte_spki_sha256": "568ff05a2c4a87b986e73e693b7ecbc72f72ad8b1383d878ff9758a0a001b695",
+    "certificat_sha256": "3d349d2d97fab62dfeaca63b853e399d479447f9ac5c8605c09256ae7ef610f3"
+   },
+   "preuve": "Public Key Algorithm: RSA-1024"
+  }
+ },
+ {
+  "id": "T0014",
+  "agent": "inventoriste",
+  "empreinte": "3d1b061623c6cee3",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha1WithRSAEncryption",
+   "description": "Signature du certificat « Lab CA 2015 » par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab CA 2015",
+    "auto_signature": true,
+    "certificat_sha256": "3d349d2d97fab62dfeaca63b853e399d479447f9ac5c8605c09256ae7ef610f3",
+    "faiblesse_classique": "fonction de hachage cassée (collisions)"
+   },
+   "preuve": "Signature Algorithm: sha1WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0015",
+  "agent": "inventoriste",
+  "empreinte": "3d44285c3c1cbb1c",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "argon2-cffi 25.1.0",
+   "description": "Bibliothèque argon2-cffi (hachage de mots de passe Argon2), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "hachage de mots de passe Argon2",
+    "declaree": true,
+    "module": "argon2",
+    "importee_dans": [
+     "api/auth.py"
+    ],
+    "contrainte": ">=23.1",
+    "version_verrouillee": "25.1.0"
+   },
+   "preuve": "argon2-cffi>=23.1 ; uv.lock : 25.1.0"
+  }
+ },
+ {
+  "id": "T0016",
+  "agent": "inventoriste",
+  "empreinte": "1299da04aeebcaf5",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "argon2-cffi-bindings 26.1.0",
+   "description": "Bibliothèque argon2-cffi-bindings (liaison C de la bibliothèque de référence Argon2), transitive, tirée par argon2-cffi",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "liaison C de la bibliothèque de référence Argon2",
+    "declaree": false,
+    "module": "_argon2_cffi_bindings",
+    "importee_dans": [],
+    "version_verrouillee": "26.1.0",
+    "tiree_par": [
+     "argon2-cffi"
+    ]
+   },
+   "preuve": "argon2-cffi-bindings ; uv.lock : 26.1.0"
+  }
+ },
+ {
+  "id": "T0017",
+  "agent": "inventoriste",
+  "empreinte": "ef0c9c888b7c4236",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "bcrypt 5.0.0",
+   "description": "Bibliothèque bcrypt (hachage de mots de passe bcrypt), transitive, tirée par paramiko",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "hachage de mots de passe bcrypt",
+    "declaree": false,
+    "module": "bcrypt",
+    "importee_dans": [],
+    "version_verrouillee": "5.0.0",
+    "tiree_par": [
+     "paramiko"
+    ]
+   },
+   "preuve": "bcrypt ; uv.lock : 5.0.0"
+  }
+ },
+ {
+  "id": "T0018",
+  "agent": "inventoriste",
+  "empreinte": "da8cb5df9f3153d8",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "cryptography 50.0.2",
+   "description": "Bibliothèque cryptography (primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels",
+    "declaree": true,
+    "module": "cryptography",
+    "importee_dans": [
+     "api/crypto_fields.py",
+     "factures/signer.py"
+    ],
+    "contrainte": ">=42.0",
+    "version_verrouillee": "50.0.2"
+   },
+   "preuve": "cryptography>=42.0 ; uv.lock : 50.0.2"
+  }
+ },
+ {
+  "id": "T0019",
+  "agent": "inventoriste",
+  "empreinte": "c7d05e478998a15b",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "paramiko 5.0.0",
+   "description": "Bibliothèque paramiko (client et serveur SSH en Python pur), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "client et serveur SSH en Python pur",
+    "declaree": true,
+    "module": "paramiko",
+    "importee_dans": [
+     "scripts/deploy.py"
+    ],
+    "contrainte": ">=3.4",
+    "version_verrouillee": "5.0.0"
+   },
+   "preuve": "paramiko>=3.4 ; uv.lock : 5.0.0"
+  }
+ },
+ {
+  "id": "T0020",
+  "agent": "inventoriste",
+  "empreinte": "6dc1c73cb5f5b2b6",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pycryptodome 3.9.9",
+   "description": "Bibliothèque pycryptodome (primitives cryptographiques (successeur de PyCrypto)), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "primitives cryptographiques (successeur de PyCrypto)",
+    "declaree": true,
+    "module": "Crypto",
+    "importee_dans": [],
+    "contrainte": "==3.9.9",
+    "version_verrouillee": "3.9.9",
+    "faiblesse_classique": "déclarée mais importée nulle part : dépendance morte ; version 3.9.9 antérieure à 3.19.1 — CVE-2023-52323 : fuite par canal auxiliaire dans le déchiffrement OAEP"
+   },
+   "preuve": "pycryptodome==3.9.9 ; uv.lock : 3.9.9"
+  }
+ },
+ {
+  "id": "T0021",
+  "agent": "inventoriste",
+  "empreinte": "e19147dd294586d7",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pyjwt 2.15.1",
+   "description": "Bibliothèque pyjwt (signature et vérification des jetons JWT), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "signature et vérification des jetons JWT",
+    "declaree": true,
+    "module": "jwt",
+    "importee_dans": [
+     "api/tokens.py"
+    ],
+    "contrainte": ">=2.8",
+    "version_verrouillee": "2.15.1"
+   },
+   "preuve": "pyjwt>=2.8 ; uv.lock : 2.15.1"
+  }
+ },
+ {
+  "id": "T0022",
+  "agent": "inventoriste",
+  "empreinte": "93e7d8d360e8d332",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "api/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pynacl 1.6.2",
+   "description": "Bibliothèque pynacl (liaison de libsodium (Curve25519, Ed25519, XSalsa20)), transitive, tirée par paramiko",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "liaison de libsodium (Curve25519, Ed25519, XSalsa20)",
+    "declaree": false,
+    "module": "nacl",
+    "importee_dans": [],
+    "version_verrouillee": "1.6.2",
+    "tiree_par": [
+     "paramiko"
+    ]
+   },
+   "preuve": "pynacl ; uv.lock : 1.6.2"
+  }
+ },
+ {
+  "id": "T0023",
+  "agent": "inventoriste",
+  "empreinte": "282d6d3770cb2e8f",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/cache.py",
+   "ligne": 9,
+   "type_actif": "algorithm",
+   "nom": "MD5",
+   "description": "Empreinte MD5 (hashlib) dans cle_de_cache()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "cle_de_cache",
+    "parametres": [
+     "contenu"
+    ],
+    "contexte": "Cache des traitements de documents (évite de retraiter un fichier déjà reçu).",
+    "faiblesse_classique": "MD5 est cassé (collisions)"
+   },
+   "preuve": "hashlib.md5(contenu)"
+  }
+ },
+ {
+  "id": "T0024",
+  "agent": "inventoriste",
+  "empreinte": "ab65b72566dafd63",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "clients/admin/.ssh/id_ed25519",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:g+1xdnuK+x/oTYvS88YgM98p3t6MspkmaqHuRSvyl3w",
+    "algorithme": "Ed25519",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0025",
+  "agent": "inventoriste",
+  "empreinte": "4024147a810f7d11",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "api/legacy_auth.py",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "SHA-256",
+   "description": "Mention de SHA-256 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "return hashlib.sha256(password.encode(\"utf-8\")).hexdigest()"
+  }
+ },
+ {
+  "id": "T0026",
+  "agent": "inventoriste",
+  "empreinte": "e99d529365e037c0",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/legacy_auth.py",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "SHA-256",
+   "description": "Empreinte SHA-256 (hashlib) dans hash_password_v1()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "hash_password_v1",
+    "parametres": [
+     "password"
+    ],
+    "contexte": "Ancienne authentification (v1), remplacée par auth.py en 2024.",
+    "usage_probable": "mot de passe",
+    "faiblesse_classique": "hachage rapide d'un mot de passe, sans sel ni itérations : à remplacer par Argon2id"
+   },
+   "preuve": "hashlib.sha256(password.encode('utf-8'))"
+  }
+ },
+ {
+  "id": "T0027",
+  "agent": "inventoriste",
+  "empreinte": "04f95a9aae262b29",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "clients/admin/admin.key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé privée (type masqué)",
+   "description": "Clé privée chiffrée par phrase de passe : son algorithme n'est pas lisible sans elle",
+   "exposition": "inconnue",
+   "implicite": false,
+   "proprietes": {
+    "format": "PKCS#8 chiffré",
+    "chiffree": true,
+    "chiffrement": "PBKDF2 (2048 itérations), AES-256"
+   },
+   "preuve": "-----BEGIN ENCRYPTED PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0028",
+  "agent": "inventoriste",
+  "empreinte": "39f00d98f2555d05",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/crypto_fields.py",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "Fernet (AES-128-CBC + HMAC-SHA256)",
+   "description": "Chiffrement symétrique authentifié Fernet",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "contexte": "Chiffrement des colonnes sensibles (IBAN des clients) avant écriture en base.",
+    "cle_lue_dans": "variable d'environnement FIELD_ENCRYPTION_KEY"
+   },
+   "preuve": "Fernet(os.environ['FIELD_ENCRYPTION_KEY'].encode())"
+  }
+ },
+ {
+  "id": "T0029",
+  "agent": "inventoriste",
+  "empreinte": "a52d61753366ecae",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/intermediaire.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Intermediate CA »",
+   "description": "Certificat d'autorité « Lab Intermediate CA », émis par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "2750e007cf540d422f7f8aadb8422f6441b6da3f",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2036-11-13",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14",
+    "certificat_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-384",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Intermediate CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0030",
+  "agent": "inventoriste",
+  "empreinte": "d8260a1e2c868b57",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/intermediaire.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé publique du certificat « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "taille": 384,
+    "empreinte_spki_sha256": "121209ec23e5976a207572ec9cc2755b1511892243b4009a6fedd9811eec0428",
+    "certificat_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-384"
+  }
+ },
+ {
+  "id": "T0031",
+  "agent": "inventoriste",
+  "empreinte": "ec0fb15408499d6c",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/intermediaire.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Intermediate CA » par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": false,
+    "certificat_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0032",
+  "agent": "inventoriste",
+  "empreinte": "3d82ccc53e0cd3f0",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/files.py",
+   "ligne": 8,
+   "type_actif": "algorithm",
+   "nom": "SHA-256",
+   "description": "Empreinte SHA-256 (hashlib) dans checksum_document()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "checksum_document",
+    "parametres": [
+     "contenu"
+    ],
+    "contexte": "Empreinte stockée en base à côté du document, pour détecter une corruption."
+   },
+   "preuve": "hashlib.sha256(contenu)"
+  }
+ },
+ {
+  "id": "T0033",
+  "agent": "inventoriste",
+  "empreinte": "2cb1ef72855c6f88",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/reset.py",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "Mersenne Twister (module random)",
+   "description": "Aléa du module random (choice) dans generer_jeton_reinitialisation()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "generer_jeton_reinitialisation",
+    "parametres": [],
+    "contexte": "Jeton envoyé par courriel pour réinitialiser le mot de passe.",
+    "faiblesse_classique": "générateur NON cryptographique : ses sorties sont prévisibles"
+   },
+   "preuve": "random.choice(_ALPHABET)"
+  }
+ },
+ {
+  "id": "T0034",
+  "agent": "inventoriste",
+  "empreinte": "df128b2da1a2c61b",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "db/tls/server.key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé privée RSA-3072, NON chiffrée (PKCS#8)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 3072,
+    "format": "PKCS#8",
+    "chiffree": false,
+    "empreinte_spki_sha256": "034186208ac9579abc544f6665ac1116328b8acce60da779244de9f8a267feb6",
+    "empreinte": "SHA256:ySgXHon/RSED8ipauV6vPfft45R1yMwsutEKKp6duwQ",
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0035",
+  "agent": "inventoriste",
+  "empreinte": "5f893143d86c5128",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/racine.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Root CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "76aee12e0ae204dff71a7853a7abf4ff10062434",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2046-11-11",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-4096",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Root CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0036",
+  "agent": "inventoriste",
+  "empreinte": "32c0d2844404735a",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/racine.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 4096,
+    "empreinte_spki_sha256": "44ca50f2f1c9d45f605f9a470e63c532c5367cec655f7233cd768bdc24a6f5fa",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Public Key Algorithm: RSA-4096"
+  }
+ },
+ {
+  "id": "T0037",
+  "agent": "inventoriste",
+  "empreinte": "3539fd03d5b4f710",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/racine.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": true,
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0038",
+  "agent": "inventoriste",
+  "empreinte": "0b9fda02c78d94a5",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/tokens.py",
+   "ligne": 15,
+   "type_actif": "algorithm",
+   "nom": "JWT (algorithme à déterminer)",
+   "description": "Signature des jetons JWT (pyjwt) dans creer_jeton()",
+   "exposition": "inconnue",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "creer_jeton",
+    "parametres": [
+     "utilisateur",
+     "duree"
+    ],
+    "contexte": "Jetons de session JWT.",
+    "algorithme": "lu dans la variable d'environnement JWT_ALGORITHM",
+    "secret_lu_dans": "variable d'environnement JWT_SECRET",
+    "lignes": [
+     "15",
+     "19"
+    ],
+    "fonctions": [
+     "creer_jeton",
+     "verifier_jeton"
+    ]
+   },
+   "preuve": "jwt.encode(charge, _SECRET, algorithm=_ALGORITHME)"
+  }
+ },
+ {
+  "id": "T0039",
+  "agent": "inventoriste",
+  "empreinte": "60750676d9837ac6",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "clients/admin/admin.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « admin »",
+   "description": "Certificat d'entité finale « admin », émis par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=admin,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "2f52f703805b3974a033730dfa8956c9cd475c06",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2027-11-16",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "clientAuth"
+    ],
+    "empreinte_sha256": "d237881d04b9fb43dc76e486fff5a0d36794df28fa457696ce17494bf5cbd63a",
+    "certificat_sha256": "d237881d04b9fb43dc76e486fff5a0d36794df28fa457696ce17494bf5cbd63a",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-256",
+    "algorithme_signature": "ecdsa-with-SHA384"
+   },
+   "preuve": "Subject: CN=admin,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0040",
+  "agent": "inventoriste",
+  "empreinte": "77606163996f7fe1",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "clients/admin/admin.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique du certificat « admin »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "empreinte_spki_sha256": "61dc4d2607e88253f9c219deac1d83d4ab0f40a6e7409c415a49598ea69ca1ab",
+    "certificat_sha256": "d237881d04b9fb43dc76e486fff5a0d36794df28fa457696ce17494bf5cbd63a"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-256"
+  }
+ },
+ {
+  "id": "T0041",
+  "agent": "inventoriste",
+  "empreinte": "e008b95ec1b97f9a",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "clients/admin/admin.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « admin » par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "d237881d04b9fb43dc76e486fff5a0d36794df28fa457696ce17494bf5cbd63a"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ },
+ {
+  "id": "T0042",
+  "agent": "inventoriste",
+  "empreinte": "0dc8b90a5cd15b67",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/utils/codes.py",
+   "ligne": 6,
+   "type_actif": "algorithm",
+   "nom": "random.SystemRandom (os.urandom)",
+   "description": "Aléa du système d'exploitation",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "contexte": "Codes d'invitation des nouveaux utilisateurs."
+   },
+   "preuve": "random.SystemRandom()"
+  }
+ },
+ {
+  "id": "T0043",
+  "agent": "inventoriste",
+  "empreinte": "71f040a03be34277",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "clients/admin/.ssh/known_hosts",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé publique SSH Ed25519 mémorisée pour l'hôte « ssh.lab.local »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:HekowQfoy/skudfdEllwhp+Kw0wNAzYczDi/YEUGco0",
+    "algorithme": "Ed25519",
+    "hotes": [
+     "ssh.lab.local"
+    ]
+   },
+   "preuve": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5..."
+  }
+ },
+ {
+  "id": "T0044",
+  "agent": "inventoriste",
+  "empreinte": "577066779b264035",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "db/pg_hba.conf",
+   "ligne": 3,
+   "type_actif": "protocol",
+   "nom": "md5",
+   "description": "Authentification des connexions à la base : défi-réponse MD5 sur une empreinte MD5 du mot de passe",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "lignes": [
+     "hostssl lab_app lab_app 10.0.0.0/8 md5"
+    ],
+    "faiblesse_classique": "MD5 est cassé ; une empreinte volée suffit pour se connecter"
+   },
+   "preuve": "hostssl lab_app lab_app 10.0.0.0/8 md5"
+  }
+ },
+ {
+  "id": "T0045",
+  "agent": "inventoriste",
+  "empreinte": "dbe286c5f9a9c1e0",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "db/postgresql.conf",
+   "ligne": 16,
+   "type_actif": "protocol",
+   "nom": "TLSv1.2",
+   "description": "Version TLS minimale du serveur PostgreSQL",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {},
+   "preuve": "ssl_min_protocol_version = 'TLSv1.2'"
+  }
+ },
+ {
+  "id": "T0046",
+  "agent": "inventoriste",
+  "empreinte": "5351c66937f916aa",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "HIGH:MEDIUM:+3DES:!aNULL",
+   "description": "Suites de chiffrement TLS 1.2 du serveur PostgreSQL : paramètre absent, valeur par défaut",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "nombre_de_suites_tls12": 125,
+    "echanges_de_cles": [
+     "DH",
+     "DHEPSK",
+     "ECDH",
+     "ECDHEPSK",
+     "PSK",
+     "RSA",
+     "RSAPSK",
+     "SRP"
+    ],
+    "developpe_avec": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+    "suites_echange_rsa": [
+     "AES256-GCM-SHA384",
+     "AES256-CCM",
+     "ARIA256-GCM-SHA384",
+     "AES128-GCM-SHA256",
+     "AES128-CCM",
+     "ARIA128-GCM-SHA256",
+     "AES256-SHA256",
+     "CAMELLIA256-SHA256",
+     "AES128-SHA256",
+     "CAMELLIA128-SHA256",
+     "AES256-SHA",
+     "CAMELLIA256-SHA",
+     "AES128-SHA",
+     "CAMELLIA128-SHA",
+     "AES256-CCM8",
+     "AES128-CCM8"
+    ],
+    "faiblesse_classique": "MEDIUM et 3DES autorisés",
+    "source": "valeur par défaut de PostgreSQL 12 à 17"
+   },
+   "preuve": "ssl_ciphers absent de db/postgresql.conf"
+  }
+ },
+ {
+  "id": "T0047",
+  "agent": "inventoriste",
+  "empreinte": "c69d4b82b643ee83",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "db/postgresql.conf",
+   "ligne": 17,
+   "type_actif": "algorithm",
+   "nom": "prime256v1",
+   "description": "Groupe d'échange de clés (ECDHE) du serveur PostgreSQL",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {},
+   "preuve": "ssl_ecdh_curve = 'prime256v1'"
+  }
+ },
+ {
+  "id": "T0048",
+  "agent": "inventoriste",
+  "empreinte": "894ef2f7af490434",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "db/tls/server.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « db.lab.local »",
+   "description": "Certificat d'entité finale « db.lab.local », émis par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=db.lab.local,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "1f6d67681bf05ac229188f29bdab8bc518e0d5f0",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2028-11-15",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "key_encipherment",
+     "serverAuth"
+    ],
+    "empreinte_sha256": "dbeec4d09b2188ecfd8d92db5475b6667fe3d14051274ecfdd8fc9801e470564",
+    "certificat_sha256": "dbeec4d09b2188ecfd8d92db5475b6667fe3d14051274ecfdd8fc9801e470564",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-3072",
+    "algorithme_signature": "ecdsa-with-SHA384",
+    "noms_alternatifs": [
+     "db.lab.local"
+    ]
+   },
+   "preuve": "Subject: CN=db.lab.local,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0049",
+  "agent": "inventoriste",
+  "empreinte": "df3a2c9ca63b72b6",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "db/tls/server.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique du certificat « db.lab.local »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 3072,
+    "empreinte_spki_sha256": "034186208ac9579abc544f6665ac1116328b8acce60da779244de9f8a267feb6",
+    "certificat_sha256": "dbeec4d09b2188ecfd8d92db5475b6667fe3d14051274ecfdd8fc9801e470564"
+   },
+   "preuve": "Public Key Algorithm: RSA-3072"
+  }
+ },
+ {
+  "id": "T0050",
+  "agent": "inventoriste",
+  "empreinte": "debfbd53e27fe5a9",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "db/tls/server.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « db.lab.local » par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "dbeec4d09b2188ecfd8d92db5475b6667fe3d14051274ecfdd8fc9801e470564"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ },
+ {
+  "id": "T0051",
+  "agent": "inventoriste",
+  "empreinte": "51b4618dfc4ee3b6",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "db/tls/root.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Root CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "76aee12e0ae204dff71a7853a7abf4ff10062434",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2046-11-11",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-4096",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Root CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0052",
+  "agent": "inventoriste",
+  "empreinte": "96a1a6d7fc9d1245",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "db/tls/root.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 4096,
+    "empreinte_spki_sha256": "44ca50f2f1c9d45f605f9a470e63c532c5367cec655f7233cd768bdc24a6f5fa",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Public Key Algorithm: RSA-4096"
+  }
+ },
+ {
+  "id": "T0053",
+  "agent": "inventoriste",
+  "empreinte": "119bee163cc8dbd0",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "db/tls/root.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": true,
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0054",
+  "agent": "inventoriste",
+  "empreinte": "413b09c9d09f3f46",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/webhooks.py",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "HMAC-SHA-256",
+   "description": "Code d'authentification HMAC-SHA-256 dans signature_valide()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "signature_valide",
+    "parametres": [
+     "corps",
+     "signature_recue"
+    ],
+    "contexte": "Réception des webhooks du prestataire de paiement.",
+    "cle_lue_dans": "variable d'environnement WEBHOOK_SECRET",
+    "comparaison": "« == » ligne 12 (temps NON constant)",
+    "faiblesse_classique": "tag comparé avec == : attaque temporelle possible, utiliser hmac.compare_digest"
+   },
+   "preuve": "hmac.new(_SECRET, corps, hashlib.sha256)"
+  }
+ },
+ {
+  "id": "T0055",
+  "agent": "inventoriste",
+  "empreinte": "733e5cee1338bc76",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "deploy/old/backup_2024/inter.key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé privée ECDSA P-384, NON chiffrée (PKCS#8)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "taille": 384,
+    "format": "PKCS#8",
+    "chiffree": false,
+    "empreinte_spki_sha256": "121209ec23e5976a207572ec9cc2755b1511892243b4009a6fedd9811eec0428",
+    "empreinte": "SHA256:ya3OkTV/xXb1NIPH0wmelzHg6fSqav3BZAP1nRxt5kE",
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0056",
+  "agent": "inventoriste",
+  "empreinte": "99ecc17214bd2361",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "factures/keys/factures.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Factures »",
+   "description": "Certificat d'entité finale « Lab Factures », émis par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Factures,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "21e1743accd59ed09bf6956d5e3f0ef6f00b8aa3",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2029-11-15",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature"
+    ],
+    "empreinte_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759",
+    "certificat_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-256",
+    "algorithme_signature": "ecdsa-with-SHA384"
+   },
+   "preuve": "Subject: CN=Lab Factures,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0057",
+  "agent": "inventoriste",
+  "empreinte": "32b07150a6e23237",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "factures/keys/factures.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique du certificat « Lab Factures »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "empreinte_spki_sha256": "40d93cb9695f0f4e49ef71bd55375f98874f4a83b7c99780ac82a4e31c43abd8",
+    "certificat_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-256"
+  }
+ },
+ {
+  "id": "T0058",
+  "agent": "inventoriste",
+  "empreinte": "35c07aabf2c22cb2",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "factures/keys/factures.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « Lab Factures » par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ },
+ {
+  "id": "T0059",
+  "agent": "inventoriste",
+  "empreinte": "57e9fe377bd8152a",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "nginx/ssl/dhparam.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "DH-2048",
+   "description": "Paramètres Diffie-Hellman sur corps fini, 2048 bits (groupe standard de type RFC 3526 / 7919)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "DH",
+    "taille": 2048,
+    "generateur": 2,
+    "groupe_standard": true
+   },
+   "preuve": "-----BEGIN DH PARAMETERS-----"
+  }
+ },
+ {
+  "id": "T0060",
+  "agent": "inventoriste",
+  "empreinte": "1ed88f23631e9298",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/fullchain.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « app.lab.local »",
+   "description": "Certificat d'entité finale « app.lab.local », émis par « Lab Intermediate CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=app.lab.local,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "479c0be44288f2ff8a1d7d0593d01d14257e7161",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2027-11-16",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "key_encipherment",
+     "serverAuth"
+    ],
+    "empreinte_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76",
+    "certificat_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-2048",
+    "algorithme_signature": "ecdsa-with-SHA384",
+    "noms_alternatifs": [
+     "app.lab.local",
+     "api.lab.local"
+    ]
+   },
+   "preuve": "Subject: CN=app.lab.local,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0061",
+  "agent": "inventoriste",
+  "empreinte": "aee7c0bbc50b0307",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/fullchain.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-2048",
+   "description": "Clé publique du certificat « app.lab.local » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 2048,
+    "empreinte_spki_sha256": "278e384b6508763984aeecb573447b2d05a44c3a4707acb50a57a0f10f35445e",
+    "certificat_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76"
+   },
+   "preuve": "Public Key Algorithm: RSA-2048"
+  }
+ },
+ {
+  "id": "T0062",
+  "agent": "inventoriste",
+  "empreinte": "b4676a3195a3bed9",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/fullchain.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « app.lab.local » par « Lab Intermediate CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ },
+ {
+  "id": "T0063",
+  "agent": "inventoriste",
+  "empreinte": "216fc61508ba4429",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/fullchain.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Intermediate CA »",
+   "description": "Certificat d'autorité « Lab Intermediate CA », émis par « Lab Root CA » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "2750e007cf540d422f7f8aadb8422f6441b6da3f",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2036-11-13",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14",
+    "certificat_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14",
+    "rang_dans_fichier": 2,
+    "cle_publique": "ECDSA P-384",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Intermediate CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0064",
+  "agent": "inventoriste",
+  "empreinte": "d87b887c051d449b",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/fullchain.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé publique du certificat « Lab Intermediate CA » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "taille": 384,
+    "empreinte_spki_sha256": "121209ec23e5976a207572ec9cc2755b1511892243b4009a6fedd9811eec0428",
+    "certificat_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-384"
+  }
+ },
+ {
+  "id": "T0065",
+  "agent": "inventoriste",
+  "empreinte": "063df498a5ebf272",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/fullchain.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Intermediate CA » par « Lab Root CA » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": false,
+    "certificat_sha256": "67bed479a6de6aca2f7d539ee628eff7cccdb5fb0e2523fac75f2ab91ce52c14"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0066",
+  "agent": "inventoriste",
+  "empreinte": "0da537ae7029b887",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/old/ssh_host_dsa_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "DSA-1024",
+   "description": "Clé privée DSA-1024, NON chiffrée (PEM traditionnel)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "DSA",
+    "taille": 1024,
+    "faiblesse_classique": "DSA est obsolète",
+    "format": "PEM traditionnel",
+    "chiffree": false,
+    "empreinte_spki_sha256": "f48906b9d6f333563f6f5f5a0aa869db678428a50787358b764944693e7ce241",
+    "empreinte": "SHA256:m0dJchNhabQJYz/THOoS2/mxgO4TBreuHjQj/5+GqEI",
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN DSA PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0067",
+  "agent": "inventoriste",
+  "empreinte": "fe662a0bd0055cac",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "nginx/nginx.conf",
+   "ligne": 31,
+   "type_actif": "protocol",
+   "nom": "TLSv1.2 TLSv1.3",
+   "description": "Versions de TLS acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "versions": [
+     "TLSv1.2",
+     "TLSv1.3"
+    ],
+    "serveurs": [
+     "app.lab.local api.lab.local"
+    ]
+   },
+   "preuve": "ssl_protocols TLSv1.2 TLSv1.3;"
+  }
+ },
+ {
+  "id": "T0068",
+  "agent": "inventoriste",
+  "empreinte": "1037bbedb336eba9",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "nginx/nginx.conf",
+   "ligne": 32,
+   "type_actif": "protocol",
+   "nom": "HIGH:!aNULL:!MD5",
+   "description": "Suites de chiffrement TLS 1.2 acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "nombre_de_suites_tls12": 115,
+    "echanges_de_cles": [
+     "DH",
+     "DHEPSK",
+     "ECDH",
+     "ECDHEPSK",
+     "PSK",
+     "RSA",
+     "RSAPSK",
+     "SRP"
+    ],
+    "developpe_avec": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+    "suites_echange_rsa": [
+     "AES256-GCM-SHA384",
+     "AES256-CCM",
+     "ARIA256-GCM-SHA384",
+     "AES128-GCM-SHA256",
+     "AES128-CCM",
+     "ARIA128-GCM-SHA256",
+     "AES256-SHA256",
+     "CAMELLIA256-SHA256",
+     "AES128-SHA256",
+     "CAMELLIA128-SHA256",
+     "AES256-SHA",
+     "CAMELLIA256-SHA",
+     "AES128-SHA",
+     "CAMELLIA128-SHA"
+    ],
+    "serveurs": [
+     "app.lab.local api.lab.local"
+    ]
+   },
+   "preuve": "ssl_ciphers HIGH:!aNULL:!MD5;"
+  }
+ },
+ {
+  "id": "T0069",
+  "agent": "inventoriste",
+  "empreinte": "9e6f02dab8dbc5b6",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "nginx/nginx.conf",
+   "ligne": 32,
+   "type_actif": "protocol",
+   "nom": "Échange de clés RSA (Kx=RSA) : 14 suites",
+   "description": "Suites TLS 1.2 sans confidentialité persistante activées par la chaîne ssl_ciphers : la clé RSA du certificat chiffre directement le secret de session",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "suites": [
+     "AES256-GCM-SHA384",
+     "AES256-CCM",
+     "ARIA256-GCM-SHA384",
+     "AES128-GCM-SHA256",
+     "AES128-CCM",
+     "ARIA128-GCM-SHA256",
+     "AES256-SHA256",
+     "CAMELLIA256-SHA256",
+     "AES128-SHA256",
+     "CAMELLIA128-SHA256",
+     "AES256-SHA",
+     "CAMELLIA256-SHA",
+     "AES128-SHA",
+     "CAMELLIA128-SHA"
+    ],
+    "faiblesse_classique": "pas de confidentialité persistante",
+    "serveurs": [
+     "app.lab.local api.lab.local"
+    ]
+   },
+   "preuve": "ssl_ciphers HIGH:!aNULL:!MD5;"
+  }
+ },
+ {
+  "id": "T0070",
+  "agent": "inventoriste",
+  "empreinte": "67890000f561b5df",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
+   "description": "Suites de chiffrement TLS 1.3 : aucune directive ne les fixe, nginx applique celles d'OpenSSL",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "suites": [
+     "TLS_AES_256_GCM_SHA384",
+     "TLS_CHACHA20_POLY1305_SHA256",
+     "TLS_AES_128_GCM_SHA256"
+    ],
+    "source": "valeur par défaut d'OpenSSL 3 (SSL_CTX_set_ciphersuites)",
+    "serveurs": [
+     "app.lab.local api.lab.local"
+    ]
+   },
+   "preuve": "ssl_conf_command absente (serveur app.lab.local api.lab.local)"
+  }
+ },
+ {
+  "id": "T0071",
+  "agent": "inventoriste",
+  "empreinte": "55bae479e2d6f0be",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "nginx/nginx.conf",
+   "ligne": 33,
+   "type_actif": "algorithm",
+   "nom": "X25519:secp256r1",
+   "description": "Groupes d'échange de clés (ECDHE) proposés par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "groupes": [
+     "X25519",
+     "secp256r1"
+    ],
+    "hybride_post_quantique": false,
+    "serveurs": [
+     "app.lab.local api.lab.local"
+    ]
+   },
+   "preuve": "ssl_ecdh_curve X25519:secp256r1;"
+  }
+ },
+ {
+  "id": "T0072",
+  "agent": "inventoriste",
+  "empreinte": "b05552da8d24543d",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "nginx/nginx.conf",
+   "ligne": 36,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé des tickets de session TLS",
+   "description": "Clé symétrique générée par nginx pour chiffrer les tickets de reprise de session",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "rotation": "au redémarrage de nginx",
+    "serveurs": [
+     "app.lab.local api.lab.local"
+    ]
+   },
+   "preuve": "ssl_session_tickets on;"
+  }
+ },
+ {
+  "id": "T0073",
+  "agent": "inventoriste",
+  "empreinte": "279e9ec9747a0d20",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/server.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « app.lab.local »",
+   "description": "Certificat d'entité finale « app.lab.local », émis par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=app.lab.local,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "479c0be44288f2ff8a1d7d0593d01d14257e7161",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2027-11-16",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "key_encipherment",
+     "serverAuth"
+    ],
+    "empreinte_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76",
+    "certificat_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-2048",
+    "algorithme_signature": "ecdsa-with-SHA384",
+    "noms_alternatifs": [
+     "app.lab.local",
+     "api.lab.local"
+    ]
+   },
+   "preuve": "Subject: CN=app.lab.local,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0074",
+  "agent": "inventoriste",
+  "empreinte": "97f0d1c1db2a2b86",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/server.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-2048",
+   "description": "Clé publique du certificat « app.lab.local »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 2048,
+    "empreinte_spki_sha256": "278e384b6508763984aeecb573447b2d05a44c3a4707acb50a57a0f10f35445e",
+    "certificat_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76"
+   },
+   "preuve": "Public Key Algorithm: RSA-2048"
+  }
+ },
+ {
+  "id": "T0075",
+  "agent": "inventoriste",
+  "empreinte": "cabbfcc634253510",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/server.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « app.lab.local » par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "bc3eeae21bd23ccb3bf288334c10e3ae7b35ecd4c0ccdcdc966471c701524f76"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ },
+ {
+  "id": "T0076",
+  "agent": "inventoriste",
+  "empreinte": "f4e80b8a320a0766",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/ca_clients.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Root CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "76aee12e0ae204dff71a7853a7abf4ff10062434",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2046-11-11",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-4096",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Root CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0077",
+  "agent": "inventoriste",
+  "empreinte": "12dbd36687f995c6",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/ca_clients.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 4096,
+    "empreinte_spki_sha256": "44ca50f2f1c9d45f605f9a470e63c532c5367cec655f7233cd768bdc24a6f5fa",
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Public Key Algorithm: RSA-4096"
+  }
+ },
+ {
+  "id": "T0078",
+  "agent": "inventoriste",
+  "empreinte": "cc7aa051fc70f7fe",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "nginx/ssl/ca_clients.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": true,
+    "certificat_sha256": "a687500632dddaa3c25dada4a9ded9e432ba3fac14791a36f5341e20cb735ba9"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0079",
+  "agent": "inventoriste",
+  "empreinte": "79151cdca6146733",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "nginx/ssl/server.key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-2048",
+   "description": "Clé privée RSA-2048, NON chiffrée (PKCS#8)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 2048,
+    "format": "PKCS#8",
+    "chiffree": false,
+    "empreinte_spki_sha256": "278e384b6508763984aeecb573447b2d05a44c3a4707acb50a57a0f10f35445e",
+    "empreinte": "SHA256:ZZjlqm5eKFkoPGuUi+gu8A2j/ionSxOt6W0BpfBu40M",
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0080",
+  "agent": "inventoriste",
+  "empreinte": "d5f19462d6eee959",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/old/ssh_host_dsa_key.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "DSA-1024",
+   "description": "Clé publique SSH DSA-1024 (« root@ssh-lab »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-dss",
+    "empreinte": "SHA256:m0dJchNhabQJYz/THOoS2/mxgO4TBreuHjQj/5+GqEI",
+    "algorithme": "DSA",
+    "taille": 1024,
+    "faiblesse_classique": "DSA est obsolète (retiré d'OpenSSH)",
+    "commentaire": "root@ssh-lab"
+   },
+   "preuve": "ssh-dss AAAAB3NzaC1kc3MAAACB... root@ssh-lab"
+  }
+ },
+ {
+  "id": "T0081",
+  "agent": "inventoriste",
+  "empreinte": "284646776d90a0e3",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "ssh/Dockerfile",
+   "ligne": 4,
+   "type_actif": "library",
+   "nom": "OpenSSH 9.6p1",
+   "description": "OpenSSH installé dans l'image (openssh-server)",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "paquet": "openssh-server",
+    "image_de_base": "ubuntu:24.04",
+    "version_paquet": "1:9.6p1-3ubuntu13.5",
+    "version": "9.6p1",
+    "kex_post_quantique_par_defaut": "sntrup761x25519-sha512@openssh.com"
+   },
+   "preuve": "openssh-server=1:9.6p1-3ubuntu13.5"
+  }
+ },
+ {
+  "id": "T0082",
+  "agent": "inventoriste",
+  "empreinte": "c1f9faa2c8142fef",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "api/legacy_auth.py",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "SHA-256",
+   "description": "Empreinte SHA-256 (hashlib) dans hash_password_v1()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "hash_password_v1",
+    "parametres": [
+     "password"
+    ],
+    "contexte": "Ancienne authentification (v1), remplacée par auth.py en 2024.",
+    "usage_probable": "mot de passe",
+    "faiblesse_classique": "hachage rapide d'un mot de passe, sans sel ni itérations : à remplacer par Argon2id",
+    "module_importe_ailleurs": false
+   },
+   "preuve": "hashlib.sha256(password.encode('utf-8'))"
+  }
+ },
+ {
+  "id": "T0083",
+  "agent": "inventoriste",
+  "empreinte": "9217f5ee95e2bee2",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/ssh_host_ed25519_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:HekowQfoy/skudfdEllwhp+Kw0wNAzYczDi/YEUGco0",
+    "algorithme": "Ed25519",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0084",
+  "agent": "inventoriste",
+  "empreinte": "629981fbb2643393",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "scripts/keys/backup_pub.asc",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique OpenPGP RSA-3072 de « Sauvegardes Lab <backup@lab.local> »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "format": "OpenPGP v4",
+    "algorithme": "RSA",
+    "sous_cle": false,
+    "taille": 3072,
+    "identites": [
+     "Sauvegardes Lab <backup@lab.local>"
+    ]
+   },
+   "preuve": "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+  }
+ },
+ {
+  "id": "T0085",
+  "agent": "inventoriste",
+  "empreinte": "219cc98ffb7f56a7",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "ssh/server/sshd_config",
+   "ligne": 10,
+   "type_actif": "algorithm",
+   "nom": "curve25519-sha256,diffie-hellman-group14-sha256",
+   "description": "Échange de clés (KexAlgorithms) du serveur SSH",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "curve25519-sha256",
+     "diffie-hellman-group14-sha256"
+    ],
+    "ecriture": "liste explicite",
+    "post_quantique_retire": [
+     "sntrup761x25519-sha512@openssh.com"
+    ],
+    "regression": "la liste écrite retire l'échange post-quantique hybride proposé par défaut par OpenSSH",
+    "version_openssh": "9.6 (lue dans ssh/Dockerfile)"
+   },
+   "preuve": "KexAlgorithms curve25519-sha256,diffie-hellman-group14-sha256"
+  }
+ },
+ {
+  "id": "T0086",
+  "agent": "inventoriste",
+  "empreinte": "20da640c9dc65cbf",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "ssh/server/sshd_config",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-ctr",
+   "description": "Chiffrement de la session (Ciphers) du serveur SSH",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "chacha20-poly1305@openssh.com",
+     "aes256-gcm@openssh.com",
+     "aes128-ctr"
+    ],
+    "ecriture": "liste explicite",
+    "version_openssh": "9.6 (lue dans ssh/Dockerfile)"
+   },
+   "preuve": "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-ctr"
+  }
+ },
+ {
+  "id": "T0087",
+  "agent": "inventoriste",
+  "empreinte": "7b595c6bb847d7af",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "ssh/server/sshd_config",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com",
+   "description": "Intégrité des messages (MACs) du serveur SSH",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "hmac-sha2-256-etm@openssh.com",
+     "hmac-sha2-512-etm@openssh.com"
+    ],
+    "ecriture": "liste explicite",
+    "version_openssh": "9.6 (lue dans ssh/Dockerfile)"
+   },
+   "preuve": "MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com"
+  }
+ },
+ {
+  "id": "T0088",
+  "agent": "inventoriste",
+  "empreinte": "6ccaf7cdd805ecec",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "ssh/server/sshd_config",
+   "ligne": 13,
+   "type_actif": "algorithm",
+   "nom": "ssh-ed25519,rsa-sha2-512,ecdsa-sha2-nistp256",
+   "description": "Algorithmes de signature des clés d'hôte (HostKeyAlgorithms) du serveur SSH",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "ssh-ed25519",
+     "rsa-sha2-512",
+     "ecdsa-sha2-nistp256"
+    ],
+    "ecriture": "liste explicite",
+    "version_openssh": "9.6 (lue dans ssh/Dockerfile)"
+   },
+   "preuve": "HostKeyAlgorithms ssh-ed25519,rsa-sha2-512,ecdsa-sha2-nistp256"
+  }
+ },
+ {
+  "id": "T0089",
+  "agent": "inventoriste",
+  "empreinte": "09430fa536ffbf6a",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256",
+   "description": "Algorithmes acceptés pour les clés des utilisateurs (PubkeyAcceptedAlgorithms) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "ssh-ed25519-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp521-cert-v01@openssh.com",
+     "sk-ssh-ed25519-cert-v01@openssh.com",
+     "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "rsa-sha2-512-cert-v01@openssh.com",
+     "rsa-sha2-256-cert-v01@openssh.com",
+     "ssh-ed25519",
+     "ecdsa-sha2-nistp256",
+     "ecdsa-sha2-nistp384",
+     "ecdsa-sha2-nistp521",
+     "sk-ssh-ed25519@openssh.com",
+     "sk-ecdsa-sha2-nistp256@openssh.com",
+     "rsa-sha2-512",
+     "rsa-sha2-256"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (sshd_config(5))",
+    "version_openssh": "9.6 (lue dans ssh/Dockerfile)"
+   },
+   "preuve": "PubkeyAcceptedAlgorithms absente de ssh/server/sshd_config"
+  }
+ },
+ {
+  "id": "T0090",
+  "agent": "inventoriste",
+  "empreinte": "58840e9cee7a7a50",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/ssh_host_ecdsa_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé privée SSH ECDSA P-256, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp256",
+    "empreinte": "SHA256:io1g6UbovTyOhvO0NiWsvEyM1ujf22CrDYnZhhMAoLo",
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0091",
+  "agent": "inventoriste",
+  "empreinte": "17ca59c001137c68",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/ssh_host_rsa_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé privée SSH RSA-3072, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-rsa",
+    "empreinte": "SHA256:kBZODc5iZBTYQZIIN+eL6cHaafSb2xfvzwRu93Z03Rw",
+    "algorithme": "RSA",
+    "taille": 3072,
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "666"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0092",
+  "agent": "inventoriste",
+  "empreinte": "4726694493b749cc",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/ssh_host_ecdsa_key.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique SSH ECDSA P-256 (« root@ssh-lab »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp256",
+    "empreinte": "SHA256:io1g6UbovTyOhvO0NiWsvEyM1ujf22CrDYnZhhMAoLo",
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "commentaire": "root@ssh-lab"
+   },
+   "preuve": "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTIt... root@ssh-lab"
+  }
+ },
+ {
+  "id": "T0093",
+  "agent": "inventoriste",
+  "empreinte": "1a213aff082c7cb6",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/ssh_host_ed25519_key.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé publique SSH Ed25519 (« root@ssh-lab »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:HekowQfoy/skudfdEllwhp+Kw0wNAzYczDi/YEUGco0",
+    "algorithme": "Ed25519",
+    "commentaire": "root@ssh-lab"
+   },
+   "preuve": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5... root@ssh-lab"
+  }
+ },
+ {
+  "id": "T0094",
+  "agent": "inventoriste",
+  "empreinte": "27486a0434ff1650",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "factures/signer.py",
+   "ligne": 23,
+   "type_actif": "algorithm",
+   "nom": "ECDSA avec SHA-256",
+   "description": "Signature ECDSA avec SHA-256 dans signer_facture()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "signer_facture",
+    "parametres": [
+     "contenu"
+    ],
+    "contexte": "Signature électronique des factures émises (conservées 10 ans).",
+    "courbe": "celle de la clé chargée (voir le certificat ou le conteneur)",
+    "lignes": [
+     "23",
+     "29"
+    ],
+    "fonctions": [
+     "signer_facture",
+     "verifier_facture"
+    ]
+   },
+   "preuve": "ec.ECDSA(hashes.SHA256())"
+  }
+ },
+ {
+  "id": "T0095",
+  "agent": "inventoriste",
+  "empreinte": "4f2191319b78a01a",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "scripts/backup.sh",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "Chiffrement OpenPGP à clé publique",
+   "description": "Données chiffrées par gpg pour la clé de « backup@lab.local »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "destinataire": "backup@lab.local",
+    "chiffrement_symetrique": "choisi par GnuPG selon les préférences de la clé",
+    "faiblesse_classique": "--trust-model always : la clé du destinataire n'est pas vérifiée",
+    "duree_conservation_jours": 3650
+   },
+   "preuve": "gpg --batch --yes --trust-model always --encrypt --recipient backup@lab.local /var/backups/lab/lab_app_$DATE.sql.gz.gpg"
+  }
+ },
+ {
+  "id": "T0096",
+  "agent": "inventoriste",
+  "empreinte": "3dacf792fd588d23",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "ssh/server/home/admin/.ssh/authorized_keys",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé publique SSH Ed25519 (« admin@poste-admin »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:g+1xdnuK+x/oTYvS88YgM98p3t6MspkmaqHuRSvyl3w",
+    "algorithme": "Ed25519",
+    "commentaire": "admin@poste-admin"
+   },
+   "preuve": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5... admin@poste-admin"
+  }
+ },
+ {
+  "id": "T0097",
+  "agent": "inventoriste",
+  "empreinte": "cf17278700b9953e",
+  "trouvaille": {
+   "outil": "analyser_pkcs12",
+   "fichier": "factures/keys/factures.p12",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "pbeWithSHA1And3-KeyTripleDES-CBC ; MAC SHA-1",
+   "description": "Chiffrement par mot de passe du conteneur PKCS#12 (clé et certificats) et son MAC d'intégrité",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "chiffrement_cle": [
+     "pbeWithSHA1And3-KeyTripleDES-CBC"
+    ],
+    "chiffrement_certificats": [
+     "pbeWithSHA1And3-KeyTripleDES-CBC"
+    ],
+    "mac": "SHA-1",
+    "iterations_mac": 2048,
+    "faiblesse_classique": "algorithmes anciens : pbeWithSHA1And3-KeyTripleDES-CBC, SHA-1"
+   },
+   "preuve": "PFX : clé ['pbeWithSHA1And3-KeyTripleDES-CBC'], certificats ['pbeWithSHA1And3-KeyTripleDES-CBC'], MAC SHA-1"
+  }
+ },
+ {
+  "id": "T0098",
+  "agent": "inventoriste",
+  "empreinte": "1628b099546bb7b2",
+  "trouvaille": {
+   "outil": "analyser_pkcs12",
+   "fichier": "factures/keys/factures.p12",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé privée ECDSA P-256 contenue dans le PKCS#12",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "mot_de_passe_lu_dans": "api/.env (KEYSTORE_PASS)"
+   },
+   "preuve": "pkcs8ShroudedKeyBag"
+  }
+ },
+ {
+  "id": "T0099",
+  "agent": "inventoriste",
+  "empreinte": "2250da4e133c5f4c",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "factures/keys/factures.p12",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Factures »",
+   "description": "Certificat d'entité finale « Lab Factures », émis par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Factures,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "21e1743accd59ed09bf6956d5e3f0ef6f00b8aa3",
+    "debut_validite": "2026-11-16",
+    "fin_validite": "2029-11-15",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature"
+    ],
+    "empreinte_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759",
+    "certificat_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-256",
+    "algorithme_signature": "ecdsa-with-SHA384"
+   },
+   "preuve": "Subject: CN=Lab Factures,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0100",
+  "agent": "inventoriste",
+  "empreinte": "c40cc43e1f23cf71",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "factures/keys/factures.p12",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique du certificat « Lab Factures »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "empreinte_spki_sha256": "40d93cb9695f0f4e49ef71bd55375f98874f4a83b7c99780ac82a4e31c43abd8",
+    "certificat_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-256"
+  }
+ },
+ {
+  "id": "T0101",
+  "agent": "inventoriste",
+  "empreinte": "62c8af2e5d783f8c",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "factures/keys/factures.p12",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « Lab Factures » par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "a1fe3ba5a358d2301d01c908a854295f4b8477c58abac67fc6ef2e40b1438759"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ }
+]

@@ -161,7 +161,7 @@ def ajouter_bilan(bilan: dict, fichier: Path = RESULTATS_RAW) -> None:
     fichier.parent.mkdir(parents=True, exist_ok=True)
     existant = json.loads(fichier.read_text(encoding="utf-8")) if fichier.is_file() else []
     existant.append(bilan)
-    fichier.write_text(json.dumps(existant, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    fichier.write_text(json.dumps(existant, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def main(argv: list[str] | None = None) -> None:

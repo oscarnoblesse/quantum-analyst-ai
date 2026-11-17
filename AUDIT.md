@@ -50,8 +50,8 @@ make rejeu SESSION=traces/<session>
 - **Attendu (exact)** : aucun appel d'outil pur `DIFFÉRENT`. Les appels non rejoués sont listés
   (outils qui lisent l'état de la session, laboratoire).
 - **Attendu** : sur la session v5, 51 appels identiques sur 75 enregistrés, aucun écart.
-- Les traces ne sont pas versionnées dans le dépôt : elles sont à reproduire (`make agents`) ou à
-  demander à l'auteur.
+- Les traces des exécutions sont publiées dans `traces/` (CC BY 4.0) et couvertes par
+  `SHA256SUMS` (section 10) ; de nouvelles traces se produisent avec `make agents`.
 
 **Évaluation** (`make evaluer SESSIONS="traces/<session>"`) :
 - **Attendu, exécution v5** : rappel 1,0 ; précision stricte 0,9359 ; F1 0,9669 (valeurs
@@ -119,14 +119,42 @@ make metriques
 
 ## 9. Sécurité du dépôt
 
-- **Attendu** : gitleaks ne signale aucun secret (CI, job `secrets`) ; aucun fichier du SI fictif,
-  aucune clé privée et aucun dossier `traces/` n'est versionné (`git ls-files | grep -c traces/`
-  renvoie 0).
+- **Attendu** : gitleaks ne signale aucun secret (CI, job `secrets`) ; aucun fichier du SI fictif
+  et aucune clé privée n'est versionné. Les traces publiées (`traces/`) ont été relues : aucun
+  secret réel ni aucune donnée personnelle ; gitleaks les analyse comme le reste du dépôt.
+
+## 10. Intégrité et authenticité des résultats
+
+À faire **en premier**, sur un clone neuf ou l'archive Zenodo, avant toute commande qui régénère
+des résultats (`make metriques` réécrit `results/metrics.json` et `results/ENVIRONMENT.json`).
+
+`SHA256SUMS` liste l'empreinte SHA-256 de chaque artefact publié : `results/`, `traces/` et
+`data/ground_truth/`. `SHA256SUMS.minisig` est sa signature [minisign](https://jedisct1.github.io/minisign/)
+(Ed25519), faite par l'auteur au moment de la release ; `cle_publique_minisign.pub` est la clé
+publique correspondante. Installer minisign : `brew install minisign` (macOS),
+`winget install jedisct1.minisign` (Windows), `apt install minisign` (Debian, Ubuntu).
+
+```bash
+minisign -V -p cle_publique_minisign.pub -m SHA256SUMS   # authenticité de SHA256SUMS
+uv run python -m quantum_ready.integrite verifier         # intégrité de chaque artefact
+# ou, en une commande : make verifier-signature
+# sous Linux, la seconde vérification peut aussi se faire avec : sha256sum -c SHA256SUMS
+```
+
+- **Attendu (exact)** : `Signature and comment signature verified`, avec le commentaire de
+  confiance `Quantum-Ready v1.0.0 - SHA256SUMS des artefacts publies`.
+- **Attendu (exact)** : l'identifiant de la clé publique (`minisign public key <ID>`, première ligne
+  de `cle_publique_minisign.pub`) est celui indiqué sur la fiche de dépôt.
+- **Attendu (exact)** : `0 différents, 0 manquants`. Des fichiers « non listés » ne sont qu'un
+  avertissement : ils apparaissent si l'auditeur a déjà relancé une évaluation (`evaluation.json`).
+- La CI (job `integrite`) refait ces deux vérifications à chaque modification.
+
+Limite assumée : la signature est classique (Ed25519), donc exposée à un futur ordinateur
+quantique (Shor), comme les actifs que le projet inventorie. Elle protège l'archive aujourd'hui ;
+une signature post-quantique (ML-DSA) n'est pas encore disponible dans minisign.
 
 ## Écarts connus
 
-- **Traces non versionnées** : l'étape 3 ne peut pas être refaite à partir du dépôt seul tant que
-  les traces ne sont pas publiées (elles doivent être relues avant publication).
 - **Variante 2 du SI** : pas encore produite. La performance sur un SI non vu n'est pas mesurée.
 - **Ablation avec un second modèle** : pas encore faite.
 - **Répétitions de l'évaluation d'inventaire** : une seule exécution pour l'instant ; l'écart type
