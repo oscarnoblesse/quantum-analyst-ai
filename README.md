@@ -42,6 +42,7 @@ Le Démonstrateur se lance avec `make demonstrateur-agent` (modèle local et Doc
 - [Périmètre technologique et validation des outils d'inventaire](docs/perimetre_et_validation_des_outils.md)
 - [Comparer deux implémentations des agents](docs/comparaison_des_agents.md)
 - [Journal des prompts et de la boucle agentique](docs/journal_des_prompts.md)
+- [Publier la version v1.0.0 : signature, release, Zenodo](docs/publication.md)
 
 ## Installation
 
@@ -122,6 +123,21 @@ Notes :
 - Certains tests sont ignorés selon le système, sans que cela soit une erreur : droits POSIX et liens symboliques (Windows), `ssh-keygen` absent, clés DSA refusées par OpenSSH récent. `openssl`, lui, est obligatoire (voir Installation).
 - Si vous lancez un module à la main sous Windows (`uv run python -m quantum_ready...`), activez d'abord le mode UTF-8 : `$env:PYTHONUTF8 = "1"`.
 
+## Reproduire avec Docker
+
+Sur une machine qui n'a que Docker, l'image du dépôt exécute la même reproduction (`make reproduce`), sans rien installer d'autre :
+
+```bash
+docker build -t quantum-ready .
+docker run --rm quantum-ready
+```
+
+L'image ne contient ni Ollama ni le laboratoire TLS : les agents et le démonstrateur se lancent sur l'hôte (voir plus haut).
+
+## Vérifier l'intégrité des résultats
+
+`SHA256SUMS` donne l'empreinte de chaque artefact publié (`results/`, `traces/`, `data/ground_truth/`) ; il est signé avec [minisign](https://jedisct1.github.io/minisign/) (`SHA256SUMS.minisig`, clé publique `cle_publique_minisign.pub`). Vérification : `make verifier-signature`, ou les deux commandes de la section 10 d'[AUDIT.md](AUDIT.md).
+
 ## Cadre éthique
 
 Le système d'information analysé est entièrement fictif. Aucune clé privée réelle n'est publiée dans ce dépôt : toutes les clés sont factices et générées par script.
@@ -129,7 +145,7 @@ Le système d'information analysé est entièrement fictif. Aucune clé privée 
 ## Licence
 
 - Code : [Apache-2.0](LICENSE)
-- Documentation et données : CC BY 4.0
+- Documentation, données, résultats et traces : [CC BY 4.0](LICENSE-docs)
 
 ## Auteur
 

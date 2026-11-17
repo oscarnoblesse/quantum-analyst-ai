@@ -191,7 +191,9 @@ def ecrire_json(actifs: list[Actif], chemin: str | Path, version: str = "si_v1")
         "resume": resume(actifs),
         "actifs": [a.vers_dict() for a in actifs],
     }
-    chemin.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    # newline="\n" : LF sur tous les systèmes, sinon Windows écrit CRLF et l'empreinte de
+    # SHA256SUMS (calculée sur les octets, en LF comme dans git) ne correspond plus.
+    chemin.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def convertir(entree: str | Path, sortie: str | Path) -> list[Actif]:

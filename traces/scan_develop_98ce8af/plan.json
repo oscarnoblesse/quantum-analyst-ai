@@ -1,0 +1,114 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-39a64876dbf6",
+    "crypto-44fa65b82b49",
+    "crypto-472ccdeab2a1",
+    "crypto-4e72f83c33b5",
+    "crypto-e3ab65145346"
+   ],
+   "action": "Migrer les signatures de factures et les clés de sauvegarde vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2027-11-17",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-07cf9f7a5e95",
+    "crypto-33881d619f83",
+    "crypto-36c5c98cc7b8"
+   ],
+   "action": "Mettre à jour les échanges de clés TLS et SSH en utilisant un échange hybride avec X25519MLKEM768",
+   "cible": "X25519MLKEM768",
+   "echeance": "2027-11-17",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-041d1175bd41",
+    "crypto-1e053c74eed2",
+    "crypto-220cfb62c521",
+    "crypto-255fdd87f5e2",
+    "crypto-462da4ddef98",
+    "crypto-742773857ff2"
+   ],
+   "action": "Migrer les certificats et les clés de signature vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2028-11-17",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 4,
+   "actifs": [
+    "crypto-2e280df75180",
+    "crypto-2f69dd54eb88",
+    "crypto-4f973b93c942",
+    "crypto-7a459e2573fa"
+   ],
+   "action": "Évaluer et remplacer les clés privées et algorithmes obsolètes (SHA-1, 3DES, RSA-1024) par des algorithmes post-quantiques ou sécurisés",
+   "cible": "SYMETRIQUE-ET-HACHAGE",
+   "echeance": "2029-11-17",
+   "references": [
+    "SYMETRIQUE-ET-HACHAGE"
+   ]
+  },
+  {
+   "ordre": 5,
+   "actifs": [
+    "crypto-462da4ddef98"
+   ],
+   "action": "Mettre à jour les configurations SSH pour utiliser des algorithmes de signature post-quantiques (ssh-ed25519) et échanger des clés avec X25519MLKEM768",
+   "cible": "OpenSSH 10",
+   "echeance": "2029-11-17",
+   "references": [
+    "IETF-TLS-HYBRIDE",
+    "OPENSSH-PQ"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord les signatures critiques et les sauvegardes exposées à la menace « enregistrer maintenant, déchiffrer plus tard ». Ensuite, il migre les échanges de clés TLS et SSH vers des algorithmes hybrides post-quantiques. Les certificats et clés de signature sont ensuite mis à jour selon NIST-FIPS-204. Enfin, les algorithmes obsolètes sont remplacés par des solutions sécurisées, avec une mise à jour progressive des configurations SSH.",
+ "verification": "plan conforme",
+ "demonstration": [
+  {
+   "ordre": 1,
+   "cible": "ML-DSA-65",
+   "statut": "non vérifiée",
+   "motif": "laboratoire indisponible : Docker introuvable sur cette machine"
+  },
+  {
+   "ordre": 2,
+   "cible": "X25519MLKEM768",
+   "statut": "non vérifiée",
+   "motif": "laboratoire indisponible : Docker introuvable sur cette machine"
+  },
+  {
+   "ordre": 3,
+   "cible": "ML-DSA-65",
+   "statut": "non vérifiée",
+   "motif": "laboratoire indisponible : Docker introuvable sur cette machine"
+  },
+  {
+   "ordre": 4,
+   "cible": "SYMETRIQUE-ET-HACHAGE",
+   "statut": "non vérifiée",
+   "motif": "cible non démontrable au laboratoire (GnuPG, PKI hors laboratoire, etc.)"
+  },
+  {
+   "ordre": 5,
+   "cible": "OpenSSH 10",
+   "statut": "non vérifiée",
+   "motif": "cible non démontrable au laboratoire (GnuPG, PKI hors laboratoire, etc.)"
+  }
+ ],
+ "date_verification": "2026-11-17"
+}

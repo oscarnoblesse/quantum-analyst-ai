@@ -64,7 +64,7 @@ def construire() -> dict:
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
-    SORTIE.write_text(json.dumps(construire(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    SORTIE.write_text(json.dumps(construire(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Environnement écrit dans {SORTIE}")
     return 0
 

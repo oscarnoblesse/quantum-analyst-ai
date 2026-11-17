@@ -53,6 +53,33 @@ jobs:
       - name: Reproduire la chaîne avec qwen3:0.6b (journal et rejeu vérifiés)
         run: uv run python scripts/reproduce_petit_modele.py
 
+  integrite:
+    name: Intégrité des artefacts publiés (SHA256SUMS et signature)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Vérifier chaque empreinte de SHA256SUMS
+        run: uv run python -m quantum_ready.integrite verifier
+      - name: Vérifier la signature minisign (si elle est publiée)
+        run: |
+          if [ -f SHA256SUMS.minisig ] && [ -f cle_publique_minisign.pub ]; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq minisign
+            minisign -V -p cle_publique_minisign.pub -m SHA256SUMS
+          else
+            echo "Signature non encore publiée (SHA256SUMS.minisig ou cle_publique_minisign.pub absent)."
+          fi
+
+  image-docker:
+    name: Image de reproduction (Dockerfile, make reproduce)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construire l'image
+        run: docker build -t quantum-ready .
+      - name: Lancer make reproduce dans l'image
+        run: docker run --rm quantum-ready
+
   secrets:
     runs-on: ubuntu-latest
     steps:

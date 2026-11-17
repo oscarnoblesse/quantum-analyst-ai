@@ -86,9 +86,25 @@ def generer_secrets(ctx: Contexte) -> None:
 
     Ils changent à chaque génération : la vérité terrain décrit leur forme, pas leur valeur.
     """
-    ctx.valeurs["MOT_DE_PASSE_BASE"] = secrets.token_urlsafe(18)
-    ctx.valeurs["MOT_DE_PASSE_CONTENEUR_FACTURES"] = secrets.token_urlsafe(12)
-    ctx.valeurs["PHRASE_DE_PASSE_ADMIN_MTLS"] = secrets.token_urlsafe(16)
+    ctx.valeurs["MOT_DE_PASSE_BASE"] = secret_aleatoire(18)
+    ctx.valeurs["MOT_DE_PASSE_CONTENEUR_FACTURES"] = secret_aleatoire(12)
+    ctx.valeurs["PHRASE_DE_PASSE_ADMIN_MTLS"] = secret_aleatoire(16)
+
+
+def secret_aleatoire(nb_octets: int) -> str:
+    """Secret aléatoire (base64 URL) qui ne contient aucun mot prévisible.
+
+    Un tirage peut contenir par hasard « dev », « test » ou « admin » (environ une
+    génération sur 1 300) : l'outil d'inventaire le classerait alors, à juste titre,
+    comme « Secret faible », alors que la vérité terrain décrit un secret fort. On
+    retire dans ce cas, pour que le SI généré corresponde toujours à la vérité terrain.
+    """
+    from quantum_ready.outils.configurations.env import MOTS_PREVISIBLES
+
+    while True:
+        valeur = secrets.token_urlsafe(nb_octets)
+        if not any(mot in valeur.lower() for mot in MOTS_PREVISIBLES):
+            return valeur
 
 
 Etape = Callable[[Contexte], None]
