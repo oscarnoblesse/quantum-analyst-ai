@@ -1,0 +1,571 @@
+[
+ {
+  "id": "T0001",
+  "agent": "inventoriste",
+  "empreinte": "7b69fa34f05c2489",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 2,
+   "type_actif": "related-crypto-material",
+   "nom": "Mot de passe de connexion (secret en clair)",
+   "description": "Mot de passe de « lab_app » vers db.lab.local, en clair dans l'URL DATABASE_URL",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "24 caractères (minuscules, majuscules, chiffres, symboles)",
+    "variable": "DATABASE_URL",
+    "utilisateur": "lab_app",
+    "hote": "db.lab.local"
+   },
+   "preuve": "DATABASE_URL=postgresql://lab_app:<masqué>@db.lab.local"
+  }
+ },
+ {
+  "id": "T0002",
+  "agent": "inventoriste",
+  "empreinte": "4d6082098030de78",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 2,
+   "type_actif": "protocol",
+   "nom": "sslmode=require",
+   "description": "Mode TLS de la connexion postgresql vers db.lab.local",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "variable": "DATABASE_URL",
+    "effet": "chiffrement, mais le certificat du serveur n'est PAS vérifié",
+    "faiblesse_classique": "certificat du serveur non vérifié : homme du milieu possible"
+   },
+   "preuve": "DATABASE_URL=...?sslmode=require"
+  }
+ },
+ {
+  "id": "T0003",
+  "agent": "inventoriste",
+  "empreinte": "74e33e618e4aa5a9",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 4,
+   "type_actif": "algorithm",
+   "nom": "HS256",
+   "description": "Algorithme choisi par configuration (JWT_ALGORITHM)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "variable": "JWT_ALGORITHM",
+    "usage": "valeur lue par l'application : chercher le code qui l'utilise"
+   },
+   "preuve": "JWT_ALGORITHM=HS256"
+  }
+ },
+ {
+  "id": "T0004",
+  "agent": "inventoriste",
+  "empreinte": "3562bcdb87f290e5",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 5,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret faible (JWT_SECRET)",
+   "description": "Secret JWT_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "15 caractères (minuscules, chiffres, symboles)",
+    "faiblesse_classique": "secret court ou prévisible (mot du dictionnaire, année...)",
+    "variable": "JWT_SECRET"
+   },
+   "preuve": "JWT_SECRET=<masqué>"
+  }
+ },
+ {
+  "id": "T0005",
+  "agent": "inventoriste",
+  "empreinte": "a0b7a840df96cb9b",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 7,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret aléatoire de 256 bits (WEBHOOK_SECRET)",
+   "description": "Secret WEBHOOK_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "64 caractères (minuscules, chiffres)",
+    "format": "hexadécimal, 256 bits",
+    "variable": "WEBHOOK_SECRET"
+   },
+   "preuve": "WEBHOOK_SECRET=<masqué>"
+  }
+ },
+ {
+  "id": "T0006",
+  "agent": "inventoriste",
+  "empreinte": "edcbeba8f6090b63",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 8,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé Fernet 256 bits (FIELD_ENCRYPTION_KEY)",
+   "description": "Secret FIELD_ENCRYPTION_KEY stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "44 caractères (minuscules, majuscules, chiffres, symboles)",
+    "format": "clé Fernet (base64, 32 octets : 128 bits AES + 128 bits HMAC)",
+    "variable": "FIELD_ENCRYPTION_KEY"
+   },
+   "preuve": "FIELD_ENCRYPTION_KEY=<masqué>"
+  }
+ },
+ {
+  "id": "T0007",
+  "agent": "inventoriste",
+  "empreinte": "440f88fe5646e5a6",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "api/.env",
+   "ligne": 9,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret en clair (KEYSTORE_PASS)",
+   "description": "Secret KEYSTORE_PASS stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "16 caractères (minuscules, majuscules, chiffres, symboles)",
+    "variable": "KEYSTORE_PASS"
+   },
+   "preuve": "KEYSTORE_PASS=<masqué>"
+  }
+ },
+ {
+  "id": "T0008",
+  "agent": "inventoriste",
+  "empreinte": "fba5e0ba02a9afea",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Root CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "a4fa9b5042c2597fa5d5bb267e215a827647576",
+    "debut_validite": "2026-11-03",
+    "fin_validite": "2046-10-29",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc",
+    "certificat_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-4096",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Root CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0009",
+  "agent": "inventoriste",
+  "empreinte": "340ca4a3b92c0816",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 4096,
+    "empreinte_spki_sha256": "3c88d0ffd35f08c56179189c0b45121a8e0eaf3cff28ea12a9e48fd02bdadd5b",
+    "certificat_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc"
+   },
+   "preuve": "Public Key Algorithm: RSA-4096"
+  }
+ },
+ {
+  "id": "T0010",
+  "agent": "inventoriste",
+  "empreinte": "4b691e7bdd3a05e4",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": true,
+    "certificat_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0011",
+  "agent": "inventoriste",
+  "empreinte": "e81ca1eb2985c6c2",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab CA 2015 »",
+   "description": "Certificat d'autorité « Lab CA 2015 », émis par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab CA 2015,O=Lab,C=FR",
+    "emetteur": "CN=Lab CA 2015,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "7f136985697f95cc0caaf2272480f3a1987eb2f2",
+    "debut_validite": "2015-03-01",
+    "fin_validite": "2035-03-01",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "2d5937714342934c46d4b35cde3ccf602730e48248c99e1e4f6d1cc1684140dc",
+    "certificat_sha256": "2d5937714342934c46d4b35cde3ccf602730e48248c99e1e4f6d1cc1684140dc",
+    "rang_dans_fichier": 2,
+    "cle_publique": "RSA-1024",
+    "algorithme_signature": "sha1WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab CA 2015,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0012",
+  "agent": "inventoriste",
+  "empreinte": "c1c883cce09ebab9",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-1024",
+   "description": "Clé publique du certificat « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 1024,
+    "faiblesse_classique": "taille insuffisante aujourd'hui (1024 bits)",
+    "empreinte_spki_sha256": "899d84e0f457540c24206ec58f32edfc0b5b7536e5e03dffc9f145212ecee0a0",
+    "certificat_sha256": "2d5937714342934c46d4b35cde3ccf602730e48248c99e1e4f6d1cc1684140dc"
+   },
+   "preuve": "Public Key Algorithm: RSA-1024"
+  }
+ },
+ {
+  "id": "T0013",
+  "agent": "inventoriste",
+  "empreinte": "ec8fbb25e62811dd",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "api/config/ca_bundle.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha1WithRSAEncryption",
+   "description": "Signature du certificat « Lab CA 2015 » par « Lab CA 2015 » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab CA 2015",
+    "auto_signature": true,
+    "certificat_sha256": "2d5937714342934c46d4b35cde3ccf602730e48248c99e1e4f6d1cc1684140dc",
+    "faiblesse_classique": "fonction de hachage cassée (collisions)"
+   },
+   "preuve": "Signature Algorithm: sha1WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0014",
+  "agent": "inventoriste",
+  "empreinte": "27b00880abefc7a4",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "clients/admin/.ssh/id_ed25519",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:0UeS6XTfisUSTtOJVBfoHjwDxrCY+GtbPnNtoUSdFkE",
+    "algorithme": "Ed25519",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0015",
+  "agent": "inventoriste",
+  "empreinte": "d460b1a9b919d27e",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "clients/admin/admin.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « admin »",
+   "description": "Certificat d'entité finale « admin », émis par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=admin,O=Lab,C=FR",
+    "emetteur": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "7ca46210e45edd9f6bc1f6f8cd63038c6794c931",
+    "debut_validite": "2026-11-03",
+    "fin_validite": "2027-11-03",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "clientAuth"
+    ],
+    "empreinte_sha256": "31570391d3a6972d14e0515204102afdc0d51906831e4525d354207a76916648",
+    "certificat_sha256": "31570391d3a6972d14e0515204102afdc0d51906831e4525d354207a76916648",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-256",
+    "algorithme_signature": "ecdsa-with-SHA384"
+   },
+   "preuve": "Subject: CN=admin,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0016",
+  "agent": "inventoriste",
+  "empreinte": "4909c8937a2fdc03",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "clients/admin/admin.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique du certificat « admin »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "empreinte_spki_sha256": "b90c2db5e02427393014f15c34c7c2a471446697b3bf07ae3400602939acf478",
+    "certificat_sha256": "31570391d3a6972d14e0515204102afdc0d51906831e4525d354207a76916648"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-256"
+  }
+ },
+ {
+  "id": "T0017",
+  "agent": "inventoriste",
+  "empreinte": "e7255308bbebb1cf",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "clients/admin/admin.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA384",
+   "description": "Signature du certificat « admin » par « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Intermediate CA",
+    "auto_signature": false,
+    "certificat_sha256": "31570391d3a6972d14e0515204102afdc0d51906831e4525d354207a76916648"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA384"
+  }
+ },
+ {
+  "id": "T0018",
+  "agent": "inventoriste",
+  "empreinte": "4c189cd17f31e85d",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/intermediaire.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Intermediate CA »",
+   "description": "Certificat d'autorité « Lab Intermediate CA », émis par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Intermediate CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "7291fd6a662deedf26c9f6c4c52bf5935da4e50c",
+    "debut_validite": "2026-11-03",
+    "fin_validite": "2036-10-31",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "47f28c8e8958c5888ed1637245251e78891f22b805ac9d418a8f53040c57d8cf",
+    "certificat_sha256": "47f28c8e8958c5888ed1637245251e78891f22b805ac9d418a8f53040c57d8cf",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-384",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Intermediate CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0019",
+  "agent": "inventoriste",
+  "empreinte": "f18ddbd76a24bbaf",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/intermediaire.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé publique du certificat « Lab Intermediate CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "taille": 384,
+    "empreinte_spki_sha256": "8c9dabe2777245f09452df95856923956c0edd10cf36370ba956a98fe5756968",
+    "certificat_sha256": "47f28c8e8958c5888ed1637245251e78891f22b805ac9d418a8f53040c57d8cf"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-384"
+  }
+ },
+ {
+  "id": "T0020",
+  "agent": "inventoriste",
+  "empreinte": "16e19ef59ab72c91",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/intermediaire.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Intermediate CA » par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": false,
+    "certificat_sha256": "47f28c8e8958c5888ed1637245251e78891f22b805ac9d418a8f53040c57d8cf"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0021",
+  "agent": "inventoriste",
+  "empreinte": "ee1b6b434aed7855",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/racine.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « Lab Root CA »",
+   "description": "Certificat d'autorité « Lab Root CA », émis par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=Lab Root CA,O=Lab,C=FR",
+    "emetteur": "CN=Lab Root CA,O=Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "a4fa9b5042c2597fa5d5bb267e215a827647576",
+    "debut_validite": "2026-11-03",
+    "fin_validite": "2046-10-29",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc",
+    "certificat_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-4096",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=Lab Root CA,O=Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0022",
+  "agent": "inventoriste",
+  "empreinte": "9fcd92faadcd3065",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/racine.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-4096",
+   "description": "Clé publique du certificat « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 4096,
+    "empreinte_spki_sha256": "3c88d0ffd35f08c56179189c0b45121a8e0eaf3cff28ea12a9e48fd02bdadd5b",
+    "certificat_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc"
+   },
+   "preuve": "Public Key Algorithm: RSA-4096"
+  }
+ },
+ {
+  "id": "T0023",
+  "agent": "inventoriste",
+  "empreinte": "9be422dd4d006a00",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "certs/ca/racine.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « Lab Root CA » par « Lab Root CA »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "Lab Root CA",
+    "auto_signature": true,
+    "certificat_sha256": "f3f4927de003158b98452d5e83757d36b7ce9f52191bf24d6cee161e7804a1fc"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ }
+]

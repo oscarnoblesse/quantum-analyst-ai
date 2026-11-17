@@ -1,0 +1,63 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-07cf9f7a5e95",
+    "crypto-152accd85e63",
+    "crypto-2c9685759616",
+    "crypto-37b324072d4a",
+    "crypto-44fa65b82b49",
+    "crypto-4509e64cc6fe",
+    "crypto-472ccdeab2a1",
+    "crypto-67c55da46f1b",
+    "crypto-6d2fbc155247",
+    "crypto-8a15b6093bf0",
+    "crypto-97ef8f87af7f",
+    "crypto-98e902a5514f",
+    "crypto-9b89469504e9",
+    "crypto-9d9f2f22e569",
+    "crypto-cc83064f388e",
+    "crypto-d2d60d3c40d3"
+   ],
+   "action": "Migrer les échanges de clés TLS et SSH vers des algorithmes post-quantiques en utilisant des groupes hybrides",
+   "cible": "X25519MLKEM768",
+   "echeance": "2025-06-30",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-39a64876dbf6",
+    "crypto-53e95ce80840",
+    "crypto-9d9f2f22e569"
+   ],
+   "action": "Migrer les signatures de certificats et de factures vers des algorithmes post-quantiques",
+   "cible": "ML-DSA-65",
+   "echeance": "2025-12-31",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-44fa65b82b49",
+    "crypto-4509e64cc6fe",
+    "crypto-9d9f2f22e569"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées à long terme pour une clé publique post-quantique",
+   "cible": "GNUPG-PQ",
+   "echeance": "2026-06-30",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord les échanges de clés exposés, puis les signatures critiques, enfin les sauvegardes à long terme. Chaque étape s'appuie sur des normes officielles : IETF-TLS-HYBRIDE, NIST-FIPS-204 et GNUPG-PQ. Les actifs critiques sont tous couverts dans les délais prévus.",
+ "verification": [
+  "3 actif(s) critique(s) non couvert(s) : crypto-009dcaf82fb9, crypto-49071935d022, crypto-e6634e48eae5"
+ ]
+}

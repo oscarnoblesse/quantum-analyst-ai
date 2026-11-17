@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -33,6 +33,16 @@ demonstrateur: ## Construit et vérifie le laboratoire TLS hybride (Docker requi
 demonstrateur-agent: ## Agent Démonstrateur avec le modèle local (Docker et Ollama requis)
 	uv run python -m quantum_ready.agents.demonstrateur --modele ollama
 
+reproduce-complet: ## Reproduction complète : environnement, modèle, laboratoire, mesures, agents (traces/complet), évaluation, métriques (Ollama et Docker requis, plus d'une heure)
+	$(MAKE) reproduce
+	$(MAKE) installer-modele
+	$(MAKE) demonstrateur
+	uv run python scripts/bench_pqc.py
+	uv run python scripts/bench_signatures.py
+	uv run python -m quantum_ready.orchestrateur --racine si/generated/v1 --modele ollama --session traces/complet --validation accepter
+	$(MAKE) evaluer SESSIONS="traces/complet"
+	$(MAKE) metriques
+
 reproduce-small-modele: ## Chaîne complète avec un très petit modèle (qwen3:0.6b, Ollama requis) : journal et rejeu
 	uv run python scripts/reproduce_petit_modele.py
 
@@ -48,8 +58,10 @@ agents: ## Système multi-agents avec le modèle local (Ollama doit tourner)
 agents-regles: ## Agents à règles fixes, sans modèle (ablation) (traces/regles)
 	uv run python -m quantum_ready.orchestrateur --racine si/generated/v1 --modele regles --validation accepter --session traces/regles
 
-metriques: ## Génère results/metrics.json à partir de results/raw/ (aucune valeur saisie à la main)
+metriques: ## Génère results/metrics.json, les figures et ENVIRONMENT.json à partir de results/raw/ (aucune valeur saisie à la main)
 	uv run python -m quantum_ready.evaluation.metriques
+	uv run python -m quantum_ready.evaluation.figures
+	uv run python -m quantum_ready.evaluation.environnement
 
 rejeu: ## Affiche une session et rejoue ses appels purs : make rejeu SESSION=traces/<dossier>
 	uv run python -m quantum_ready.rejeu $(SESSION) --racine si/generated/v1

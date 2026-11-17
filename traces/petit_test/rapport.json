@@ -1,0 +1,29 @@
+{
+ "session": "traces/petit_test",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "inventaire_vide",
+ "tentatives_cartographe": 0,
+ "cbom_valide": false,
+ "tentatives_architecte": 0,
+ "plan_valide": false,
+ "erreurs_plan": [],
+ "validation": "non_demandee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "sortie_invalide",
+   "etapes": 4,
+   "appels_outils": 5,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 4,
+   "fins_refusees": 0,
+   "jetons_entree": 10363,
+   "jetons_sortie": 1269,
+   "duree_ms": 55164,
+   "message": "réponse finale invalide après 2 corrections : 1 validation error for SortieInventoriste\nexclusions.0.raison\n  Field required [type=missing, input_value={'id': 'T0001', 'reason':... analysé à confirmer'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing",
+   "sortie": null
+  }
+ }
+}

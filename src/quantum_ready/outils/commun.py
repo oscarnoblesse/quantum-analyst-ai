@@ -113,8 +113,18 @@ def resoudre(chemin: str, racine: Path) -> Path:
     if not cible.is_relative_to(racine):
         raise ErreurOutil(f"Chemin hors du périmètre du SI, refusé : {chemin}")
     if not cible.exists():
-        raise ErreurOutil(f"Fichier introuvable dans le SI : {chemin}")
+        proches = fichiers_proches(chemin, racine)
+        suite = f". Fichiers du SI au nom proche : {', '.join(proches)}" if proches else ""
+        raise ErreurOutil(f"Fichier introuvable dans le SI : {chemin}{suite}")
     return cible
+
+
+def fichiers_proches(chemin: str, racine: Path, n: int = 3) -> list[str]:
+    """Fichiers réels du SI dont le chemin ressemble au chemin demandé (pour corriger une faute, pas pour deviner)."""
+    import difflib
+
+    existants = [p.relative_to(racine).as_posix() for p in racine.rglob("*") if p.is_file()]
+    return difflib.get_close_matches(chemin, existants, n=n, cutoff=0.5)
 
 
 def relatif(chemin: Path, racine: Path) -> str:

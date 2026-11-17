@@ -10,6 +10,7 @@ modele:
   # Variante écartée pour la configuration principale : qwen3:4b (ID 359d7dd4bcda, variante
   # « thinking ») raisonne malgré think=false et consomme la fenêtre de 4096 jetons.
   hote: http://localhost:11434
+  version_ollama: "0.40.15"    # `ollama --version` au moment des mesures (environnement consigné)
   contexte: 4096               # num_ctx : 8 Go de mémoire sur le portable de référence
   temperature: 0
   graine: 42
@@ -26,6 +27,9 @@ orchestrateur:
   tentatives_cartographe: 3    # boucle de vérification : CBOM invalide -> le Cartographe recommence
   tentatives_architecte: 2     # boucle de vérification : plan non conforme -> l'Architecte recommence
   validation_humaine: demander # demander | accepter (exécution non interactive, ex. make reproduce)
+  # Décision de méthode n° 2 (validée) : chaque étape démontrable du plan est vérifiée au laboratoire
+  # (TLS hybride, ML-DSA-65, SSH hybride) ; un échec renvoie le plan à l'Architecte. Exige Docker.
+  verification_demonstration: true
 
 mosca:
   # z : années avant un ordinateur quantique capable de casser RSA-2048 / ECC-256.

@@ -1,0 +1,156 @@
+{
+ "session": "traces/mesure_v6_run3",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "termine",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 1,
+ "plan_valide": true,
+ "erreurs_plan": [],
+ "validation": "acceptee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "termine",
+   "etapes": 70,
+   "appels_outils": 58,
+   "appels_refuses": 0,
+   "appels_en_double": 11,
+   "erreurs_outils": 7,
+   "fins_refusees": 0,
+   "jetons_entree": 166229,
+   "jetons_sortie": 2381,
+   "duree_ms": 1974053,
+   "message": "",
+   "sortie": {
+    "resume": "L'inventaire a révélé une clé PKCS#12 utilisant des algorithmes anciens et faibles (PBE avec 3-Key Triple DES et SHA-1), ainsi qu'une configuration SSH version 8.9p1 dans un fichier de configuration. Une piste vers un conteneur de clés a été suivie et a permis de détecter une vulnérabilité de cryptographie ancienne. Les liens entre fichiers montrent une chaîne d'analyse allant de la configuration à la clé PKCS#12.",
+    "exclusions": [],
+    "liens": [
+     {
+      "de": "factures/keys/factures.p12",
+      "vers": "api/.env",
+      "explication": "Le mot de passe pour ouvrir le PKCS#12 est stocké dans la variable KEYSTORE_PASS du fichier .env"
+     },
+     {
+      "de": "api/.env",
+      "vers": "api/docker-compose.yml",
+      "explication": "Le fichier .env contient une variable de configuration liée à un Dockerfile, mais ce fichier n'existe pas dans le SI, donc cette piste est invalide"
+     }
+    ],
+    "fichiers_non_analyses": [
+     "api/tokens.py",
+     "api/webhooks.py",
+     "api/reset.py"
+    ]
+   }
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 6,
+   "appels_outils": 5,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 10008,
+   "jetons_sortie": 189,
+   "duree_ms": 210180,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 79,
+    "exclusions": [],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé sans exclusion, avec 79 composants issus de 101 trouvailles et 16 fusions détectées."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 18,
+   "appels_outils": 17,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 34132,
+   "jetons_sortie": 4133,
+   "duree_ms": 1580210,
+   "message": "",
+   "sortie": {
+    "evalues": 79,
+    "critiques": [
+     "crypto-472ccdeab2a1",
+     "crypto-9d9f2f22e569"
+    ],
+    "resume": "Les signatures de factures conservées 10 ans sont critiques. Les échanges de clés TLS sur serveurs anciens doivent être migrés rapidement."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 11137,
+   "jetons_sortie": 850,
+   "duree_ms": 299908,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-39a64876dbf6",
+       "crypto-44fa65b82b49",
+       "crypto-472ccdeab2a1",
+       "crypto-49c1cf3eca18",
+       "crypto-9d9f2f22e569",
+       "crypto-c3302e0351db"
+      ],
+      "action": "Migrer les signatures de factures et les certificats de clés de signature vers des algorithmes post-quantiques résistants, en priorité ML-DSA-65 selon NIST-FIPS-204.",
+      "cible": "ML-DSA-65",
+      "echeance": "2027-11-08",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-36c5c98cc7b8",
+       "crypto-7052728128d5",
+       "crypto-74c67a65d6de",
+       "crypto-438e027bd5f5",
+       "crypto-4e3d0c6c7b77"
+      ],
+      "action": "Migrer les échanges de clés TLS et les certificats de serveurs vers un échange hybride avec X25519MLKEM768, en utilisant IETF-TLS-HYBRIDE pour les serveurs nginx.",
+      "cible": "X25519MLKEM768",
+      "echeance": "2027-11-08",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-44fa65b82b49",
+       "crypto-2e280df75180"
+      ],
+      "action": "Rechiffrer les sauvegardes chiffrées avec des clés publiques (OpenPGP) en utilisant des clés hybrides post-quantiques, conformément à la norme GNUPG-PQ.",
+      "cible": "GNUPG-PQ",
+      "echeance": "2028-11-08",
+      "references": [
+       "GNUPG-PQ"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise d'abord les signatures critiques avec ML-DSA-65, puis les échanges de clés TLS avec X25519MLKEM768, enfin les sauvegardes chiffrées avec GNUPG-PQ. Tous les actifs critiques sont couverts. La stratégie suit l'ordre des menaces : enregistrer maintenant, déchiffrer plus tard, puis sécuriser les flux et les certificats."
+   }
+  }
+ }
+}

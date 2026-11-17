@@ -1,0 +1,49 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-125889948c37",
+    "crypto-37b324072d4a",
+    "crypto-49071935d022",
+    "crypto-556843550dde",
+    "crypto-67c55da46f1b",
+    "crypto-6d2fbc155247"
+   ],
+   "action": "Migrer les certificats et clés de signature (RSA-1024, RSA-4096, sha1WithRSAEncryption, sha256WithRSAEncryption) vers des algorithmes post-quantiques conformes à NIST-FIPS-204.",
+   "cible": "api/config/ca_bundle.pem",
+   "echeance": "6 mois",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-e20f040f2931"
+   ],
+   "action": "Activer l'échange de clés TLS hybride (X25519MLKEM768) sur nginx via mise à jour d'OpenSSL et configuration du groupe de courbes.",
+   "cible": "api/config/ca_bundle.pem",
+   "echeance": "3 mois",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-c29d59680863",
+    "crypto-708faef0c086",
+    "crypto-82e7246bd97c"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées pour une clé publique (RSA) en utilisant une clé hybride post-quantique, conformément à GNUPG-PQ, pour éviter la menace « enregistrer maintenant, déchiffrer plus tard ».",
+   "cible": "api/.env",
+   "echeance": "12 mois",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord la migration des certificats critiques vers NIST-FIPS-204, puis l'activation de l'échange de clés TLS hybride, enfin le rechiffrement des sauvegardes sensibles. Les actifs critiques sont couverts dès les premiers mois, avec une attention particulière à la préservation des données longues de vie.",
+ "verification": "plan conforme"
+}

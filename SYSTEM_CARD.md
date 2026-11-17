@@ -21,7 +21,7 @@ Le système ne modifie aucun SI. Toute proposition passe par une validation huma
 | Agents (`agents/`) | modèle + code | Inventoriste, Cartographe, Analyste de risque, Architecte, Démonstrateur. Le modèle choisit les appels et rédige ; le code vérifie. |
 | Modèle de langage | composant externe | `qwen3:4b-instruct-2507-q4_K_M` via Ollama, en local, température 0, graine 42, contexte 4096. |
 | Laboratoire TLS et SSH (`demonstrateur/`) | conteneurs | Serveurs TLS 1.3 et SSH locaux, certificats éphémères, sans donnée réelle. |
-| Orchestrateur (`orchestrateur.py`) | graphe LangGraph | Enchaîne Inventoriste, Cartographe, Analyste, Architecte, puis validation humaine. Le Démonstrateur n'y est pas branché. |
+| Orchestrateur (`orchestrateur.py`) | graphe LangGraph | Enchaîne Inventoriste, Cartographe, Analyste, Architecte, puis validation humaine. Avant la validation, chaque étape démontrable du plan est vérifiée sur le laboratoire (TLS hybride, ML-DSA-65, SSH hybride) ; un échec renvoie le plan à l'Architecte. Les échéances passées sont refusées par le code. |
 
 ## 3. Données
 
