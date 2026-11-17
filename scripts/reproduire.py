@@ -55,7 +55,7 @@ def openssl_de_git() -> Path | None:
     return candidat if candidat.is_file() else None
 
 
-def openssl_manquant() -> str | None:
+def openssl_manquant(windows: bool | None = None) -> str | None:
     """Message d'erreur si openssl est introuvable, None sinon.
 
     Sans openssl, la macro HIGH de nginx n'est pas développée : l'actif caché QR-015
@@ -66,7 +66,9 @@ def openssl_manquant() -> str | None:
         return None
     message = ("openssl est introuvable. Il sert à développer la macro TLS « HIGH » de nginx ; "
                "sans lui, l'actif caché QR-015 n'est pas détecté et des tests échouent.")
-    git = openssl_de_git() if os.name == "nt" else None
+    if windows is None:
+        windows = os.name == "nt"
+    git = openssl_de_git() if windows else None
     if git is not None:
         message += (f"\nGit for Windows en fournit un. Ajoutez son dossier au PATH, puis relancez :"
                     f'\n    $env:Path += ";{git.parent}"')
