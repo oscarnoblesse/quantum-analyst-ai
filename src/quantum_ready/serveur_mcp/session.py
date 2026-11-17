@@ -31,7 +31,8 @@ def maintenant() -> str:
 def ecrire_json(chemin: Path, donnees: Any) -> None:
     """Écriture atomique : un fichier à moitié écrit ne doit jamais être lu par un autre agent."""
     chemin.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=chemin.parent, delete=False, suffix=".tmp") as flux:
+    # newline="\n" : traces en LF sur tous les systèmes (SHA256SUMS porte sur les octets).
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", newline="\n", dir=chemin.parent, delete=False, suffix=".tmp") as flux:
         json.dump(donnees, flux, ensure_ascii=False, indent=1)
         temporaire = flux.name
     os.replace(temporaire, chemin)
@@ -86,7 +87,7 @@ class Session:
     # --- journaux ---
 
     def journaliser(self, fichier: str, evenement: dict) -> None:
-        with (self.dossier / fichier).open("a", encoding="utf-8") as flux:
+        with (self.dossier / fichier).open("a", encoding="utf-8", newline="\n") as flux:
             flux.write(json.dumps({"horodatage": maintenant(), **evenement}, ensure_ascii=False) + "\n")
 
     def evenements(self, fichier: str) -> list[dict]:

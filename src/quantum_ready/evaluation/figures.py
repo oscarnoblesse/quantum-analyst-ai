@@ -64,7 +64,7 @@ def main() -> int:
     figures = construire(json.loads(METRIQUES.read_text(encoding="utf-8")))
     DOSSIER.mkdir(parents=True, exist_ok=True)
     for nom, svg in figures.items():
-        (DOSSIER / nom).write_text(svg, encoding="utf-8")
+        (DOSSIER / nom).write_text(svg, encoding="utf-8", newline="\n")
     print(f"{len(figures)} figure(s) écrite(s) dans {DOSSIER}")
     return 0
 

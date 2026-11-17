@@ -133,7 +133,7 @@ def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     document = construire()
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
-    SORTIE.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    SORTIE.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Métriques écrites dans {SORTIE} ({len(document['sources'])} sources, "
           f"{len(document['avertissements'])} avertissement(s), {len(NON_MESURE)} mesures non faites).")
     return 0

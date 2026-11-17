@@ -1,0 +1,160 @@
+{
+ "session": "traces\\test_windows_20261117",
+ "racine": "si/generated/v1",
+ "modele": "ollama",
+ "arret": "termine",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 1,
+ "plan_valide": true,
+ "erreurs_plan": [],
+ "validation": "acceptee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "termine",
+   "etapes": 64,
+   "appels_outils": 58,
+   "appels_refuses": 0,
+   "appels_en_double": 5,
+   "erreurs_outils": 3,
+   "fins_refusees": 0,
+   "jetons_entree": 153602,
+   "jetons_sortie": 2283,
+   "duree_ms": 41764,
+   "message": "",
+   "sortie": {
+    "resume": "L'inventaire a révélé plusieurs actifs cryptographiques, notamment un conteneur PKCS#12 contenant une clé ECDSA P-256 et un algorithme ancien (PBE avec SHA-1), une clé OpenPGP avec modèle de confiance faible, et une clé SSH Ed25519. Des liens ont été établis entre les fichiers de clés et les scripts de gestion. Le système a également identifié une clé SSH RSA publique non analysée, qui reste à explorer.",
+    "exclusions": [],
+    "liens": [
+     {
+      "de": "factures/signer.py",
+      "vers": "factures/keys/factures.p12",
+      "explication": "Le code Python ouvre un conteneur PKCS#12 avec le mot de passe KEYSTORE_PASS, indiquant une utilisation directe de la clé."
+     },
+     {
+      "de": "scripts/backup.sh",
+      "vers": "scripts/keys/backup_pub.asc",
+      "explication": "Le script importe une clé OpenPGP publique pour le chiffrement des données de sauvegarde."
+     },
+     {
+      "de": "ssh/server/home/admin/.ssh/authorized_keys",
+      "vers": "ssh/server/ssh_host_rsa_key.pub",
+      "explication": "La clé Ed25519 est utilisée pour l'authentification SSH, ce qui suggère une configuration de sécurité moderne, mais un fichier RSA publique reste à analyser."
+     }
+    ],
+    "fichiers_non_analyses": [
+     "ssh/server/ssh_host_rsa_key.pub"
+    ]
+   }
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 6,
+   "appels_outils": 5,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 9990,
+   "jetons_sortie": 190,
+   "duree_ms": 3500,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 79,
+    "exclusions": [],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé sans exclusion, avec 79 composants issus de 101 trouvailles et 15 fusions de certificats."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 18,
+   "appels_outils": 17,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 34136,
+   "jetons_sortie": 4165,
+   "duree_ms": 51546,
+   "message": "",
+   "sortie": {
+    "evalues": 79,
+    "critiques": [
+     "crypto-9d9f2f22e569"
+    ],
+    "resume": "Les signatures longues durée sont critiques. Les authentifications sont peu sensibles. Les clés anciennes nécessitent une migration rapide."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 10905,
+   "jetons_sortie": 834,
+   "duree_ms": 10952,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-39a64876dbf6",
+       "crypto-9e85d58d87ba",
+       "crypto-dbeeb676b886",
+       "crypto-28bd18e3deda",
+       "crypto-2d92b99990c4",
+       "crypto-288a9bb998f1",
+       "crypto-668ac4361909"
+      ],
+      "action": "Migrer les signatures de certificats et de factures vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+      "cible": "ML-DSA-65",
+      "echeance": "2027-11-17",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-07cf9f7a5e95",
+       "crypto-36c5c98cc7b8",
+       "crypto-39adf1719b54",
+       "crypto-472ccdeab2a1",
+       "crypto-6044a0daedcf",
+       "crypto-62943e39545e",
+       "crypto-7052728128d5"
+      ],
+      "action": "Migrer les échanges de clés TLS vers un échange hybride avec X25519MLKEM768, en mettant à jour nginx et OpenSSL",
+      "cible": "X25519MLKEM768",
+      "echeance": "2027-11-17",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-44fa65b82b49"
+      ],
+      "action": "Rechiffrer les sauvegardes chiffrées à clé publique (OpenPGP) avec une clé hybride post-quantique conformément à GNUPG-PQ",
+      "cible": "GNUPG-PQ",
+      "echeance": "2028-11-17",
+      "references": [
+       "GNUPG-PQ"
+      ]
+     }
+    ],
+    "resume": "La stratégie repose sur une priorisation des actifs critiques, en commençant par les signatures et les certificats, puis les échanges de clés TLS, avant les sauvegardes. Les algorithmes post-quantiques NIST-FIPS-204, X25519MLKEM768 et GNUPG-PQ sont utilisés selon les actifs. Tous les actifs critiques sont couverts dans les délais prévus."
+   }
+  }
+ }
+}

@@ -167,7 +167,7 @@ def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     metriques = json.loads(METRIQUES.read_text(encoding="utf-8"))
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
-    SORTIE.write_text(construire(metriques), encoding="utf-8")
+    SORTIE.write_text(construire(metriques), encoding="utf-8", newline="\n")
     print(f"Page écrite dans {SORTIE}")
     return 0
 

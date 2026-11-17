@@ -1,0 +1,9 @@
+# Contexte de construction de l'image de reproduction : seulement ce qui est versionné.
+.git
+.venv
+.pytest_cache
+.coverage
+**/__pycache__
+si/generated
+*.minisign.key
+*.key

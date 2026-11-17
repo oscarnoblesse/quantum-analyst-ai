@@ -1,7 +1,11 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu
+.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu sommes verifier-sommes signer verifier-signature
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
+
+# Signature de SHA256SUMS (minisign). La clé privée n'est JAMAIS dans le dépôt.
+CLE_PUBLIQUE := cle_publique_minisign.pub
+CLE_PRIVEE   ?= $(HOME)/.minisign/quantum-ready.key
 
 help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-18s %s\n", $$1, $$2}'
@@ -69,3 +73,16 @@ rejeu: ## Affiche une session et rejoue ses appels purs : make rejeu SESSION=tra
 evaluer: ## Évalue et compare des sessions : make evaluer SESSIONS="traces/a traces/b"
 	uv run python -m quantum_ready.evaluation $(SESSIONS)
 
+
+sommes: ## Écrit SHA256SUMS : empreintes des artefacts publiés (results/, traces/, data/ground_truth/)
+	uv run python -m quantum_ready.integrite generer
+
+verifier-sommes: ## Vérifie chaque empreinte de SHA256SUMS
+	uv run python -m quantum_ready.integrite verifier
+
+signer: ## Signe SHA256SUMS avec la clé privée minisign de l'auteur (release seulement) : make signer CLE_PRIVEE=...
+	minisign -S -s $(CLE_PRIVEE) -m SHA256SUMS -t "Quantum-Ready v1.0.0 - SHA256SUMS des artefacts publies"
+
+verifier-signature: ## Vérifie la signature de SHA256SUMS avec la clé publique du dépôt, puis les empreintes
+	minisign -V -p $(CLE_PUBLIQUE) -m SHA256SUMS
+	$(MAKE) verifier-sommes

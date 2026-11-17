@@ -233,3 +233,7 @@ si/generated/
 
 # Passation locale pour Claude Code (jamais versionnée)
 CLAUDE.md
+
+# Clés privées de signature (minisign) : jamais dans le dépôt
+*.minisign.key
+minisign.key
