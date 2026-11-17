@@ -20,8 +20,7 @@ def test_openssl_present(monkeypatch):
 
 def test_openssl_absent_hors_windows(monkeypatch):
     monkeypatch.setattr(reproduire.shutil, "which", _which(set()))
-    monkeypatch.setattr(reproduire.os, "name", "posix")
-    message = reproduire.openssl_manquant()
+    message = reproduire.openssl_manquant(windows=False)
     assert "openssl est introuvable" in message and "QR-015" in message and "Installez OpenSSL" in message
 
 
@@ -33,8 +32,7 @@ def test_openssl_absent_sous_windows_indique_celui_de_git(monkeypatch, tmp_path)
     git.parent.mkdir(parents=True)
     git.touch()
     monkeypatch.setattr(reproduire.shutil, "which", lambda nom: str(git) if nom == "git" else None)
-    monkeypatch.setattr(reproduire.os, "name", "nt")
-    message = reproduire.openssl_manquant()
+    message = reproduire.openssl_manquant(windows=True)
     assert str(openssl.parent) in message and "$env:Path" in message
 
 
