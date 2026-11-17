@@ -28,7 +28,11 @@ RUN pip install --no-cache-dir uv==0.11.32
 
 # Utilisateur non privilégié : sous root, les tests de droits POSIX (fichiers de clés
 # lisibles par tous, etc.) ne seraient pas représentatifs.
-RUN useradd --create-home --uid 1000 auditeur
+# Le dossier de travail est créé ici et donné à auditeur : WORKDIR seul le créerait pour root,
+# et uv ne pourrait pas y écrire .venv (COPY --chown ne change pas le dossier lui-même).
+RUN useradd --create-home --uid 1000 auditeur \
+    && mkdir -p /home/auditeur/quantum-ready \
+    && chown auditeur:auditeur /home/auditeur/quantum-ready
 WORKDIR /home/auditeur/quantum-ready
 COPY --chown=auditeur:auditeur . .
 USER auditeur
