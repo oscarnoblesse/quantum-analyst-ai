@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import csv
 import io
+import shutil
 import statistics
 import subprocess
 import time
@@ -35,7 +36,8 @@ def _groupe(groupe: str) -> str:
 
 
 def _docker(*args: str, verifier: bool = True) -> subprocess.CompletedProcess:
-    return subprocess.run(["docker", *args], capture_output=True, text=True, encoding="utf-8", check=verifier, timeout=600)
+    return subprocess.run(["docker", *args], stdin=subprocess.DEVNULL, capture_output=True, text=True, encoding="utf-8",
+                          check=verifier, timeout=600)
 
 
 def demarrer(groupe: str, cert: str = "ecdsa-p256") -> str:
@@ -170,10 +172,16 @@ VERIFICATEURS = {
 }
 
 
-def verifier(cle: str) -> tuple[bool, str]:
-    """Lance la démonstration correspondant à une clé de `verification_plan.DEMONSTRABLES`."""
+def verifier(cle: str) -> tuple[bool | None, str]:
+    """Lance la démonstration correspondant à une clé de `verification_plan.DEMONSTRABLES`.
+
+    Renvoie (None, motif) si le laboratoire est indisponible (Docker absent) : l'étape est alors
+    « non vérifiée », pas en échec, car l'Architecte n'y peut rien.
+    """
     if cle not in VERIFICATEURS:
         return False, f"démonstration inconnue : {cle}"
+    if shutil.which("docker") is None:
+        return None, "laboratoire indisponible : Docker introuvable sur cette machine"
     try:
         return VERIFICATEURS[cle]()
     except ErreurOutil as erreur:

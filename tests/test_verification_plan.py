@@ -45,6 +45,21 @@ def test_demonstration_inconnue_echoue_sans_rien_lancer():
     assert reussi is False and "inconnue" in motif
 
 
+def test_laboratoire_indisponible_donne_non_verifiee_sans_erreur_pour_l_architecte():
+    verdicts = vp.classer(_plan("X25519MLKEM768", "GnuPG 2.4"), lambda cle: (None, "Docker introuvable"))
+    assert [v.statut for v in verdicts] == ["non vérifiée", "non vérifiée"]
+    assert verdicts[0].motif == "Docker introuvable"
+    assert vp.erreurs_pour_l_architecte(verdicts) == []
+
+
+def test_sans_docker_le_laboratoire_ne_lance_rien(monkeypatch):
+    from quantum_ready.outils import laboratoire
+    monkeypatch.setattr(laboratoire.shutil, "which", lambda _: None)
+    monkeypatch.setattr(laboratoire.subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(AssertionError("docker lancé")))
+    reussi, motif = laboratoire.verifier("tls-hybride")
+    assert reussi is None and "Docker introuvable" in motif
+
+
 def test_chaque_demonstration_du_plan_a_un_verificateur_reel():
     from quantum_ready.outils import laboratoire
     assert set(vp.DEMONSTRABLES.values()) == set(laboratoire.VERIFICATEURS)
