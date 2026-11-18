@@ -1,0 +1,12 @@
+"""Réception des webhooks du prestataire de paiement."""
+
+import hashlib
+import hmac
+import os
+
+_SECRET = os.environ["WEBHOOK_SECRET"].encode()
+
+
+def signature_valide(corps: bytes, signature_recue: str) -> bool:
+    attendue = hmac.new(_SECRET, corps, hashlib.sha256).hexdigest()
+    return attendue == signature_recue

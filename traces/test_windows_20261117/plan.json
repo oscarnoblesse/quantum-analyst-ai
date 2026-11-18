@@ -1,0 +1,75 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-39a64876dbf6",
+    "crypto-9e85d58d87ba",
+    "crypto-dbeeb676b886",
+    "crypto-28bd18e3deda",
+    "crypto-2d92b99990c4",
+    "crypto-288a9bb998f1",
+    "crypto-668ac4361909"
+   ],
+   "action": "Migrer les signatures de certificats et de factures vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2027-11-17",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-07cf9f7a5e95",
+    "crypto-36c5c98cc7b8",
+    "crypto-39adf1719b54",
+    "crypto-472ccdeab2a1",
+    "crypto-6044a0daedcf",
+    "crypto-62943e39545e",
+    "crypto-7052728128d5"
+   ],
+   "action": "Migrer les échanges de clés TLS vers un échange hybride avec X25519MLKEM768, en mettant à jour nginx et OpenSSL",
+   "cible": "X25519MLKEM768",
+   "echeance": "2027-11-17",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-44fa65b82b49"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées à clé publique (OpenPGP) avec une clé hybride post-quantique conformément à GNUPG-PQ",
+   "cible": "GNUPG-PQ",
+   "echeance": "2028-11-17",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  }
+ ],
+ "resume": "La stratégie repose sur une priorisation des actifs critiques, en commençant par les signatures et les certificats, puis les échanges de clés TLS, avant les sauvegardes. Les algorithmes post-quantiques NIST-FIPS-204, X25519MLKEM768 et GNUPG-PQ sont utilisés selon les actifs. Tous les actifs critiques sont couverts dans les délais prévus.",
+ "verification": "plan conforme",
+ "demonstration": [
+  {
+   "ordre": 1,
+   "cible": "ML-DSA-65",
+   "statut": "non vérifiée",
+   "motif": "laboratoire indisponible : Docker introuvable sur cette machine"
+  },
+  {
+   "ordre": 2,
+   "cible": "X25519MLKEM768",
+   "statut": "non vérifiée",
+   "motif": "laboratoire indisponible : Docker introuvable sur cette machine"
+  },
+  {
+   "ordre": 3,
+   "cible": "GNUPG-PQ",
+   "statut": "non vérifiée",
+   "motif": "cible non démontrable au laboratoire (GnuPG, PKI hors laboratoire, etc.)"
+  }
+ ],
+ "date_verification": "2026-11-17"
+}

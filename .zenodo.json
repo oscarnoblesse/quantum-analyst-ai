@@ -1,0 +1,32 @@
+{
+  "title": "Quantum-Ready : copilote multi-agents de migration post-quantique",
+  "upload_type": "software",
+  "version": "1.0.0",
+  "language": "fra",
+  "creators": [
+    {
+      "name": "Noblesse, Oscar"
+    }
+  ],
+  "description": "<p>Système multi-agents d'IA agentique, exécuté avec un modèle de langage local (Ollama, sans GPU ni abonnement), appliqué à la migration post-quantique d'un système d'information <strong>fictif</strong>.</p><p>Quatre agents (Inventoriste, Cartographe, Analyste de risque, Architecte), orchestrés avec une boucle de vérification, inventorient la cryptographie, produisent un CBOM CycloneDX 1.6, évaluent le risque quantique de chaque actif selon l'inégalité de Mosca et proposent un plan de migration priorisé. Un agent Démonstrateur vérifie les étapes du plan sur un laboratoire TLS 1.3 hybride local (X25519MLKEM768, ML-DSA). Le modèle de langage décide et explique ; toute la cryptographie et tous les calculs sont faits par du code testé.</p><p>L'archive contient le code (Apache-2.0), la documentation, la vérité terrain, les métriques et les traces complètes des exécutions (CC BY 4.0), ainsi que le fichier SHA256SUMS signé des artefacts publiés. Reproduction : <code>make reproduce</code> (ou <code>uv run python scripts/reproduire.py</code>).</p><p>Projet individuel, sujet n° 7 « Quantum-Ready », module Cryptographie appliquée et IA agentique, 2026.</p>",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cryptographie post-quantique",
+    "IA agentique",
+    "système multi-agents",
+    "CBOM",
+    "CycloneDX",
+    "inégalité de Mosca",
+    "ML-KEM",
+    "ML-DSA",
+    "Ollama"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/oscarnoblesse/quantum-analyst-ai",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "Code sous licence Apache-2.0 (fichier LICENSE) ; documentation, données, résultats et traces sous licence CC BY 4.0 (fichier LICENSE-docs)."
+}
