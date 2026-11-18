@@ -3,6 +3,10 @@
 Ce document permet à un tiers de vérifier les résultats publiés, sans les croire sur parole.
 Chaque étape donne la commande, la valeur attendue et la tolérance.
 
+**Ordre conseillé** : commencer par la section 10 (signature et empreintes), sur un clone neuf
+ou l'archive Zenodo, avant toute commande qui régénère ou ajoute des fichiers ; puis les sections
+1 à 3 (sans Docker ni modèle, environ 5 minutes) ; enfin les sections 4 à 7 (Docker) et 11.
+
 **Règle des tolérances**
 - **Exacte** : comptes, tailles en octets des algorithmes à longueur fixe (clés publiques,
   signatures ML-DSA et SLH-DSA), identifiants, résultats de vérification. Un écart est une erreur.
@@ -13,9 +17,16 @@ Chaque étape donne la commande, la valeur attendue et la tolérance.
 
 ## 0. Prérequis
 
-- macOS, Linux ou Windows, avec `git`, `uv` et Docker (Docker Desktop sous macOS et Windows).
-- Pour les étapes d'agent : Ollama et le modèle `qwen3:4b-instruct-2507-q4_K_M`
-  (`make installer-modele` ; empreinte attendue `0edcdef34593`).
+| Sections | Il faut |
+|---|---|
+| 1, 2, 3, 8 | macOS, Linux ou Windows ; `git`, `uv`, OpenSSL 3 (vérifié au démarrage de la reproduction), `ssh-keygen` |
+| 4, 5, 7, 11 | Docker (Docker Desktop sous macOS et Windows) |
+| nouvelles exécutions d'agents | Ollama et le modèle `qwen3:4b-instruct-2507-q4_K_M` (`make installer-modele` ; empreinte attendue `0edcdef34593`) |
+| 10 | `minisign` |
+
+Sous Windows, `make` n'est pas requis : chaque cible a son équivalent `uv run` (README).
+Aucune section ne demande de GPU ; les sections 1 à 3 et 8 n'utilisent pas le modèle de langage :
+elles vérifient les traces publiées.
 
 ## 1. Environnement
 
@@ -24,10 +35,14 @@ git clone https://github.com/oscarnoblesse/quantum-analyst-ai.git && cd quantum-
 uv run python scripts/reproduire.py
 ```
 
-- **Attendu** : toutes les étapes réussissent ; couverture ≥ 70 % (exact : seuil atteint).
-- **Attendu** : `make test` ne donne aucun échec ; le nombre de tests réussis est au moins 473
-  (exact sur la version archivée) et une seule ignorance est admise (comparaison DSA refusée par
-  `ssh-keygen` récent).
+- **Attendu** : toutes les étapes réussissent et le script se termine par
+  `Reproduction terminée avec succès` (environ 70 à 120 s).
+- **Attendu (exact)** : 545 tests, aucun échec. Une seule ignorance est admise (comparaison DSA
+  refusée par un `ssh-keygen` récent) : 545 réussis sans ignorance, ou 544 réussis et 1 ignoré.
+- **Attendu** : couverture ≥ 70 % (seuil exigé, contrôlé par pytest) ; valeur mesurée sous Linux :
+  92,67 %. Un écart de quelques dixièmes selon le système est normal (branches propres à Windows).
+- La CI refait cette étape sous Ubuntu, macOS et Windows à chaque modification (job
+  `Reproduction`).
 
 ## 2. Vérité terrain et SI fictif
 
@@ -35,27 +50,52 @@ uv run python scripts/reproduire.py
 make si && make verifier-si
 ```
 
-- **Attendu (exact)** : 52 fichiers dans `si/generated/v1` ; 73 actifs attendus, 16 cachés
-  (`data/ground_truth/verite_terrain_v1.csv`) ; `verifier-si` ne signale aucun écart.
+- **Attendu (exact)** : `SI v1 généré dans si/generated/v1 : 52 fichiers` ; 73 actifs attendus,
+  dont 16 cachés (`data/ground_truth/verite_terrain_v1.csv`) ; `verifier-si` affiche
+  `73/73 actifs conformes, 0 fichier(s) en trop`.
+- Les secrets, clés et mots de passe du SI sont tirés au hasard à chaque génération : les octets
+  diffèrent d'une machine à l'autre, pas les actifs ni leur classement.
 
 ## 3. Inventaire multi-agents (évaluation)
 
-Le modèle est non déterministe en pratique (température 0 mais calcul flottant) : cette étape se
-vérifie par rejeu des appels d'outils, pas par répétition du modèle.
+Le modèle est non déterministe d'une machine à l'autre (température 0 et graine 42, mais calcul
+flottant) : cette étape se vérifie sur les traces publiées, par rejeu des appels d'outils et par
+évaluation, pas en relançant le modèle. Les traces sont dans `traces/` (CC BY 4.0) et couvertes
+par `SHA256SUMS` (section 10) ; de nouvelles traces se produisent avec `make agents`.
 
-```bash
-make rejeu SESSION=traces/<session>
-```
+**Rejeu des appels d'outils** (`make rejeu SESSION=traces/mesure_v6_run1`, sessions de référence :
+`mesure_v6_run1` à `run3` et `test_windows_20261117`) :
+- **Attendu (exact)** : `60 identique(s) sur 84 appel(s) enregistré(s)` ; 23 appels non rejoués
+  (outils qui lisent l'état de la session : `score_mosca`, `lister_trouvailles`,
+  `construire_cbom`, `valider_schema`, `lister_priorites`).
+- **Écart admis, un seul** : `DIFFÉRENT : inventoriste / analyser_configuration` sur
+  `nginx/nginx.conf`, si l'OpenSSL de l'auditeur n'est pas de la même branche que celui des
+  mesures. L'outil développe la macro `HIGH:!aNULL:!MD5` avec l'OpenSSL de la machine : il trouve
+  14 suites à échange de clés RSA avec OpenSSL 3.5 (mesures publiées, `results/ENVIRONMENT.json`)
+  et 16 avec OpenSSL 3.0 (Ubuntu 24.04, image Docker). L'actif (QR-015) est trouvé dans les deux
+  cas ; seul le nombre de suites du libellé change. `make rejeu` rend alors un code d'erreur : lire
+  la ligne `DIFFÉRENT`, qui doit être celle-ci et aucune autre.
+- **Sessions antérieures à la v6** (par exemple la v5, `20261104T213437Z_ollama`) : 47 appels
+  identiques sur 51 rejoués. Les 4 écarts sont attendus : 3 messages d'erreur enrichis depuis
+  (« Fichiers du SI au nom proche »), plus l'écart OpenSSL ci-dessus. Aucune trouvaille ne change.
 
-- **Attendu (exact)** : aucun appel d'outil pur `DIFFÉRENT`. Les appels non rejoués sont listés
-  (outils qui lisent l'état de la session, laboratoire).
-- **Attendu** : sur la session v5, 51 appels identiques sur 75 enregistrés, aucun écart.
-- Les traces des exécutions sont publiées dans `traces/` (CC BY 4.0) et couvertes par
-  `SHA256SUMS` (section 10) ; de nouvelles traces se produisent avec `make agents`.
+**Évaluation** (`make evaluer SESSIONS="traces/<session>"`, exact à la quatrième décimale) :
 
-**Évaluation** (`make evaluer SESSIONS="traces/<session>"`) :
-- **Attendu, exécution v5** : rappel 1,0 ; précision stricte 0,9359 ; F1 0,9669 (valeurs
-  arrondies à 0,936 et 0,967 dans les autres documents). Exact à la quatrième décimale.
+| Session | Rappel | Rappel cachés | Préc. stricte | Préc. hors doublons | F1 | Composants / appariés / doublons / en trop | Shor bien classés | Plan |
+|---|---|---|---|---|---|---|---|---|
+| `mesure_v6_run1`, `run2`, `run3` (macOS) | 1,0 | 1,0 | 0,9241 | 0,9733 | 0,9605 | 79 / 73 / 4 / 2 | 42/43 | conforme |
+| `test_windows_20261117`, `scan_develop_98ce8af` (Windows) | 1,0 | 1,0 | 0,9241 | 0,9865 | 0,9605 | 79 / 73 / 5 / 1 | 42/43 | conforme |
+| `20261104T213437Z_ollama` (v5) | 1,0 | 1,0 | 0,9359 | 0,9865 | 0,9669 | 78 / 73 / 4 / 1 | 42/43 | conforme |
+| `reference_outils_seuls` (sans modèle) | 0,9863 | 1,0 | 0,9351 | 0,9863 | 0,9600 | 77 / 72 / 4 / 1 | 41/43 | — |
+
+- Les CBOM de toutes ces sessions sont valides (CycloneDX 1.6). Les valeurs arrondies des autres
+  documents (0,936, 0,967, 0,961) viennent de ce tableau.
+- `ci_petit_modele` et `petit_test` (qwen3:0.6b) : **attendu** `aucun cbom.json dans la session`.
+  C'est un résultat de l'ablation, pas une erreur de l'auditeur.
+- La figure `results/figures/evolution_inventaire.svg` se régénère depuis les traces, sans valeur
+  saisie à la main : `uv run --with matplotlib python scripts/figure_evolution_inventaire.py`.
+- `make evaluer` écrit un `evaluation.json` dans chaque session évaluée : ces fichiers apparaissent
+  ensuite comme « non listés » à la section 10 (avertissement, pas une erreur).
 
 ## 4. Démonstrateur : vérification du laboratoire
 
@@ -113,7 +153,10 @@ make metriques
 ```
 
 - **Attendu (exact)** : `results/metrics.json` identique à celui versionné, à l'exception du champ
-  `genere_le`.
+  `genere_le` ; figures `latence.svg` et `signatures.svg` identiques.
+- **Attendu** : `results/ENVIRONMENT.json` décrit la machine de l'auditeur (système, versions
+  d'OpenSSL, de Python, de Docker) : il diffère de celui des mesures, c'est son rôle. Comparer
+  plutôt `configuration_sha256` et l'empreinte du modèle, qui doivent être identiques.
 - **Attendu** : la liste `non_mesure` est présente ; elle n'est jamais vide tant que le sujet n'est
   pas entièrement couvert.
 
@@ -153,9 +196,31 @@ Limite assumée : la signature est classique (Ed25519), donc exposée à un futu
 quantique (Shor), comme les actifs que le projet inventorie. Elle protège l'archive aujourd'hui ;
 une signature post-quantique (ML-DSA) n'est pas encore disponible dans minisign.
 
+## 11. Image Docker de reproduction
+
+```bash
+docker build -t quantum-ready .
+docker run --rm quantum-ready
+```
+
+- **Attendu** : la même sortie que la section 1 (l'image exécute `make reproduce` sous un
+  utilisateur non privilégié, avec OpenSSL 3.0 de Debian 12). La CI construit et lance l'image
+  à chaque modification (job `image-docker`).
+
 ## Écarts connus
 
 - **Variante 2 du SI** : pas encore produite. La performance sur un SI non vu n'est pas mesurée.
-- **Ablation avec un second modèle** : pas encore faite.
-- **Répétitions de l'évaluation d'inventaire** : une seule exécution pour l'instant ; l'écart type
-  n'est donc pas disponible pour le rappel et la précision.
+- **Ablation** : faite pour « outils seuls, sans modèle » (F1 0,9600 contre 0,9605 avec qwen3 4B :
+  le modèle n'apporte qu'un actif, QR-020) et pour un très petit modèle (qwen3:0.6b : aucun CBOM
+  produit). Pas encore faite avec un second modèle de taille comparable.
+- **Répétitions de l'évaluation d'inventaire** : trois exécutions v6 sur la même machine (macOS),
+  identiques sur toutes les mesures de qualité (écart type nul) ; seules les durées varient
+  (1 807 à 4 064 s). Sur Windows, deux exécutions donnent le même rappel et le même F1 mais un
+  chemin différent (5 doublons et 1 composant en trop au lieu de 4 et 2) : à température 0, la
+  sortie du modèle reste propre à la machine.
+- **`results/metrics.json`** ne reprend pas encore les mesures d'inventaire : la liste
+  `non_mesure` le déclare (rappel et précision par catégorie, validité du CBOM sur 3 répétitions).
+  Les valeurs se recalculent depuis les traces (section 3).
+- **QR-049** (`clients/admin/admin.key`, clé ECDSA P-256 chiffrée par phrase de passe) : classée
+  d'exposition « inconnue » faute de pouvoir lire la clé, d'où 42/43 actifs Shor bien classés.
+- **Rejeu dépendant d'OpenSSL** : voir section 3 (14 ou 16 suites RSA selon la branche d'OpenSSL).
