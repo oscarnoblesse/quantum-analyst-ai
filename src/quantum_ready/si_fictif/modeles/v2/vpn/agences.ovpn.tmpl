@@ -1,0 +1,13 @@
+client
+dev tun
+proto udp
+remote vpn.{{DOMAINE}} 1194
+nobind
+persist-key
+persist-tun
+ca agences-ca.crt
+cipher BF-CBC
+key-direction 1
+<tls-auth>
+{{OPENVPN_TLS_AUTH}}
+</tls-auth>

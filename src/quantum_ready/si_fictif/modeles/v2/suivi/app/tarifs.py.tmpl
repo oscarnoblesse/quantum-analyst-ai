@@ -1,0 +1,8 @@
+"""Grille tarifaire par zone de livraison."""
+
+rsa_zone = "Région Sud-Atlantique"
+TARIFS = {rsa_zone: 12.40, "Région Nord": 10.90, "Île-de-France": 9.80}
+
+
+def tarif(zone: str, poids_kg: float) -> float:
+    return round(TARIFS.get(zone, 14.00) + 0.35 * poids_kg, 2)

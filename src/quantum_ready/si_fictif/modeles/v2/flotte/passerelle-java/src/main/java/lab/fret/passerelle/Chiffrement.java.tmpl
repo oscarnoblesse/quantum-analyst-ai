@@ -1,0 +1,18 @@
+package lab.fret.passerelle;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+/** Chiffrement des positions transmises au portail. */
+public final class Chiffrement {
+    private Chiffrement() {}
+
+    public static byte[] chiffrerPosition(byte[] cle, byte[] position) throws Exception {
+        if (cle.length != 16) {
+            throw new IllegalArgumentException("clé de 128 bits attendue");
+        }
+        Cipher chiffreur = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        chiffreur.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cle, "AES"));
+        return chiffreur.doFinal(position);
+    }
+}

@@ -1,0 +1,24 @@
+"""Jetons d'accès du portail (clients) et jetons émis par les partenaires."""
+
+import os
+from datetime import datetime, timedelta, timezone
+
+import jwt
+
+from app.securite.cles_partenaires import CLE_PARTENAIRE_TRANSIT
+
+SECRET = os.environ["JWT_SECRET"]
+
+
+def emettre(client_id: str) -> str:
+    charge = {"sub": client_id, "exp": datetime.now(timezone.utc) + timedelta(hours=8)}
+    return jwt.encode(charge, SECRET, algorithm="HS256")
+
+
+def lire(jeton: str) -> dict:
+    return jwt.decode(jeton, SECRET, algorithms=["HS256"])
+
+
+def lire_jeton_partenaire(jeton: str) -> dict:
+    """Jeton signé par le transitaire partenaire, présenté lors d'un transfert de colis."""
+    return jwt.decode(jeton, CLE_PARTENAIRE_TRANSIT, algorithms=["RS256"], audience="fret-lab")

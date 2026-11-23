@@ -1,0 +1,11 @@
+"""Numéros et codes de suivi des colis."""
+
+import string
+from random import choices as generer_code
+
+ALPHABET = string.ascii_uppercase + string.digits
+
+
+def nouveau_code_suivi() -> str:
+    """Code remis au destinataire : il suffit pour consulter l'adresse de livraison."""
+    return "".join(generer_code(ALPHABET, k=8))

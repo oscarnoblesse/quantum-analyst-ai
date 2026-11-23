@@ -1,0 +1,7 @@
+"""Détection des lettres de voiture déposées deux fois."""
+
+import zlib
+
+
+def somme(document: bytes) -> int:
+    return zlib.crc32(document)

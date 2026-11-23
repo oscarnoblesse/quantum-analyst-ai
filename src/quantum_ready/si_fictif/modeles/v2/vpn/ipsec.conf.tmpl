@@ -1,0 +1,13 @@
+config setup
+    charondebug="ike 1"
+
+conn agence-ouest
+    keyexchange=ikev1
+    left=%defaultroute
+    leftid=@vpn.{{DOMAINE}}
+    right=10.30.0.1
+    rightsubnet=10.30.0.0/16
+    authby=secret
+    ike=aes128-sha1-modp1024!
+    esp=3des-md5!
+    auto=start

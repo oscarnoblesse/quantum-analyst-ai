@@ -1,0 +1,15 @@
+[project]
+name = "suivi-colis"
+version = "3.4.0"
+description = "Portail de suivi des colis de Fret Lab"
+requires-python = ">=3.11"
+dependencies = [
+    "flask==3.0.0",
+    "cryptography==41.0.7",
+    "PyJWT==2.8.0",
+    "fabric==2.7.1",
+    "pyopenssl",
+]
+
+[tool.uv]
+constraint-dependencies = ["pyopenssl==23.2.0"]

@@ -1,0 +1,12 @@
+package lab.fret.passerelle;
+
+import java.security.MessageDigest;
+
+/** Ancienne déduplication des trames (plus appelée depuis la version 2 de la passerelle). */
+final class Empreinte {
+    private Empreinte() {}
+
+    static byte[] calculer(byte[] trame) throws Exception {
+        return MessageDigest.getInstance("SHA-1").digest(trame);
+    }
+}

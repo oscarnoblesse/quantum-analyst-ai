@@ -1,0 +1,11 @@
+# Configuration OpenSSL propre au frontal, chargée par nginx via OPENSSL_CONF
+openssl_conf = frontal
+
+[frontal]
+ssl_conf = frontal_ssl
+
+[frontal_ssl]
+system_default = frontal_tls
+
+[frontal_tls]
+Ciphersuites = TLS_AES_128_GCM_SHA256

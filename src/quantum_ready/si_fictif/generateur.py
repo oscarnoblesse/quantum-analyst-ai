@@ -110,8 +110,17 @@ def secret_aleatoire(nb_octets: int) -> str:
 Etape = Callable[[Contexte], None]
 
 
-def etapes() -> list[Etape]:
+VARIANTES = ("v1", "v2")
+
+
+def etapes(variante: str = "v1") -> list[Etape]:
     """Les étapes du générateur, dans l'ordre. Chaque module ajoute la sienne."""
+    if variante == "v2":
+        from quantum_ready.si_fictif.v2 import etapes_v2
+
+        return etapes_v2()
+    if variante != "v1":
+        raise ErreurGenerateur(f"Variante inconnue : {variante} (connues : {', '.join(VARIANTES)})")
     from quantum_ready.si_fictif import code_applicatif, configurations, pki, ssh
 
     return [
@@ -135,6 +144,7 @@ def generer(
     ecraser: bool = False,
 ) -> Contexte:
     """Génère le SI fictif complet dans racine_si."""
+    liste_etapes = etapes(variante)  # refuse une variante inconnue avant de toucher au disque
     racine_si = Path(racine_si)
     racine_hors_si = Path(racine_hors_si) if racine_hors_si else racine_si.parent / "hors_si" / variante
     for dossier in (racine_si, racine_hors_si):
@@ -144,7 +154,7 @@ def generer(
             shutil.rmtree(dossier)
     racine_si.mkdir(parents=True)
     ctx = Contexte(racine_si=racine_si, racine_hors_si=racine_hors_si, variante=variante)
-    for etape in etapes():
+    for etape in liste_etapes:
         etape(ctx)
     # Secrets gardés hors du SI. Le laboratoire du démonstrateur n'en utilise aucun pour l'instant (TLS serveur seul).
     ctx.ecrire_hors_si("secrets.json", json.dumps(ctx.valeurs, indent=2, ensure_ascii=False) + "\n")

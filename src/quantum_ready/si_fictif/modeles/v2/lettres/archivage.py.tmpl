@@ -1,0 +1,16 @@
+"""Archivage chiffré des lettres de voiture (10 ans)."""
+
+import os
+
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+
+def chiffrer_archive(cle: bytes, donnees: bytes) -> bytes:
+    if len(cle) != 32:
+        raise ValueError("clé de 256 bits attendue")
+    iv = os.urandom(16)
+    bourreur = padding.PKCS7(128).padder()
+    clair = bourreur.update(donnees) + bourreur.finalize()
+    chiffreur = Cipher(algorithms.AES(cle), modes.CBC(iv)).encryptor()
+    return iv + chiffreur.update(clair) + chiffreur.finalize()

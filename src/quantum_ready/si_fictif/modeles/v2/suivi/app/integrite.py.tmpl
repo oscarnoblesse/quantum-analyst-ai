@@ -1,0 +1,17 @@
+"""Intégrité des documents déposés et des notifications des partenaires."""
+
+import hashlib
+import hmac
+
+PARAMETRES = {"empreinte": "sha1", "entete": "X-Signature"}
+
+
+def empreinte_scan(contenu: bytes) -> str:
+    """Empreinte d'un scan de lettre de voiture, stockée avec le document."""
+    return hashlib.md5(contenu).hexdigest()
+
+
+def verifier_webhook(secret: bytes, corps: bytes, signature: str) -> bool:
+    fonction = getattr(hashlib, PARAMETRES["empreinte"])
+    attendu = hmac.new(secret, corps, fonction).hexdigest()
+    return hmac.compare_digest(attendu, signature)

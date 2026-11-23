@@ -1,0 +1,8 @@
+"""Export des lettres de voiture vers le tableur de la comptabilité."""
+
+import base64
+
+
+def chiffrer_nom(nom: str) -> str:
+    """Masque le nom du chauffeur dans l'export (il reste lisible par la comptabilité)."""
+    return base64.b64encode(nom.encode()).decode()

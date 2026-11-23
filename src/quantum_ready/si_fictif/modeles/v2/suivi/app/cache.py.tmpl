@@ -1,0 +1,13 @@
+"""Cache des pages de suivi (évite de recalculer l'itinéraire)."""
+
+import hashlib
+
+_CACHE: dict[str, bytes] = {}
+
+
+def cle_cache(numero_colis: str, langue: str) -> str:
+    return hashlib.md5(f"{numero_colis}:{langue}".encode(), usedforsecurity=False).hexdigest()
+
+
+def lire(numero_colis: str, langue: str) -> bytes | None:
+    return _CACHE.get(cle_cache(numero_colis, langue))
