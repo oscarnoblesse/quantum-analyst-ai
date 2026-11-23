@@ -1,0 +1,4268 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:2df9ad1b-cebc-5203-b06a-91b9f1ba3d95",
+  "version": 1,
+  "metadata": {
+    "component": {
+      "type": "application",
+      "bom-ref": "si",
+      "name": "SI fictif v2 : CBOM attendu"
+    }
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-001",
+      "name": "Clé publique de l’AC racine Fret Lab",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "pki/racine/ac-racine.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-001"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-3072"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-002",
+      "name": "Signature de l’AC racine (auto-signée)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "pki/racine/ac-racine.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-002"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "sha384WithRSAEncryption, clé RSA-3072 de la racine"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-003",
+      "name": "Certificat de l’AC racine Fret Lab (auto-signé)",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat de l’AC racine Fret Lab (auto-signé)",
+          "subjectPublicKeyRef": "V2-001",
+          "signatureAlgorithmRef": "V2-002"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "pki/racine/ac-racine.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-003"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 v3 ; clé RSA-3072 (V2-001), signature sha384WithRSAEncryption (V2-002), validité 20 ans"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-004",
+      "name": "Clé publique de l’AC d’exploitation",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "pki/exploitation/ac-exploitation.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-004"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-256"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-005",
+      "name": "Signature de l’AC d’exploitation par la racine",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "pki/exploitation/ac-exploitation.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-005"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "sha384WithRSAEncryption, clé RSA-3072 de la racine"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-006",
+      "name": "Certificat de l’AC d’exploitation",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat de l’AC d’exploitation",
+          "subjectPublicKeyRef": "V2-004",
+          "signatureAlgorithmRef": "V2-005"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "pki/exploitation/ac-exploitation.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-006"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 v3 ; clé ECDSA P-256 (V2-004), signé par la racine (V2-005), validité 8 ans"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-007",
+      "name": "Clé publique du serveur suivi.fret.lab.local",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/tls/suivi.crt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-007"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-2048"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-008",
+      "name": "Signature du certificat du portail par l’AC d’exploitation",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/tls/suivi.crt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-008"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ecdsa-with-SHA256, clé ECDSA P-256 de l’AC d’exploitation"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-009",
+      "name": "Certificat du serveur suivi.fret.lab.local",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat du serveur suivi.fret.lab.local",
+          "subjectPublicKeyRef": "V2-007",
+          "signatureAlgorithmRef": "V2-008"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/tls/suivi.crt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-009"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 v3 ; clé RSA-2048 (V2-007), signé par l’AC d’exploitation (V2-008), validité 398 jours"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-010",
+      "name": "Clé publique du serveur EDI edi.fret.lab.local",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/edi-douane.der"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-010"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-384"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-011",
+      "name": "Signature du certificat EDI par l’AC d’exploitation",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/edi-douane.der"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-011"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ecdsa-with-SHA256, clé ECDSA P-256 de l’AC d’exploitation"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-012",
+      "name": "Certificat du serveur EDI (DER)",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat du serveur EDI (DER)",
+          "subjectPublicKeyRef": "V2-010",
+          "signatureAlgorithmRef": "V2-011"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/edi-douane.der"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-012"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 v3 ; clé ECDSA P-384 (V2-010), signé par l’AC d’exploitation (V2-011), validité 398 jours"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-013",
+      "name": "Clé publique du certificat client du camion 0427",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/certs/camion-0427.crt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-013"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Ed25519"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-014",
+      "name": "Signature du certificat du camion par l’AC d’exploitation",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/certs/camion-0427.crt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-014"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ecdsa-with-SHA256, clé ECDSA P-256 de l’AC d’exploitation"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-015",
+      "name": "Certificat client mTLS du camion 0427",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat client mTLS du camion 0427",
+          "subjectPublicKeyRef": "V2-013",
+          "signatureAlgorithmRef": "V2-014"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/certs/camion-0427.crt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-015"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 v3 ; clé Ed25519 (V2-013), signé par l’AC d’exploitation (V2-014), validité 2 ans, usage clientAuth"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-016",
+      "name": "Clé publique de l’ancienne AC de la douane (2012)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/procedure_douane.txt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-016"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-1024"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-017",
+      "name": "Signature de l’ancienne AC de la douane (auto-signée)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/procedure_douane.txt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-017"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "sha1WithRSAEncryption, clé RSA-1024"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-018",
+      "name": "Certificat de l’ancienne AC de la douane (2012)",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat de l’ancienne AC de la douane (2012)",
+          "subjectPublicKeyRef": "V2-016",
+          "signatureAlgorithmRef": "V2-017"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/procedure_douane.txt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-018"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 v3 ; clé RSA-1024 (V2-016), signature sha1WithRSAEncryption (V2-017), émis il y a 14 ans pour 20 ans"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-019",
+      "name": "Versions TLS autorisées (ssl_protocols)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/suivi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-019"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "TLSv1.2 TLSv1.3"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-020",
+      "name": "Groupes d’échange de clés (ssl_ecdh_curve)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/suivi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-020"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X25519MLKEM768:X25519:prime256v1"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-021",
+      "name": "Suites de chiffrement TLS 1.2 (ssl_ciphers)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/snippets/tls-commun.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-021"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DES-CBC3-SHA"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-022",
+      "name": "Clé des tickets de session (ssl_session_ticket_key)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "secret-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/snippets/tls-tickets.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-022"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Fichier de 48 octets : AES-128-CBC + HMAC-SHA256 (format nginx)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-023",
+      "name": "Paramètres Diffie-Hellman classiques (ssl_dhparam)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/tls/dhparam-2048.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-023"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "DH 2048 bits (groupe ffdhe2048, RFC 7919)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-024",
+      "name": "Versions TLS autorisées sur le point EDI (ssl_protocols)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/edi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-024"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "TLSv1 TLSv1.1 TLSv1.2"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-025",
+      "name": "Suites de chiffrement du point EDI (ssl_ciphers)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/edi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-025"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDHE-ECDSA-AES128-SHA:ECDHE-ECDSA-RC4-SHA"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-026",
+      "name": "Algorithmes acceptés pour les clés des utilisateurs (PubkeyAcceptedAlgorithms)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/sshd_config.d/10-cles.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-026"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "+ssh-rsa (signature RSA avec SHA-1, ajoutée aux valeurs par défaut)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-027",
+      "name": "Suites vers l’API interne (proxy_ssl_ciphers)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/suivi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-027"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDHE-ECDSA-AES256-GCM-SHA384"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-028",
+      "name": "Groupe d’échange de clés du point EDI (ssl_ecdh_curve)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/edi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-028"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "secp384r1 (P-384)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-029",
+      "name": "Échange de clés RSA statique sans confidentialité persistante",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/snippets/tls-commun.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-029"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "DES-CBC3-SHA (Kx=RSA), certificat RSA-2048 (V2-007), TLS 1.2 autorisé (V2-019)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-030",
+      "name": "Suites TLS 1.3 (ssl_conf_command Ciphersuites)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/nginx/conf.d/suivi.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-030"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-031",
+      "name": "Échange de clés (KexAlgorithms)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/sshd_config"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-031"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "mlkem768x25519-sha256,sntrup761x25519-sha512"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-032",
+      "name": "Chiffrement de session (Ciphers)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/sshd_config"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-032"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "aes128-ctr,aes256-gcm@openssh.com,3des-cbc"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-033",
+      "name": "Intégrité des messages (MACs)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/sshd_config"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-033"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "hmac-sha1,hmac-sha2-256"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-034",
+      "name": "Algorithmes de signature des clés d’hôte (HostKeyAlgorithms)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/sshd_config"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-034"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ssh-rsa,ecdsa-sha2-nistp256,ssh-ed25519"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-035",
+      "name": "Clé d’hôte ECDSA du bastion",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/ssh_host_ecdsa_key"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-035"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-256 (nistp256), non chiffrée (droits 600)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-036",
+      "name": "Clé d’hôte RSA du bastion",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/ssh_host_rsa_key"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-036"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-3072, non chiffrée (droits 600)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-037",
+      "name": "Clé d’hôte Ed25519 du bastion",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/ssh_host_ed25519_key"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-037"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Ed25519, non chiffrée (droits 600)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-038",
+      "name": "Clé publique autorisée du compte exploitation",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/authorized_keys.d/exploitation"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-038"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ssh-rsa 1024 bits"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-039",
+      "name": "Chiffrement de session des prestataires (Match Group prestataires → Ciphers)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "bastion/ssh/sshd_config.d/50-prestataires.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-039"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "aes128-cbc,3des-cbc"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-040",
+      "name": "Clé publique du bastion mémorisée par le poste du chef de quai",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "postes/chef-quai/.ssh/known_hosts"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-040"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ecdsa-sha2-nistp256 (empreinte de V2-035)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-041",
+      "name": "Clé SSH du chef de quai",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "postes/chef-quai/.ssh/id_ecdsa"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-041"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-384, non chiffrée (pas de phrase de passe)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-042",
+      "name": "Échange de clés côté client vers le routeur de quai (KexAlgorithms)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "depot/ssh/ssh_config"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-042"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "+diffie-hellman-group1-sha1 (bloc Host routeur-quai)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-043",
+      "name": "Clé DSA du vieux routeur de quai",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "depot/ssh/id_dsa_routeur"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-043"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SSH"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "DSA 1024 bits, PEM traditionnel (BEGIN DSA PRIVATE KEY), non chiffrée"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-044",
+      "name": "Hachage des mots de passe des clients",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/securite/mots_de_passe.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-044"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "PBKDF2-HMAC-SHA256, 100 000 itérations, sel de 16 octets"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-045",
+      "name": "Signature des jetons d’accès (JWT)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/securite/jetons.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-045"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "HS256 (HMAC-SHA-256), bibliothèque PyJWT"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-046",
+      "name": "Clé publique du transitaire partenaire (vérification des JWT RS256)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/securite/cles_partenaires.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-046"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-2048, PEM dans une chaîne Python"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-047",
+      "name": "Génération du code de suivi public",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/suivi_colis.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-047"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "random.choices (Mersenne Twister), importé sous le nom generer_code, 8 caractères"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-048",
+      "name": "Empreinte des scans de lettres de voiture",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/integrite.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-048"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "MD5"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-049",
+      "name": "Authentification des webhooks des partenaires",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/integrite.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-049"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "HMAC-SHA1, fonction choisie par getattr(hashlib, PARAMETRES[\"empreinte\"])"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-050",
+      "name": "Chiffrement des adresses de livraison",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/chiffrement.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-050"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Fernet (AES-128-CBC + HMAC-SHA256), bibliothèque cryptography"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-051",
+      "name": "Clé Fernet des adresses de livraison (CLE_ADRESSES)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "secret-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/.env"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-051"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Clé de 32 octets en base64 URL (16 pour AES-128, 16 pour HMAC), en clair"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-052",
+      "name": "Contexte TLS vers le TMS",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/client_tms.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-052"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "minimum_version TLSv1, set_ciphers(\"DEFAULT:@SECLEVEL=0\")"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-053",
+      "name": "Chiffrement des exports vers le transitaire (ancien)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/anciens/export_v1.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-053"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "TripleDES (3DES) en mode CBC, bibliothèque cryptography"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-054",
+      "name": "Génération des jetons de session",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/securite/session.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-054"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "secrets.token_urlsafe(32)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-055",
+      "name": "Empreinte des clés d’API des partenaires",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/securite/session.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-055"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "SHA-384"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-056",
+      "name": "Signature des lettres de voiture électroniques (e-CMR)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/signature/signer_cmr.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-056"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Lettres de voiture"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-256 avec SHA-256 (ec.ECDSA(hashes.SHA256()))"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-057",
+      "name": "Vérification des e-CMR des sous-traitants",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/signature/verifier_partenaire.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-057"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Lettres de voiture"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA PKCS#1 v1.5 avec SHA-1"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-058",
+      "name": "Empreinte de l’horodatage interne",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/signature/horodatage.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-058"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Lettres de voiture"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "SHA-1, via hashlib.new(ALGOS[\"horodatage\"])"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-059",
+      "name": "Chiffrement des archives de lettres de voiture",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/archivage.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-059"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Lettres de voiture"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "AES-256-CBC (clé de 32 octets)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-060",
+      "name": "Échange de clés avec les boîtiers télématiques",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/app/client_tms.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-060"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X25519 (cryptography)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "V2-061",
+      "name": "cryptography",
+      "version": "41.0.7",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/pyproject.toml"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-061"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Dépendances"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "41.0.7 (figée)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "V2-062",
+      "name": "PyJWT",
+      "version": "2.8.0",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/pyproject.toml"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-062"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Dépendances"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "2.8.0 (figée)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "V2-063",
+      "name": "pycryptodome",
+      "version": "3.9.9",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/requirements.txt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-063"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Dépendances"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "3.9.9"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "V2-064",
+      "name": "python-gnupg",
+      "version": "0.4.9",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/requirements.txt"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-064"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Dépendances"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "0.4.9"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "V2-065",
+      "name": "paramiko",
+      "version": "2.12.0",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/uv.lock"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-065"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Dépendances"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "2.12.0"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "V2-066",
+      "name": "pyOpenSSL",
+      "version": "23.2.0",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/pyproject.toml"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-066"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Dépendances"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "23.2.0, imposée par [tool.uv] constraint-dependencies (déclarée sans version)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-067",
+      "name": "Clé privée du portail de suivi",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/tls/suivi.key"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-067"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "nginx"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-2048, PEM non chiffré (droits 600)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-068",
+      "name": "Chiffrement du conteneur PKCS#12 du serveur EDI",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/certs/edi-douane.p12"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-068"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "EDI"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "PBES2 : AES-256-CBC + PBKDF2-HMAC-SHA256 (100 000 itérations) ; MAC HMAC-SHA256 ; contient la clé ECDSA P-384"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-069",
+      "name": "Mot de passe du conteneur PKCS#12 (EDI_CONTENEUR_SECRET)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "password"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "edi/.env"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-069"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "EDI"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Secret aléatoire en clair"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-070",
+      "name": "Clé privée du camion 0427",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/certs/camion-0427.key"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-070"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Flotte"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Ed25519, PEM PKCS#8 non chiffré"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-071",
+      "name": "Clé privée de signature des e-CMR",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lettres/cles/signature-cmr.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-071"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Lettres de voiture"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-256, PEM PKCS#8 chiffré (AES-256-CBC)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-072",
+      "name": "Clé privée de l’AC d’exploitation oubliée",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "sauvegardes/2021/exploitation.bak"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-072"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Certificats"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDSA P-256, PEM non chiffré"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-073",
+      "name": "Clé publique OpenPGP des sauvegardes",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/gpg/sauvegarde_pub.asc"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-073"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-3072"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-074",
+      "name": "Clé publique OpenPGP de la douane",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/gpg/partenaires/douane.asc"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-074"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "EdDSA Ed25519"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-075",
+      "name": "Chiffrement symétrique des sauvegardes (gpg --symmetric)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/scripts/sauvegarde.sh"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-075"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "CAST5 (bloc de 64 bits)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-076",
+      "name": "Chiffrement des exports de tournées (openssl enc)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/scripts/export_partenaires.sh"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-076"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "AES-128-CBC, dérivation de clé -md md5"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-077",
+      "name": "Génération des clés de certificat (openssl req -newkey)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/scripts/renouveler_certs.sh"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-077"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "rsa:2048"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-078",
+      "name": "Génération des clés SSH des terminaux de quai (ssh-keygen)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/scripts/rotation_cles_ssh.sh"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-078"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ecdsa -b 256"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-079",
+      "name": "Secret de signature des JWT (JWT_SECRET)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "secret-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "suivi/.env"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-079"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Suivi"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Chaîne aléatoire de 16 caractères, en clair"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-080",
+      "name": "Hachage des demandes de certificat",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "exploitation/scripts/renouveler_certs.sh"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-080"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Exploitation"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "SHA-1 par défaut (-\"${DIGEST:-sha1}\")"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "connu"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-081",
+      "name": "Clé privée de la passerelle Java dans un magasin JKS",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/passerelle-java/src/main/resources/keystore.jks"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-081"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Java"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA-2048, chaîne de 3 certificats (feuille, AC d’exploitation, racine)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-082",
+      "name": "Mot de passe du magasin JKS (server.ssl.key-store-password)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "password"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/passerelle-java/src/main/resources/application-prod.properties"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-082"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Java"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Secret aléatoire en clair"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-083",
+      "name": "Chiffrement des positions (Cipher.getInstance)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/passerelle-java/src/main/java/lab/fret/passerelle/Chiffrement.java"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-083"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Java"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "AES/ECB/PKCS5Padding, clé de 128 bits"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-084",
+      "name": "Déduplication des trames (MessageDigest)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/passerelle-java/src/main/java/lab/fret/passerelle/Empreinte.java"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-084"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Java"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "SHA-1"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-085",
+      "name": "Signature des lots de positions",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/collecteur-go/signature.go"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-085"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Go"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "rsa.SignPKCS1v15 avec SHA-256, clé RSA-2048"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-086",
+      "name": "Configuration TLS des anciens boîtiers",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "flotte/collecteur-go/tls_ancien.go"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-086"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Go"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "MinVersion tls.VersionTLS10, CurvePreferences P-256"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-087",
+      "name": "Chiffrement des références de commande (createCipheriv)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail-client/serveur/chiffrer.js"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-087"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Node.js"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "aes-128-cbc, IV nul et fixe"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-088",
+      "name": "Identifiant de session (createHash)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail-client/serveur/jeton.js"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-088"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Node.js"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "MD5 de l’utilisateur et de l’heure"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-089",
+      "name": "Suites TLS par défaut des points d’entrée (ssl-default-bind-ciphers)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "lb/haproxy/haproxy.cfg"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-089"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "HAProxy"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "ECDHE-RSA-AES256-GCM-SHA384:AES128-SHA"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-090",
+      "name": "Suites TLS 1.3 imposées par la configuration OpenSSL du frontal",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "portail/openssl/openssl.cnf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-090"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "OpenSSL"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Ciphersuites = TLS_AES_128_GCM_SHA256"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-091",
+      "name": "Proposition IKE (ike=)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "ike"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "vpn/ipsec.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-091"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "strongSwan"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "aes128-sha1-modp1024!"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-092",
+      "name": "Proposition ESP (esp=)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "ipsec"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "vpn/ipsec.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-092"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "strongSwan"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "3des-md5!"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-093",
+      "name": "Clé pré-partagée IKE (PSK)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "secret-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "vpn/ipsec.secrets"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-093"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "strongSwan"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Secret aléatoire en clair"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-094",
+      "name": "Clé privée WireGuard de la passerelle",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "vpn/wg0.conf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-094"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "WireGuard"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "Curve25519 (X25519), base64, en clair"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-095",
+      "name": "Chiffrement des données OpenVPN (cipher)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "vpn/agences.ovpn"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-095"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "OpenVPN"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "BF-CBC (Blowfish, bloc de 64 bits)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Partiellement (Grover)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-096",
+      "name": "Clé statique tls-auth intégrée au profil",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "secret-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "vpn/agences.ovpn"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-096"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "OpenVPN"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "OpenVPN Static key V1, 2048 bits (HMAC des paquets de contrôle)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Non"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-097",
+      "name": "Algorithme de la clé de la passerelle VPN (tls_private_key)",
+      "cryptoProperties": {
+        "assetType": "algorithm"
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "deploiement/terraform/modules/vpn/variables.tf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-097"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Terraform"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "RSA 2048 bits, valeurs par défaut des variables algorithme_cle et taille_cle"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Caché"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-098",
+      "name": "Certificat de signature du fournisseur d’identité SAML",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "subjectName": "Certificat de signature du fournisseur d’identité SAML"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "sso/metadata/idp-metadata.xml"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-098"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "SAML"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "X.509 ; clé RSA-2048, signature sha256WithRSAEncryption, validité 3 ans"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-099",
+      "name": "Clé de signature de clés DNSSEC (KSK)",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "public-key"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "dns/zones/db.fret.lab.local"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-099"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "DNSSEC"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "DNSKEY 257, algorithme 8 (RSASHA256), RSA-2048"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Oui (Shor)"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "V2-100",
+      "name": "Versions TLS obligatoires du serveur de messagerie (smtpd_tls_mandatory_protocols)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "protocolProperties": {
+          "type": "tls"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "messagerie/postfix/main.cf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "quantum-ready:identifiant_verite_terrain",
+          "value": "V2-100"
+        },
+        {
+          "name": "quantum-ready:composant_si",
+          "value": "Postfix"
+        },
+        {
+          "name": "quantum-ready:algorithme",
+          "value": "!SSLv2, !SSLv3 (TLS 1.0 et 1.1 acceptés)"
+        },
+        {
+          "name": "quantum-ready:vulnerabilite_quantique",
+          "value": "Indirect"
+        },
+        {
+          "name": "quantum-ready:visibilite",
+          "value": "Visible"
+        },
+        {
+          "name": "quantum-ready:perimetre",
+          "value": "hors périmètre"
+        }
+      ]
+    }
+  ]
+}
