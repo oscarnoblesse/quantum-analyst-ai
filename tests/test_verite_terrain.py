@@ -200,3 +200,39 @@ def test_main_erreur(tmp_path, capsys):
     chemin.write_text("ID\nQR-001\n", encoding="utf-8")
     assert main([str(chemin), str(tmp_path / "x.json")]) == 1
     assert "Erreur" in capsys.readouterr().err
+
+
+# --- Variante 2 : identifiants V2-, composants élargis, colonne « Périmètre » ---
+
+
+def test_v2_identifiant_et_perimetre_acceptes():
+    actif = Actif(**ligne_valide(id="V2-001", composant="Suivi", perimetre="hors périmètre"))
+    assert actif.perimetre == "hors périmètre"
+    assert actif.vers_dict()["perimetre"] == "hors périmètre"
+
+
+def test_v2_perimetre_inconnu_refuse():
+    with pytest.raises(ValueError):
+        Actif(**ligne_valide(id="V2-001", perimetre="partiel"))
+
+
+def test_v1_sans_colonne_perimetre_json_inchange():
+    actif = Actif(**ligne_valide())
+    assert "perimetre" not in actif.vers_dict()
+
+
+def test_v2_colonne_perimetre_lue_depuis_le_csv(tmp_path):
+    chemin = tmp_path / "v2.csv"
+    with chemin.open("w", encoding="utf-8", newline="") as fichier:
+        ecrivain = csv.writer(fichier)
+        ecrivain.writerow([*COLONNES, "Périmètre"])
+        ligne = ligne_valide(id="V2-001")
+        ecrivain.writerow([*(ligne[c] for c in COLONNES.values()), "connu"])
+    (actif,) = charger_csv(chemin)
+    assert actif.perimetre == "connu"
+
+
+def test_v2_parent_de_certificat_reconnu():
+    actif = Actif(**ligne_valide(id="V2-003", type_cyclonedx="certificate",
+                                 notes="Composant parent de V2-001 et V2-002"))
+    assert actif.parents == ("V2-001", "V2-002")
