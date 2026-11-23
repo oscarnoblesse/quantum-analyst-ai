@@ -6,6 +6,8 @@ import json
 import re
 import shutil
 import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -182,18 +184,45 @@ def test_keystore_jks_lu_par_keytool(si):
     assert resultat.returncode == 0 and "passerelle" in resultat.stdout
 
 
+def _gpg(dossier: Path, *arguments: str) -> subprocess.CompletedProcess:
+    """gpg avec un dossier personnel en chemin « / » (accepté aussi par le gpg MSYS de Git for Windows)."""
+    return subprocess.run(["gpg", "--homedir", dossier.as_posix(), "--batch", *arguments],
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
+def _echec_gpg(etape: str, resultat: subprocess.CompletedProcess) -> None:
+    """Échec de gpg : un vrai échec sous Linux et macOS ; sous Windows seulement, un saut motivé.
+
+    La lecture OpenPGP est vérifiée par gpg en CI sur ubuntu et macOS : le repli Windows ne
+    retire donc aucune vérification du format, seulement la répétition avec le gpg de Git for Windows.
+    """
+    erreur = resultat.stderr.strip()
+    if sys.platform == "win32":
+        pytest.skip(f"gpg de Git for Windows (MSYS) : {etape} en échec (code {resultat.returncode}) : {erreur} "
+                    "— lecture OpenPGP vérifiée par gpg en CI sur ubuntu et macOS")
+    pytest.fail(f"gpg : {etape} en échec (code {resultat.returncode}) : {erreur}")
+
+
 @pytest.mark.skipif(shutil.which("gpg") is None, reason="gpg absent")
-def test_cles_openpgp_importees_par_gpg(si, tmp_path):
-    dossier = tmp_path / "gnupg"
-    dossier.mkdir(mode=0o700)
-    for chemin in ("exploitation/gpg/sauvegarde_pub.asc", "exploitation/gpg/partenaires/douane.asc"):
-        # Pas de check : gpg sort en erreur s'il ne peut lancer gpg-agent, inutile pour une clé publique.
-        subprocess.run(["gpg", "--homedir", str(dossier), "--batch", "--no-autostart", "--import", str(si / chemin)],
-                       capture_output=True)
-    sortie = subprocess.run(["gpg", "--homedir", str(dossier), "--batch", "--with-colons", "--list-keys"],
-                            capture_output=True, text=True, check=True).stdout
-    algorithmes = sorted(l.split(":")[3] for l in sortie.splitlines() if l.startswith("pub:"))
-    assert algorithmes == ["1", "22"]  # RSA et EdDSA
+def test_cles_openpgp_importees_par_gpg(si):
+    # Dossier court : gpg joint son agent par un socket placé dans ce dossier, et le chemin d'un
+    # socket est limité (~104 caractères sous macOS) ; le dossier temporaire de pytest est trop long.
+    dossier = Path(tempfile.mkdtemp(prefix="gpg", dir="/tmp" if Path("/tmp").is_dir() else None))
+    dossier.chmod(0o700)
+    try:
+        for chemin in ("exploitation/gpg/sauvegarde_pub.asc", "exploitation/gpg/partenaires/douane.asc"):
+            resultat = _gpg(dossier, "--import", (si / chemin).as_posix())
+            if resultat.returncode != 0:
+                _echec_gpg(f"import de {chemin}", resultat)
+        resultat = _gpg(dossier, "--with-colons", "--list-keys")
+        if resultat.returncode != 0:
+            _echec_gpg("--list-keys", resultat)
+        algorithmes = sorted(l.split(":")[3] for l in resultat.stdout.splitlines() if l.startswith("pub:"))
+        assert algorithmes == ["1", "22"], resultat.stderr  # RSA et EdDSA
+    finally:
+        if shutil.which("gpgconf"):
+            subprocess.run(["gpgconf", "--homedir", dossier.as_posix(), "--kill", "gpg-agent"], capture_output=True)
+        shutil.rmtree(dossier, ignore_errors=True)
 
 
 # --- Vérité terrain v2 ---
