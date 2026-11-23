@@ -71,3 +71,43 @@ def test_tableau_et_ligne_de_commande(sessions, capsys):
 def test_session_sans_cbom(tmp_path):
     resultat = evaluer(tmp_path)
     assert resultat["erreur"].startswith("aucun cbom") and "—" in tableau([resultat])
+
+
+# --- Variante 2 : rappel par périmètre et leurres ---
+
+
+def test_rappel_par_perimetre():
+    from quantum_ready.evaluation.mesures import rappel_par_perimetre
+
+    actifs = [{"id": "A", "perimetre": "connu"}, {"id": "B", "perimetre": "connu"}, {"id": "C", "perimetre": "hors périmètre"}]
+    assert rappel_par_perimetre(actifs, {"A", "C"}) == {
+        "connu": {"trouves": 1, "attendus": 2, "rappel": 0.5},
+        "hors périmètre": {"trouves": 1, "attendus": 1, "rappel": 1.0},
+    }
+    assert rappel_par_perimetre([{"id": "A"}], {"A"}) == {}  # vérité terrain v1 : pas de périmètre
+
+
+def _cbom_composant(reference, lieu):
+    return {"bom-ref": reference, "name": reference, "evidence": {"occurrences": [{"location": lieu}]}}
+
+
+def test_leurres_touches_ignore_les_composants_apparies():
+    """Un fichier peut porter un leurre ET de vrais actifs : seul un composant non apparié y est un faux positif."""
+    from quantum_ready.evaluation.mesures import leurres_touches
+
+    cbom = {"components": [_cbom_composant("vrai", "conf/suivi.conf"), _cbom_composant("double", "conf/suivi.conf"),
+                           _cbom_composant("cache", "app/cache.py:12"), _cbom_composant("ailleurs", "app/autre.py")]}
+    leurres = [{"ID": "L-1", "Fichier / emplacement": "app/cache.py"}, {"ID": "L-2", "Fichier / emplacement": "conf/suivi.conf"}]
+    touches = leurres_touches(cbom, {"A-1": "vrai"}, ["double"], leurres)
+    assert touches == [{"leurre": "L-1", "composant": "cache", "nom": "cache"}]
+
+
+def test_evaluation_avec_leurres_et_sortie(sessions, tmp_path, capsys):
+    leurres = tmp_path / "leurres.csv"
+    leurres.write_text("ID,Fichier / emplacement,Élément\nL-1,introuvable/rien.py,x\n", encoding="utf-8")
+    sortie = tmp_path / "raw" / "evaluation.json"
+    comparer([str(sessions / "regles"), "--leurres", str(leurres), "--sortie", str(sortie)])
+    texte = capsys.readouterr().out
+    assert "| Leurres touchés | aucun |" in texte
+    document = json.loads(sortie.read_text(encoding="utf-8"))
+    assert document["leurres"] == str(leurres) and document["sessions"][0]["qualite"]["leurres"]["nombre"] == 1

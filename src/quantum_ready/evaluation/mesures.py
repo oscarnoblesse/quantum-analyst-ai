@@ -40,6 +40,7 @@ def qualite(cbom: dict, actifs: list[dict]) -> dict:
         "rappel_visibles": round(sum(a["id"] in trouves for a in actifs if a["visibilite"] != "Caché") / max(1, len(actifs) - len(caches)), 4),
         "rappel_caches": round(sum(a["id"] in trouves for a in caches) / max(1, len(caches)), 4),
         "rappel_par_categorie_cachee": {k: f"{categories_trouvees[k]}/{v}" for k, v in sorted(categories.items())},
+        "rappel_par_perimetre": rappel_par_perimetre(actifs, trouves),
         "precision_stricte": round(precision, 4),
         "precision_hors_doublons": round(apparies / max(1, n - len(appariement.doublons)), 4),
         "f1": round(2 * rappel * precision / (rappel + precision), 4) if rappel + precision else 0,
@@ -48,6 +49,59 @@ def qualite(cbom: dict, actifs: list[dict]) -> dict:
         "composants_en_trop": [f"{r} {par_reference[r].nom[:60]}" for r in appariement.en_trop],
         "appariement": appariement.paires,
     }
+
+
+def rappel_par_perimetre(actifs: list[dict], trouves: set[str]) -> dict:
+    """Rappel séparé par périmètre (vérité terrain v2 : « connu » ou « hors périmètre »).
+
+    Les technologies hors périmètre n'ont aucun analyseur dédié (docs/perimetre_et_validation_des_outils.md) :
+    les mélanger aux actifs connus rendrait le rappel global illisible. Vide pour une vérité terrain sans périmètre (v1).
+    """
+    groupes: dict[str, list[dict]] = {}
+    for actif in actifs:
+        if actif.get("perimetre"):
+            groupes.setdefault(actif["perimetre"], []).append(actif)
+    return {
+        perimetre: {"trouves": sum(a["id"] in trouves for a in groupe), "attendus": len(groupe),
+                    "rappel": round(sum(a["id"] in trouves for a in groupe) / len(groupe), 4)}
+        for perimetre, groupe in sorted(groupes.items())
+    }
+
+
+def fichier_de(emplacement: str) -> str:
+    """Chemin du fichier d'un emplacement CBOM (sans numéro de ligne éventuel)."""
+    return emplacement.split(":", 1)[0] if not emplacement.startswith("implicite") else emplacement
+
+
+def leurres_touches(cbom: dict, appariement_paires: dict[str, str], doublons: list[str], leurres: list[dict]) -> list[dict]:
+    """Faux positifs certains : composants NI appariés NI doublons, situés dans le fichier d'un leurre.
+
+    Un leurre ressemble à de la cryptographie sans en être (MD5 d'une clé de cache, certificat de test…).
+    Un composant apparié à un vrai actif du même fichier n'est jamais compté : un fichier peut contenir à la
+    fois un leurre et de vrais actifs (exemple : une ligne en commentaire à côté des vraies directives).
+    """
+    retenus = set(appariement_paires.values()) | set(doublons)
+    fichiers = {l["Fichier / emplacement"]: l["ID"] for l in leurres}
+    touches = []
+    for composant in cbom.get("components", []):
+        reference = composant.get("bom-ref", composant.get("name", "?"))
+        if reference in retenus:
+            continue
+        for occurrence in composant.get("evidence", {}).get("occurrences", []):
+            fichier = fichier_de(occurrence.get("location", ""))
+            if fichier in fichiers:
+                touches.append({"leurre": fichiers[fichier], "composant": reference, "nom": composant.get("name", "")[:60]})
+                break
+    return touches
+
+
+def lire_leurres(chemin: str | Path | None) -> list[dict] | None:
+    if not chemin:
+        return None
+    import csv
+
+    with Path(chemin).open(encoding="utf-8", newline="") as flux:
+        return list(csv.DictReader(flux))
 
 
 def couts(dossier: Path) -> dict:
@@ -68,7 +122,7 @@ def couts(dossier: Path) -> dict:
     }
 
 
-def evaluer(dossier: str | Path, verite_terrain: str | Path = VERITE_TERRAIN) -> dict:
+def evaluer(dossier: str | Path, verite_terrain: str | Path = VERITE_TERRAIN, leurres: str | Path | None = None) -> dict:
     dossier = Path(dossier)
     cbom_chemin = dossier / "cbom.json"
     actifs = json.loads(Path(verite_terrain).read_text(encoding="utf-8"))["actifs"]
@@ -79,7 +133,16 @@ def evaluer(dossier: str | Path, verite_terrain: str | Path = VERITE_TERRAIN) ->
     from quantum_ready.outils.valider_schema import valider_schema
 
     validation = valider_schema(cbom)
-    return resultat | {"cbom_valide": validation.valide, "qualite": qualite(cbom, actifs), "plan": plan(dossier), "couts": couts(dossier)}
+    mesures_qualite = qualite(cbom, actifs)
+    liste_leurres = lire_leurres(leurres)
+    if liste_leurres is not None:
+        composants = [Composant.depuis_cbom(c) for c in cbom.get("components", [])]
+        apparie = apparier(actifs, composants)
+        touches = leurres_touches(cbom, apparie.paires, apparie.doublons, liste_leurres)
+        mesures_qualite["leurres"] = {"fichier": str(leurres), "nombre": len(liste_leurres),
+                                      "leurres_touches": sorted({t["leurre"] for t in touches}),
+                                      "composants_sur_leurres": touches}
+    return resultat | {"cbom_valide": validation.valide, "qualite": mesures_qualite, "plan": plan(dossier), "couts": couts(dossier)}
 
 
 def plan(dossier: Path) -> dict | None:

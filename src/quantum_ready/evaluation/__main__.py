@@ -1,6 +1,7 @@
 """Évalue une ou plusieurs sessions et affiche un tableau comparatif.
 
     python -m quantum_ready.evaluation traces/A traces/B [--verite data/ground_truth/si_v1.json]
+        [--leurres data/ground_truth/leurres_v2.csv] [--sortie results/raw/evaluation_v2.json]
 
 Chaque session reçoit un fichier evaluation.json ; le tableau est écrit sur la sortie standard (Markdown).
 """
@@ -18,6 +19,9 @@ LIGNES = [
     ("CBOM valide", lambda r: "oui" if r.get("cbom_valide") else "non"),
     ("Rappel", lambda r: f"{r['qualite']['rappel']:.1%}"),
     ("Rappel des actifs cachés", lambda r: f"{r['qualite']['rappel_caches']:.1%}"),
+    ("Rappel : actifs connus", lambda r: _perimetre(r, "connu")),
+    ("Rappel : hors périmètre", lambda r: _perimetre(r, "hors périmètre")),
+    ("Leurres touchés", lambda r: ", ".join(r["qualite"]["leurres"]["leurres_touches"]) or "aucun"),
     ("Précision stricte", lambda r: f"{r['qualite']['precision_stricte']:.1%}"),
     ("Précision hors doublons", lambda r: f"{r['qualite']['precision_hors_doublons']:.1%}"),
     ("F1", lambda r: f"{r['qualite']['f1']:.3f}"),
@@ -29,6 +33,11 @@ LIGNES = [
     ("Jetons entrée / sortie", lambda r: f"{r['couts']['jetons_entree']} / {r['couts']['jetons_sortie']}"),
     ("Durée totale (s)", lambda r: str(r["couts"]["duree_totale_s"])),
 ]
+
+
+def _perimetre(resultat: dict, perimetre: str) -> str:
+    groupe = resultat["qualite"]["rappel_par_perimetre"][perimetre]
+    return f"{groupe['trouves']}/{groupe['attendus']} ({groupe['rappel']:.1%})"
 
 
 def tableau(resultats: list[dict]) -> str:
@@ -49,12 +58,17 @@ def main(argv: list[str] | None = None) -> None:
     analyseur = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     analyseur.add_argument("sessions", nargs="+")
     analyseur.add_argument("--verite", default=str(VERITE_TERRAIN))
+    analyseur.add_argument("--leurres", default=None, help="CSV des leurres (faux positifs certains), ex. data/ground_truth/leurres_v2.csv")
+    analyseur.add_argument("--sortie", default=None, help="écrit aussi toutes les évaluations dans ce fichier JSON (ex. results/raw/)")
     options = analyseur.parse_args(argv)
     resultats = []
     for session in options.sessions:
-        resultat = evaluer(session, options.verite)
+        resultat = evaluer(session, options.verite, options.leurres)
         ecrire_json(Path(session) / "evaluation.json", resultat)
         resultats.append(resultat)
+    if options.sortie:
+        ecrire_json(Path(options.sortie), {"verite_terrain": options.verite, "leurres": options.leurres,
+                                           "sessions": [{k: v for k, v in r.items()} for r in resultats]})
     print(tableau(resultats))
     for r in resultats:
         if "qualite" in r and r["qualite"]["manques"]:
