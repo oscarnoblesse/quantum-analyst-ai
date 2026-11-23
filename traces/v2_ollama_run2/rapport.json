@@ -1,0 +1,143 @@
+{
+ "session": "traces/v2_ollama_run2",
+ "racine": "si/generated/v2",
+ "modele": "ollama",
+ "arret": "termine",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 1,
+ "plan_valide": true,
+ "erreurs_plan": [],
+ "validation": "acceptee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "limite_etapes",
+   "etapes": 90,
+   "appels_outils": 75,
+   "appels_refuses": 0,
+   "appels_en_double": 15,
+   "erreurs_outils": 13,
+   "fins_refusees": 0,
+   "jetons_entree": 214140,
+   "jetons_sortie": 2949,
+   "duree_ms": 572908,
+   "message": "",
+   "sortie": null
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 9,
+   "appels_outils": 8,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 17342,
+   "jetons_sortie": 258,
+   "duree_ms": 66547,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 78,
+    "exclusions": [],
+    "resume": "Le CBOM CycloneDX 1.6 a été construit et validé sans exclusion, avec 78 composants issus de 107 trouvailles et 13 fusions détectées."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 17,
+   "appels_outils": 16,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 33171,
+   "jetons_sortie": 4332,
+   "duree_ms": 545141,
+   "message": "",
+   "sortie": {
+    "evalues": 78,
+    "critiques": [
+     "crypto-92e888a37da1",
+     "crypto-5353d4e5176f"
+    ],
+    "resume": "Les échanges TLS obsolètes sont critiques. La migration doit être prioritaire pour éviter les failles post-quantiques."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 5,
+   "appels_outils": 4,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 11687,
+   "jetons_sortie": 901,
+   "duree_ms": 109669,
+   "message": "",
+   "sortie": {
+    "etapes": [
+     {
+      "ordre": 1,
+      "actifs": [
+       "crypto-3d7bbc3f74d9",
+       "crypto-4cd35883856e",
+       "crypto-5777fee50342",
+       "crypto-71228e176394",
+       "crypto-93a2a3072cc2",
+       "crypto-941f3ba4b240",
+       "crypto-998f924ad040",
+       "crypto-b3fcaa665d5d",
+       "crypto-c208e3b3633e",
+       "crypto-cf76a8efa531",
+       "crypto-f5037857b08f",
+       "crypto-ffef973cf955"
+      ],
+      "action": "Migrer les signatures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+      "cible": "ML-DSA-65",
+      "echeance": "2027-12-31",
+      "references": [
+       "NIST-FIPS-204"
+      ]
+     },
+     {
+      "ordre": 2,
+      "actifs": [
+       "crypto-00b225057b98",
+       "crypto-0e22fe8cd725",
+       "crypto-1994f01df4de",
+       "crypto-1b7097d382d7",
+       "crypto-2fb5e8827315"
+      ],
+      "action": "Migrer les échanges de clés TLS et SSH vers un échange hybride avec X25519MLKEM768",
+      "cible": "X25519MLKEM768",
+      "echeance": "2027-12-31",
+      "references": [
+       "IETF-TLS-HYBRIDE"
+      ]
+     },
+     {
+      "ordre": 3,
+      "actifs": [
+       "crypto-3d7bbc3f74d9",
+       "crypto-93a2a3072cc2",
+       "crypto-c208e3b3633e"
+      ],
+      "action": "Rechiffrer les sauvegardes chiffrées pour une clé publique en utilisant une clé hybride post-quantique",
+      "cible": "GNUPG-PQ",
+      "echeance": "2028-12-31",
+      "references": [
+       "GNUPG-PQ"
+      ]
+     }
+    ],
+    "resume": "Le plan priorise d'abord la migration des signatures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204. Ensuite, il met à jour les échanges de clés TLS et SSH avec X25519MLKEM768. Enfin, il traite les sauvegardes sensibles en les rechiffrant avec GNUPG-PQ, en tenant compte de l'urgence d'« enregistrer maintenant, déchiffrer plus tard »."
+   }
+  }
+ }
+}

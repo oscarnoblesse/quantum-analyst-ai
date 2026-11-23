@@ -1,0 +1,106 @@
+{
+ "session": "traces/v2_regles",
+ "racine": "si/generated/v2",
+ "modele": "regles",
+ "arret": "termine",
+ "tentatives_cartographe": 1,
+ "cbom_valide": true,
+ "tentatives_architecte": 2,
+ "plan_valide": false,
+ "erreurs_plan": [
+  "le plan ne contient aucune étape"
+ ],
+ "validation": "acceptee",
+ "agents": {
+  "inventoriste": {
+   "agent": "inventoriste",
+   "arret": "limite_etapes",
+   "etapes": 90,
+   "appels_outils": 41,
+   "appels_refuses": 0,
+   "appels_en_double": 49,
+   "erreurs_outils": 1,
+   "fins_refusees": 0,
+   "jetons_entree": 0,
+   "jetons_sortie": 0,
+   "duree_ms": 2542,
+   "message": "",
+   "sortie": null
+  },
+  "cartographe": {
+   "agent": "cartographe",
+   "arret": "termine",
+   "etapes": 3,
+   "appels_outils": 2,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 0,
+   "jetons_sortie": 0,
+   "duree_ms": 47,
+   "message": "",
+   "sortie": {
+    "cbom_valide": true,
+    "composants": 46,
+    "exclusions": [],
+    "resume": "CBOM construit et validé."
+   }
+  },
+  "analyste_risque": {
+   "agent": "analyste_risque",
+   "arret": "termine",
+   "etapes": 11,
+   "appels_outils": 10,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 0,
+   "jetons_sortie": 0,
+   "duree_ms": 70,
+   "message": "",
+   "sortie": {
+    "evalues": 46,
+    "critiques": [],
+    "resume": "Évaluation terminée."
+   }
+  },
+  "architecte": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 7,
+   "appels_outils": 6,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 0,
+   "jetons_sortie": 0,
+   "duree_ms": 26,
+   "message": "",
+   "sortie": {
+    "etapes": [],
+    "resume": "Plan à règles fixes : échanges de clés d'abord, puis signatures et PKI."
+   }
+  },
+  "architecte_2": {
+   "agent": "architecte",
+   "arret": "termine",
+   "etapes": 7,
+   "appels_outils": 6,
+   "appels_refuses": 0,
+   "appels_en_double": 0,
+   "erreurs_outils": 0,
+   "fins_refusees": 0,
+   "jetons_entree": 0,
+   "jetons_sortie": 0,
+   "duree_ms": 29,
+   "message": "",
+   "sortie": {
+    "etapes": [],
+    "resume": "Plan à règles fixes : échanges de clés d'abord, puis signatures et PKI."
+   }
+  }
+ }
+}

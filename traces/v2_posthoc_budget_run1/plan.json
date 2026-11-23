@@ -1,0 +1,76 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-3d7bbc3f74d9",
+    "crypto-4cd35883856e",
+    "crypto-5777fee50342",
+    "crypto-6cbf3dda4f5a",
+    "crypto-71228e176394",
+    "crypto-941f3ba4b240",
+    "crypto-998f924ad040",
+    "crypto-c208e3b3633e",
+    "crypto-cb40cedb9917",
+    "crypto-f5037857b08f",
+    "crypto-ffef973cf955"
+   ],
+   "action": "Migrer les signatures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2027-11-23",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-00b225057b98",
+    "crypto-039e885d62f1",
+    "crypto-285df586fbc2",
+    "crypto-2fb5e8827315"
+   ],
+   "action": "Migrer les échanges de clés TLS et SSH vers un échange hybride avec X25519MLKEM768",
+   "cible": "X25519MLKEM768",
+   "echeance": "2027-11-23",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-cb40cedb9917"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées à long terme pour une clé publique post-quantique",
+   "cible": "GNUPG-PQ",
+   "echeance": "2028-11-23",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord la migration des signatures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204. Ensuite, il met à jour les échanges de clés TLS et SSH avec X25519MLKEM768. Enfin, il traite les sauvegardes à long terme pour une rechiffrement post-quantique. Tous les actifs critiques sont couverts dans les délais prévus.",
+ "verification": "plan conforme",
+ "demonstration": [
+  {
+   "ordre": 1,
+   "cible": "ML-DSA-65",
+   "statut": "démontrée",
+   "motif": ""
+  },
+  {
+   "ordre": 2,
+   "cible": "X25519MLKEM768",
+   "statut": "démontrée",
+   "motif": ""
+  },
+  {
+   "ordre": 3,
+   "cible": "GNUPG-PQ",
+   "statut": "non vérifiée",
+   "motif": "cible non démontrable au laboratoire (GnuPG, PKI hors laboratoire, etc.)"
+  }
+ ],
+ "date_verification": "2026-11-23"
+}
