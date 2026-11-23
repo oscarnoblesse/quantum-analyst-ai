@@ -4,6 +4,8 @@ Usage (depuis la racine du dépôt, après avoir installé uv) :
 
     uv run python scripts/reproduire.py            # reproduction complète
     uv run python scripts/reproduire.py --petite   # environnement + tests (CI rapide)
+    uv run python scripts/reproduire.py --si-v2    # SI d'évaluation v2 seul : génération et contrôles
+    uv run python scripts/reproduire.py --verifier-si-v2   # contrôles du SI v2 déjà généré
 
 Ce script n'utilise que la bibliothèque standard : il ne dépend ni de make,
 ni de bash, ni d'un shell particulier. Chaque étape est lancée sans shell
@@ -24,7 +26,34 @@ RACINE = Path(__file__).resolve().parent.parent
 VERITE_CSV = Path("data/ground_truth/verite_terrain_v1.csv")
 VERITE_JSON = Path("data/ground_truth/si_v1.json")
 SI = Path("si/generated/v1")
+VERITE_CSV_V2 = Path("data/ground_truth/verite_terrain_v2.csv")
+VERITE_JSON_V2 = Path("data/ground_truth/si_v2.json")
+LEURRES_V2 = Path("data/ground_truth/leurres_v2.csv")
+CBOM_ATTENDU_V2 = Path("data/ground_truth/cbom_attendu_v2.json")
+SI_V2 = Path("si/generated/v2")
 SEUIL_COUVERTURE = 70
+
+
+def etapes_verifier_si_v2() -> list[tuple[str, list[str]]]:
+    """Contrôles du SI v2 déjà généré (équivalent de « make verifier-si-v2 »)."""
+    uv = ["uv", "run", "python"]
+    return [
+        ("Vérifier le SI v2 contre sa vérité terrain",
+         [*uv, "-m", "quantum_ready.si_fictif.controles_v2", str(SI_V2), str(VERITE_CSV_V2), str(LEURRES_V2)]),
+    ]
+
+
+def etapes_si_v2() -> list[tuple[str, list[str]]]:
+    """SI d'évaluation v2 : vérité terrain, CBOM attendu, génération, contrôles (« make si-v2 » puis contrôles)."""
+    uv = ["uv", "run", "python"]
+    return [
+        ("Valider la vérité terrain v2",
+         [*uv, "-m", "quantum_ready.verite_terrain", str(VERITE_CSV_V2), str(VERITE_JSON_V2)]),
+        ("Construire et valider le CBOM attendu v2",
+         [*uv, "scripts/cbom_attendu.py", str(VERITE_CSV_V2), str(CBOM_ATTENDU_V2)]),
+        ("Générer le SI fictif v2", [*uv, "-m", "quantum_ready.si_fictif", "--variante", "v2", "--ecraser"]),
+        *etapes_verifier_si_v2(),
+    ]
 
 
 def etapes(petite: bool) -> list[tuple[str, list[str]]]:
@@ -38,6 +67,7 @@ def etapes(petite: bool) -> list[tuple[str, list[str]]]:
             ("Valider la vérité terrain", [*uv, "-m", "quantum_ready.verite_terrain", str(VERITE_CSV), str(VERITE_JSON)]),
             ("Générer le SI fictif v1", [*uv, "-m", "quantum_ready.si_fictif", "--variante", "v1", "--ecraser"]),
             ("Vérifier le SI contre la vérité terrain", [*uv, "-m", "quantum_ready.si_fictif.controles", str(SI), str(VERITE_CSV)]),
+            *etapes_si_v2(),
         ]
     liste.append((
         f"Lancer les tests (couverture ≥ {SEUIL_COUVERTURE} %)",
@@ -82,7 +112,10 @@ def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
     parseur = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parseur.add_argument("--petite", action="store_true", help="installer et tester sans régénérer le SI")
+    choix = parseur.add_mutually_exclusive_group()
+    choix.add_argument("--petite", action="store_true", help="installer et tester sans régénérer le SI")
+    choix.add_argument("--si-v2", action="store_true", help="générer et contrôler le SI d'évaluation v2 seulement")
+    choix.add_argument("--verifier-si-v2", action="store_true", help="contrôler le SI v2 déjà généré")
     args = parseur.parse_args()
 
     if shutil.which("uv") is None:
@@ -97,7 +130,13 @@ def main() -> int:
     environnement = {**os.environ, "PYTHONUTF8": "1"}
 
     debut = time.monotonic()
-    for numero, (libelle, commande) in enumerate(etapes(args.petite), start=1):
+    if args.si_v2:
+        liste = etapes_si_v2()
+    elif args.verifier_si_v2:
+        liste = etapes_verifier_si_v2()
+    else:
+        liste = etapes(args.petite)
+    for numero, (libelle, commande) in enumerate(liste, start=1):
         print(f"\n== Étape {numero} : {libelle}", flush=True)
         print("   $ " + " ".join(commande), flush=True)
         resultat = subprocess.run(commande, cwd=RACINE, env=environnement)
