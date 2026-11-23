@@ -5,3 +5,7 @@ eea369ef1be65ea67d515ef8fc5856a135e72fc5:src/quantum_ready/outils/analyser_cle.p
 5a35fecf38da135ddb55ae603c9a7477b8cdba6c:src/quantum_ready/outils/lister_fichiers.py:private-key:70
 # Faux secret volontaire d'un test : vérifie que rechercher_algorithmes masque les valeurs.
 928adc896348970c34411b061cd637d6ead7e9ab:tests/test_outil_rechercher_algorithmes.py:generic-api-key:37
+# En-têtes PEM cités comme motifs attendus par les contrôles du SI v2 (aucun contenu de clé) ;
+# remplacés par des en-têtes construits au commit suivant (5e2771b), mais présents dans l'historique.
+c043d22902212ded8b6c6578f9a2dca38be192c6:src/quantum_ready/si_fictif/controles_v2.py:private-key:402
+c043d22902212ded8b6c6578f9a2dca38be192c6:src/quantum_ready/si_fictif/controles_v2.py:private-key:571

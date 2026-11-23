@@ -1400,9 +1400,11 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "pyjks" },
     { name = "pytest" },
     { name = "pytest-cov" },
+]
+verification-jks = [
+    { name = "pyjks" },
 ]
 
 [package.metadata]
@@ -1419,10 +1421,10 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "pyjks", specifier = ">=20.0.0" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
 ]
+verification-jks = [{ name = "pyjks", specifier = ">=20.0.0" }]
 
 [[package]]
 name = "referencing"

@@ -14,6 +14,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      # JDK : keytool relit le magasin JKS du SI v2 (vérification par l'outil officiel, test_si_fictif_v2.py).
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
       - uses: astral-sh/setup-uv@v5
       - name: Reproduire le projet (environnement, SI fictif, vérification, tests)
         run: uv run python scripts/reproduire.py
