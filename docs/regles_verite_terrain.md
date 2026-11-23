@@ -112,7 +112,7 @@ Chaque dossier représente une machine ou un composant du SI. Les noms de dossie
 | `scripts/` | Tâches planifiées (sauvegardes) et scripts de déploiement |
 | `deploy/old/` | Vestiges d'anciens déploiements |
 
-La 2ᵉ variante du SI, non vue pendant le développement, reprend cette structure en faisant varier les actifs et leurs conditions.
+La 2ᵉ variante du SI, non vue pendant le développement, décrit un autre SI (voir la section « Variante 2 » ci-dessous).
 
 ## Ce que l'évaluation mesurera
 
@@ -128,3 +128,82 @@ Les résultats sont aussi détaillés par composant et pour les actifs cachés s
 - QR-055 : `random.SystemRandom`, sûr malgré le nom du module.
 - QR-059 : MD5 utilisé comme simple clé de cache, sans rôle de sécurité.
 - QR-029 : MAC HMAC-SHA-256/512, sans risque quantique.
+
+## Variante 2 : SI d'évaluation non vu (Fret Lab)
+
+Le sujet exige une évaluation de robustesse sur « une seconde variante du SI non vue pendant le développement ». La variante 2 est ce SI. Elle n'est pas une copie modifiée de la v1 : c'est un **autre SI**, celui de Fret Lab, un transporteur routier fictif (domaines `*.fret.lab.local`). Il comprend un portail de suivi des colis, un point EDI avec la douane, la télématique de la flotte, la signature des lettres de voiture électroniques (e-CMR, conservées 10 ans) et un bastion SSH.
+
+| Fichier | Contenu |
+| --- | --- |
+| `data/ground_truth/verite_terrain_v2.csv` | 100 actifs, V2-001 à V2-100 : colonnes de la v1, plus « Périmètre » |
+| `data/ground_truth/si_v2.json` | Conversion validée (`make verite-terrain-v2`) |
+| `data/ground_truth/cbom_attendu_v2.json` | CBOM CycloneDX 1.6 attendu, un composant par actif (`make cbom-attendu-v2`) |
+| `data/ground_truth/leurres_v2.csv` | 8 leurres, non comptés comme actifs |
+| `src/quantum_ready/si_fictif/v2/`, `modeles/v2/` | Générateur (`make si-v2`) |
+| `src/quantum_ready/si_fictif/controles_v2.py` | Un contrôle par actif (`make verifier-si-v2`, 100/100 attendus) |
+
+Sans make (Windows) : `uv run python scripts/reproduire.py --si-v2` génère et contrôle le SI ; `--verifier-si-v2` contrôle seulement.
+
+### Règle d'intégrité de l'évaluation
+
+Le système évalué est **gelé** pendant la construction de la v2 :
+
+- aucun fichier de `src/quantum_ready/outils/`, `agents/`, `prompts/`, `serveur_mcp/`, ni `orchestrateur.py` ou `config/experiment.yaml` n'est modifié ;
+- le code des outils n'a pas été lu pour choisir les actifs ni leur forme : le SI est conçu comme un administrateur réaliste le ferait. Le seul document consulté est le périmètre **déclaré** et public (`docs/perimetre_et_validation_des_outils.md`), pour classer les actifs connus et hors périmètre ;
+- les agents ne sont pas lancés sur la v2 pendant sa construction, et rien n'est ajusté d'après leurs résultats. Une correction faite après une mesure sur la v2 donne une nouvelle version du système, qui devra être évaluée sur un autre SI non vu ;
+- le CBOM attendu est construit par un script indépendant (`scripts/cbom_attendu.py`) et non par l'outil `construire_cbom` du système évalué. Seul l'outil de validation du schéma (`valider_schema`) est appelé, en lecture seule ;
+- la v1, sa vérité terrain et ses tests restent inchangés.
+
+### Répartition
+
+| Groupe | Technologie | Actifs | dont cachés |
+| --- | --- | ---: | ---: |
+| Connus (80) | Certificats X.509 et PKI (PEM, DER, bundles) | 18 | 3 |
+| | nginx et TLS | 11 | 3 |
+| | OpenSSH (serveur, client, clés, `known_hosts`, `authorized_keys`) | 14 | 3 |
+| | Code Python | 17 | 6 |
+| | Dépendances Python | 6 | 2 |
+| | PKCS#12 et clés privées | 6 | 2 |
+| | OpenPGP, scripts shell, `.env` | 8 | 1 |
+| Hors périmètre (20) | Java (JKS, `.properties`, code), Go, Node.js, HAProxy, configuration OpenSSL, strongSwan, WireGuard, OpenVPN, Terraform, SAML, DNSSEC, Postfix (12 technologies) | 20 | 7 |
+| **Total** | | **100** | **27** |
+
+Vulnérabilité : 54 actifs exposés à Shor, 20 affaiblis par Grover, 15 sans risque quantique, 11 indirects. Les actifs cassés en classique (MD5, SHA-1, RC4, 3DES, RSA-1024, DSA, CAST5, AES-ECB, TLS 1.0) et les actifs résistants (AES-256, SHA-384, PBKDF2-SHA256) sont mélangés. Deux usages sont post-quantiques hybrides : `X25519MLKEM768` dans nginx (V2-020) et `mlkem768x25519-sha256` dans `sshd_config` (V2-031).
+
+### Critère « caché »
+
+Le critère et les catégories sont ceux de la v1 (section « Critère caché »). Pour que la v2 ne teste pas les mêmes cachettes que la v1, **6 actifs cachés au plus** reprennent un mécanisme déjà présent dans la v1 : V2-029 (échange RSA statique par croisement), V2-053 (3DES dans du code mort), V2-065 (dépendance transitive), V2-069 (mot de passe PKCS#12 dans un `.env`), V2-072 (clé d'AC oubliée en sauvegarde) et V2-084 (code Java mort). Les 21 autres utilisent des mécanismes absents de la v1 :
+
+- `include` nginx avec motif (`snippets/tls-*.conf`) ;
+- `Include sshd_config.d/*.conf`, et un bloc `Match` qui redéfinit `Ciphers` ;
+- `AuthorizedKeysFile` construit avec `%u` ;
+- configuration OpenSSL chargée par `OPENSSL_CONF` ;
+- `hashlib.new()` avec un algorithme tiré d'un dictionnaire, et `getattr(hashlib, nom)` ;
+- import renommé (`from random import choices as generer_code`) ;
+- clé PEM dans une chaîne Python ;
+- clé base64 dans un `.env` dont le nom ne dit pas l'algorithme ;
+- certificat dans un fichier `.txt` (extension trompeuse) ;
+- vieille version imposée par `[tool.uv] constraint-dependencies` ;
+- valeur par défaut d'une variable shell (`${DIGEST:-sha1}`) ;
+- profil Spring, contrainte de compilation Go (`//go:build legacy`), section `global` d'HAProxy, clé `tls-auth` intégrée à un profil OpenVPN, valeur par défaut d'une variable Terraform.
+
+### Critère « hors périmètre »
+
+Un actif est **hors périmètre** quand **aucun analyseur dédié au format du fichier qui le porte** n'est déclaré dans `docs/perimetre_et_validation_des_outils.md`. Les formats « pris en charge à titre secondaire » (Apache httpd, YAML, JSON, `requirements.txt`, `poetry.lock`) comptent comme couverts : ils ne servent donc pas d'actifs hors périmètre. Pour la même raison, la configuration OpenSSL (`openssl.cnf`, non déclarée) est hors périmètre, même si elle règle le TLS de nginx.
+
+Ces 20 actifs ne mesurent pas la couverture du système. Ils mesurent sa capacité à **signaler** ce qu'il ne sait pas analyser, plutôt qu'à le passer sous silence.
+
+### Un fichier principal par actif
+
+Dans la v2, la colonne « Fichier / emplacement » contient **un seul chemin** : le fichier où l'algorithme ou la valeur est écrit. Les copies (racine recopiée dans un bundle, par exemple) et les fichiers liés sont cités dans Notes. Exemples : V2-029 a pour fichier celui des suites (`tls-commun.conf`) ; V2-022 a pour fichier la directive `ssl_session_ticket_key`, et la clé elle-même (`tickets.key`) est citée dans les notes.
+
+### Leurres
+
+`leurres_v2.csv` liste 8 éléments qui **ressemblent** à de la cryptographie sans en être : MD5 d'une clé de cache déclarée `usedforsecurity=False`, « rsa » dans un nom de variable, mention dans un README, certificat de test sous `tests/`, `random.shuffle` pour un affichage, directive en commentaire, `base64` dans une fonction nommée « chiffrer », CRC-32. Ce ne sont pas des actifs. Leur prise en compte dans l'évaluation (comptés comme faux positifs s'ils sont signalés) viendra dans une étape séparée.
+
+Différence avec la v1 : la v1 compte un MD5 de clé de cache (QR-059) comme un **actif** à classer sans risque. Dans la v2, l'équivalent est un **leurre**, parce que l'appel déclare lui-même `usedforsecurity=False`.
+
+### Clés et secrets
+
+Comme dans la v1, toutes les clés et tous les secrets sont tirés au moment de la génération et ne sont jamais commités. Les secrets nécessaires aux contrôles (mots de passe du PKCS#12 et du JKS, phrase de passe de la clé e-CMR, PSK) sont écrits hors du SI, dans `si/generated/hors_si/v2/secrets.json`. Tout le reste est déterministe : graine fixe, dates relatives à la génération. Deux générations donnent la même arborescence et les mêmes contenus, sauf les fichiers qui portent une clé, un certificat ou un secret, dont les métadonnées (algorithme, taille, courbe, durées) restent identiques.
+
