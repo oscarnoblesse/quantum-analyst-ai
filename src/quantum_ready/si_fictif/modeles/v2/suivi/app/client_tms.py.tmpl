@@ -1,0 +1,28 @@
+"""Client du TMS (gestion du transport) et réception des positions des camions."""
+
+import ssl
+import urllib.request
+
+from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey, X25519PublicKey
+
+URL_TMS = "https://tms.{{DOMAINE}}/api/tournees"
+
+
+def contexte_tms() -> ssl.SSLContext:
+    """Le TMS est un logiciel ancien : il ne parle que TLS 1.0."""
+    contexte = ssl.create_default_context()
+    contexte.minimum_version = ssl.TLSVersion.TLSv1
+    contexte.set_ciphers("DEFAULT:@SECLEVEL=0")
+    return contexte
+
+
+def tournees_du_jour() -> bytes:
+    with urllib.request.urlopen(URL_TMS, context=contexte_tms()) as reponse:
+        return reponse.read()
+
+
+def secret_session_camion(cle_publique_camion: bytes) -> tuple[bytes, bytes]:
+    """Échange de clés avec le boîtier télématique : (clé publique éphémère, secret partagé)."""
+    ephemere = X25519PrivateKey.generate()
+    partage = ephemere.exchange(X25519PublicKey.from_public_bytes(cle_publique_camion))
+    return ephemere.public_key().public_bytes_raw(), partage

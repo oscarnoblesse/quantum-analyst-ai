@@ -1,7 +1,11 @@
-.PHONY: help install test verite-terrain si verifier-si reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu sommes verifier-sommes signer verifier-signature
+.PHONY: help install test verite-terrain si verifier-si verite-terrain-v2 cbom-attendu-v2 si-v2 verifier-si-v2 reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu sommes verifier-sommes signer verifier-signature
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
+GT_CSV_V2   := data/ground_truth/verite_terrain_v2.csv
+GT_JSON_V2  := data/ground_truth/si_v2.json
+LEURRES_V2  := data/ground_truth/leurres_v2.csv
+CBOM_ATTENDU_V2 := data/ground_truth/cbom_attendu_v2.json
 
 # Signature de SHA256SUMS (minisign). La clé privée n'est JAMAIS dans le dépôt.
 CLE_PUBLIQUE := cle_publique_minisign.pub
@@ -27,6 +31,18 @@ si: ## Génère le SI fictif dans si/generated/v1 (jamais commité)
 
 verifier-si: ## Compare le SI généré à la vérité terrain, actif par actif
 	uv run python -m quantum_ready.si_fictif.controles si/generated/v1 $(GT_CSV)
+
+verite-terrain-v2: ## Valide la vérité terrain du SI v2 et produit le JSON
+	uv run python -m quantum_ready.verite_terrain $(GT_CSV_V2) $(GT_JSON_V2)
+
+cbom-attendu-v2: ## Construit le CBOM attendu du SI v2 depuis sa vérité terrain et le valide (CycloneDX 1.6)
+	uv run python scripts/cbom_attendu.py $(GT_CSV_V2) $(CBOM_ATTENDU_V2)
+
+si-v2: ## Génère le SI d'évaluation v2 dans si/generated/v2 (jamais commité)
+	uv run python -m quantum_ready.si_fictif --variante v2 --ecraser
+
+verifier-si-v2: ## Compare le SI v2 généré à sa vérité terrain, actif par actif (100 contrôles)
+	uv run python -m quantum_ready.si_fictif.controles_v2 si/generated/v2 $(GT_CSV_V2) $(LEURRES_V2)
 
 reproduce: ## Reproduction complète : environnement, vérité terrain, SI, vérification, tests (scripts/reproduire.py)
 	uv run python scripts/reproduire.py

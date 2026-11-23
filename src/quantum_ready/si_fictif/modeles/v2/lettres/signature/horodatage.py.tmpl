@@ -1,0 +1,11 @@
+"""Horodatage interne des lettres de voiture."""
+
+import hashlib
+import time
+
+ALGOS = {"horodatage": "sha1"}
+
+
+def jeton_horodatage(document: bytes) -> dict:
+    empreinte = hashlib.new(ALGOS["horodatage"], document).hexdigest()
+    return {"empreinte": empreinte, "date": int(time.time())}

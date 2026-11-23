@@ -1,0 +1,10 @@
+# Client SSH du serveur de dépôt (synchronisation des bornes de quai)
+Host routeur-quai
+    HostName 10.20.8.1
+    User admin
+    IdentityFile /srv/depot/ssh/id_dsa_routeur
+    KexAlgorithms +diffie-hellman-group1-sha1
+
+Host *
+    HashKnownHosts yes
+    ServerAliveInterval 60

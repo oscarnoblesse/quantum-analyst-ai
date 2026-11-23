@@ -30,3 +30,9 @@ dev = [
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
 ]
+# Vérification optionnelle du magasin JKS du SI v2 par une bibliothèque tierce (tests/test_si_fictif_v2.py).
+# Hors du groupe dev : pyjks dépend de twofish, distribué sans roue précompilée ; il faut un compilateur C,
+# absent de l'image Docker et non garanti sous Windows. Installation : uv sync --group verification-jks
+verification-jks = [
+    "pyjks>=20.0.0",
+]

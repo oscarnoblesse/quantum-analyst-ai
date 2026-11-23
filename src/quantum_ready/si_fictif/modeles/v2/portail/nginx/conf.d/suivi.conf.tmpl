@@ -1,0 +1,30 @@
+# Portail de suivi des colis : clients, destinataires et transporteurs partenaires
+server {
+    listen 443 ssl;
+    server_name suivi.{{DOMAINE}};
+
+    ssl_certificate         /etc/nginx/tls/suivi.crt;
+    ssl_certificate_key     /etc/nginx/tls/suivi.key;
+    ssl_trusted_certificate /etc/nginx/tls/chaine.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    # ssl_protocols SSLv3 TLSv1;   # ancienne valeur, avant l'audit de 2023
+    ssl_ecdh_curve X25519MLKEM768:X25519:prime256v1;
+    ssl_conf_command Ciphersuites TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256;
+    ssl_dhparam /etc/nginx/tls/dhparam-2048.pem;
+
+    include snippets/tls-*.conf;
+
+    location / {
+        root /srv/portail/public;
+        try_files $uri /index.html;
+    }
+
+    location /api/ {
+        proxy_pass https://api-suivi.{{DOMAINE}}:8443;
+        proxy_ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384;
+        proxy_ssl_trusted_certificate /etc/nginx/tls/chaine.pem;
+        proxy_ssl_verify on;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}

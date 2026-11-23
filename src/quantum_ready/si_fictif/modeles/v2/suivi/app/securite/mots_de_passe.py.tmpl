@@ -1,0 +1,19 @@
+"""Mots de passe des comptes clients du portail de suivi."""
+
+import hashlib
+import hmac
+import os
+
+ITERATIONS = 100_000
+
+
+def hacher(mot_de_passe: str) -> str:
+    sel = os.urandom(16)
+    empreinte = hashlib.pbkdf2_hmac("sha256", mot_de_passe.encode(), sel, ITERATIONS)
+    return f"{sel.hex()}${empreinte.hex()}"
+
+
+def verifier(mot_de_passe: str, stocke: str) -> bool:
+    sel, attendu = stocke.split("$")
+    calcule = hashlib.pbkdf2_hmac("sha256", mot_de_passe.encode(), bytes.fromhex(sel), ITERATIONS)
+    return hmac.compare_digest(calcule.hex(), attendu)

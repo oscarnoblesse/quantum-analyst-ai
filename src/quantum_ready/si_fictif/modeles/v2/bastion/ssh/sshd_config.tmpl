@@ -1,0 +1,19 @@
+# Bastion d'administration de Fret Lab (OpenSSH 10.0)
+Include /etc/ssh/sshd_config.d/*.conf
+
+Port 22
+ListenAddress 10.20.0.5
+
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_rsa_key
+
+KexAlgorithms mlkem768x25519-sha256,sntrup761x25519-sha512
+Ciphers aes128-ctr,aes256-gcm@openssh.com,3des-cbc
+MACs hmac-sha1,hmac-sha2-256
+HostKeyAlgorithms ssh-rsa,ecdsa-sha2-nistp256,ssh-ed25519
+
+PermitRootLogin no
+PasswordAuthentication no
+AuthorizedKeysFile /etc/ssh/authorized_keys.d/%u
+AllowGroups exploitation prestataires

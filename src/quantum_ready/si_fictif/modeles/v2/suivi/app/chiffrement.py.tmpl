@@ -1,0 +1,15 @@
+"""Chiffrement des adresses de livraison en base."""
+
+import os
+
+from cryptography.fernet import Fernet
+
+_ADRESSES = Fernet(os.environ["CLE_ADRESSES"])
+
+
+def chiffrer_adresse(adresse: str) -> bytes:
+    return _ADRESSES.encrypt(adresse.encode())
+
+
+def dechiffrer_adresse(jeton: bytes) -> str:
+    return _ADRESSES.decrypt(jeton).decode()

@@ -1,0 +1,18 @@
+global
+    log /dev/log local0
+    maxconn 4096
+    ssl-default-bind-ciphers ECDHE-RSA-AES256-GCM-SHA384:AES128-SHA
+
+defaults
+    mode http
+    timeout connect 5s
+    timeout client 30s
+    timeout server 30s
+
+frontend entree_quais
+    bind 10.20.0.10:443 ssl crt /etc/haproxy/certs/quais.pem
+    default_backend bornes
+
+backend bornes
+    server borne1 10.20.4.11:8080 check
+    server borne2 10.20.4.12:8080 check

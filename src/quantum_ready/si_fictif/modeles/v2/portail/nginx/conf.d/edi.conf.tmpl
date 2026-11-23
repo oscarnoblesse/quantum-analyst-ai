@@ -1,0 +1,17 @@
+# Point d'entrée EDI : déclarations en douane (partenaire historique, client ancien)
+server {
+    listen 8443 ssl;
+    server_name edi.{{DOMAINE}};
+
+    # Certificat et clé extraits de edi/certs/edi-douane.p12 au déploiement
+    ssl_certificate     /etc/nginx/tls/edi-douane.pem;
+    ssl_certificate_key /etc/nginx/tls/edi-douane-cle.pem;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-ECDSA-AES128-SHA:ECDHE-ECDSA-RC4-SHA;
+    ssl_ecdh_curve secp384r1;
+
+    location / {
+        proxy_pass http://127.0.0.1:9000;
+    }
+}

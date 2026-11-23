@@ -48,3 +48,17 @@ def test_main_s_arrete_avant_toute_etape(monkeypatch, capsys):
     monkeypatch.setattr(reproduire.subprocess, "run", lambda *a, **k: lancees.append(a))
     assert reproduire.main() == 2
     assert lancees == [] and "openssl est introuvable" in capsys.readouterr().err
+
+
+def test_option_si_v2_genere_puis_controle():
+    libelles = [libelle for libelle, _ in reproduire.etapes_si_v2()]
+    assert libelles[-2:] == ["Générer le SI fictif v2", "Vérifier le SI v2 contre sa vérité terrain"]
+    commandes = [" ".join(c) for _, c in reproduire.etapes_si_v2()]
+    assert any("--variante v2" in c for c in commandes)
+    assert any("controles_v2" in c and "leurres_v2.csv" in c for c in commandes)
+
+
+def test_reproduction_complete_inclut_le_si_v2():
+    complete = [libelle for libelle, _ in reproduire.etapes(petite=False)]
+    assert "Générer le SI fictif v2" in complete
+    assert "Générer le SI fictif v2" not in [libelle for libelle, _ in reproduire.etapes(petite=True)]

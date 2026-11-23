@@ -1,0 +1,9 @@
+"""Vérification des e-CMR signées par les transporteurs sous-traitants."""
+
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+
+
+def verifier(cle_publique_pem: bytes, document: bytes, signature: bytes) -> None:
+    cle = serialization.load_pem_public_key(cle_publique_pem)
+    cle.verify(signature, document, padding.PKCS1v15(), hashes.SHA1())

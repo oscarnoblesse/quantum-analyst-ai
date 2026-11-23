@@ -1,0 +1,9 @@
+ID,Fichier / emplacement,Élément,Ressemble à,Pourquoi ce n’est pas un actif
+L2-01,suivi/app/cache.py,"hashlib.md5(…, usedforsecurity=False)",Empreinte MD5 (algorithme cassé),"Clé de cache non sécuritaire, déclarée comme telle par usedforsecurity=False ; aucune propriété de sécurité n’en dépend"
+L2-02,suivi/app/tarifs.py,Variable rsa_zone,Mention de RSA,« rsa » est l’abréviation de « Région Sud-Atlantique » : nom de variable sans rapport avec la cryptographie
+L2-03,lettres/README.md,« nous n’utilisons plus SHA-1 ni RSA-1024 »,Mention d’algorithmes,Texte de documentation : aucun algorithme n’est configuré ni appelé à cet endroit
+L2-04,suivi/tests/donnees/certificat_test.pem,"Certificat auto-signé test.example (RSA-2048, 30 jours)",Certificat X.509,"Donnée de test sous tests/, jamais déployée"
+L2-05,suivi/app/affichage.py,random.shuffle des bannières,Générateur pseudo-aléatoire non cryptographique,Ordre d’affichage de bannières : aucun secret n’est produit
+L2-06,portail/nginx/conf.d/suivi.conf,# ssl_protocols SSLv3 TLSv1;,Versions TLS obsolètes,"Ligne en commentaire, inactive ; la directive active est V2-019"
+L2-07,lettres/export.py,def chiffrer_nom() → base64.b64encode,Fonction « chiffrer »,Encodage base64 réversible sans clé : ce n’est pas un chiffrement
+L2-08,lettres/doublons.py,zlib.crc32,Somme de contrôle,"CRC-32 non cryptographique, utilisé pour détecter les doublons"

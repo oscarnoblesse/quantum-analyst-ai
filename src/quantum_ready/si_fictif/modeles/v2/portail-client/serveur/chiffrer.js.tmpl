@@ -1,0 +1,12 @@
+'use strict';
+// Références de commande transmises aux clients grands comptes
+const crypto = require('crypto');
+
+const IV = Buffer.alloc(16, 0);
+
+function chiffrerReference(cle, reference) {
+  const chiffreur = crypto.createCipheriv('aes-128-cbc', cle, IV);
+  return Buffer.concat([chiffreur.update(reference, 'utf8'), chiffreur.final()]).toString('hex');
+}
+
+module.exports = { chiffrerReference };

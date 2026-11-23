@@ -1,0 +1,8 @@
+resource "tls_private_key" "passerelle" {
+  algorithm = var.algorithme_cle
+  rsa_bits  = var.taille_cle
+}
+
+output "cle_publique_passerelle" {
+  value = tls_private_key.passerelle.public_key_openssh
+}

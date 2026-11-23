@@ -1,0 +1,14 @@
+"""Ancien export chiffré vers le transitaire (remplacé en 2022 par lettres/archivage.py)."""
+
+import os
+
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
+
+def chiffrer_export(cle: bytes, donnees: bytes) -> bytes:
+    iv = os.urandom(8)
+    bourreur = padding.PKCS7(64).padder()
+    clair = bourreur.update(donnees) + bourreur.finalize()
+    chiffreur = Cipher(algorithms.TripleDES(cle), modes.CBC(iv)).encryptor()
+    return iv + chiffreur.update(clair) + chiffreur.finalize()

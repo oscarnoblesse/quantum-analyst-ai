@@ -1,0 +1,12 @@
+package lab.fret.passerelle;
+
+/** Passerelle de réception des positions des camions. */
+public final class Passerelle {
+    private Passerelle() {}
+
+    public static void main(String[] args) throws Exception {
+        byte[] cle = System.getenv("CLE_POSITIONS").getBytes("UTF-8");
+        byte[] trame = Chiffrement.chiffrerPosition(cle, "45.76,4.83".getBytes("UTF-8"));
+        System.out.println(trame.length);
+    }
+}

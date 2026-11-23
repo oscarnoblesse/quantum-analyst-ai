@@ -1,0 +1,11 @@
+//go:build legacy
+
+package main
+
+import "crypto/tls"
+
+// Configuration des anciens boîtiers télématiques (compilée avec -tags legacy, plus livrée).
+var configAncienne = &tls.Config{
+	MinVersion:       tls.VersionTLS10,
+	CurvePreferences: []tls.CurveID{tls.CurveP256},
+}

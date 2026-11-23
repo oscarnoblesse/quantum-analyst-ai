@@ -1,7 +1,7 @@
 """Chargement, validation et conversion de la vérité terrain du SI fictif.
 
-La vérité terrain est maintenue dans un fichier CSV versionné
-(data/ground_truth/verite_terrain_v1.csv). Ce module :
+La vérité terrain est maintenue dans un fichier CSV versionné par variante du SI
+(data/ground_truth/verite_terrain_v1.csv, verite_terrain_v2.csv). Ce module :
 
 1. lit le CSV et valide chaque ligne avec un modèle Pydantic
    (valeurs fermées pour les colonnes à choix, format des identifiants) ;
@@ -38,6 +38,8 @@ COLONNES = {
     "Notes": "notes",
     "Type CycloneDX": "type_cyclonedx",
 }
+# Colonne propre à la variante 2 : absente du CSV v1, qui reste lisible tel quel.
+COLONNES_FACULTATIVES = {"Périmètre": "perimetre"}
 
 # Catégories d'actifs cachés, telles que définies dans docs/regles_verite_terrain.md.
 CATEGORIES_CACHEES = (
@@ -51,17 +53,23 @@ CATEGORIES_CACHEES = (
     "usage à interpréter",
 )
 
+# Composants de la v1, puis ceux de la v2 (transporteur Fret Lab), dont les technologies
+# hors du périmètre déclaré des outils (docs/perimetre_et_validation_des_outils.md).
 Composant = Literal[
-    "Certificats", "nginx", "SSH", "Base de données", "Factures", "API", "Dépendances"
+    "Certificats", "nginx", "SSH", "Base de données", "Factures", "API", "Dépendances",
+    "Suivi", "Lettres de voiture", "EDI", "Flotte", "Exploitation",
+    "Java", "Go", "Node.js", "HAProxy", "OpenSSL", "strongSwan", "WireGuard", "OpenVPN",
+    "Terraform", "SAML", "DNSSEC", "Postfix",
 ]
 Visibilite = Literal["Visible", "Caché"]
 Vulnerabilite = Literal["Oui (Shor)", "Partiellement (Grover)", "Non", "Indirect"]
 TypeCycloneDX = Literal[
     "algorithm", "certificate", "protocol", "related-crypto-material", "library"
 ]
+Perimetre = Literal["connu", "hors périmètre"]
 
 _MOTIF_CATEGORIE = re.compile(r"^Caché, (?P<categorie>[^:]+?)\s*:")
-_MOTIF_PARENT = re.compile(r"Composant parent de (QR-\d{3}) et (QR-\d{3})")
+_MOTIF_PARENT = re.compile(r"Composant parent de ((?:QR|V2)-\d{3}) et ((?:QR|V2)-\d{3})")
 
 
 class ErreurVeriteTerrain(ValueError):
@@ -73,7 +81,7 @@ class Actif(BaseModel):
 
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True)
 
-    id: str = Field(pattern=r"^QR-\d{3}$")
+    id: str = Field(pattern=r"^(QR|V2)-\d{3}$")
     composant: Composant
     fichier: str = Field(min_length=1)
     actif: str = Field(min_length=1)
@@ -83,6 +91,8 @@ class Actif(BaseModel):
     type_risque: str = Field(min_length=1)
     notes: str = ""
     type_cyclonedx: TypeCycloneDX
+    # v2 seulement : « connu » (format du périmètre déclaré des outils) ou « hors périmètre ».
+    perimetre: Perimetre | None = None
 
     @field_validator("notes")
     @classmethod
@@ -123,6 +133,8 @@ class Actif(BaseModel):
 
     def vers_dict(self) -> dict:
         donnees = self.model_dump()
+        if donnees["perimetre"] is None:  # v1 : JSON inchangé
+            del donnees["perimetre"]
         donnees["categorie_cachee"] = self.categorie_cachee
         return donnees
 
@@ -138,6 +150,9 @@ def charger_csv(chemin: str | Path) -> list[Actif]:
         actifs = []
         for numero, ligne in enumerate(lecteur, start=2):
             donnees = {champ: (ligne.get(colonne) or "") for colonne, champ in COLONNES.items()}
+            for colonne, champ in COLONNES_FACULTATIVES.items():
+                if colonne in (lecteur.fieldnames or []):
+                    donnees[champ] = ligne.get(colonne) or None
             try:
                 actifs.append(Actif(**donnees))
             except ValueError as erreur:
@@ -179,6 +194,10 @@ def resume(actifs: list[Actif]) -> dict:
         "par_vulnerabilite": dict(Counter(a.vulnerabilite for a in actifs)),
         "par_type_cyclonedx": dict(Counter(a.type_cyclonedx for a in actifs)),
         "par_categorie_cachee": dict(Counter(a.categorie_cachee for a in actifs if a.est_cache)),
+        **(
+            {"par_perimetre": dict(Counter(a.perimetre for a in actifs))}
+            if any(a.perimetre for a in actifs) else {}
+        ),
     }
 
 

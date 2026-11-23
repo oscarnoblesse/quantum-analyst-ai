@@ -1,0 +1,11 @@
+"""Bannières d'information affichées sur la page d'accueil."""
+
+import random
+
+BANNIERES = ["Suivez vos colis en temps réel", "Nouveau : livraison le samedi", "Pensez au point relais"]
+
+
+def bannieres_du_jour() -> list[str]:
+    ordre = list(BANNIERES)
+    random.shuffle(ordre)
+    return ordre

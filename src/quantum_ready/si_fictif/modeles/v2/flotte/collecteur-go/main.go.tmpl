@@ -1,0 +1,15 @@
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	lot, _ := os.ReadFile(os.Args[1])
+	signature, err := signerLot(lot)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(len(signature))
+}

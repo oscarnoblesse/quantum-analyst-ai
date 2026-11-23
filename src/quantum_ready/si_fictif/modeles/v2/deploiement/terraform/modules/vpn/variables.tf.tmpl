@@ -1,0 +1,11 @@
+variable "algorithme_cle" {
+  description = "Algorithme de la clé de la passerelle VPN"
+  type        = string
+  default     = "RSA"
+}
+
+variable "taille_cle" {
+  description = "Taille de la clé, en bits"
+  type        = number
+  default     = 2048
+}

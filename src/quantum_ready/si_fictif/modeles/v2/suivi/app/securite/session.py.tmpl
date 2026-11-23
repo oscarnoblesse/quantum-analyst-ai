@@ -1,0 +1,13 @@
+"""Sessions du portail et clés d'API des partenaires."""
+
+import hashlib
+import secrets
+
+
+def nouveau_jeton_session() -> str:
+    return secrets.token_urlsafe(32)
+
+
+def empreinte_cle_api(cle: str) -> str:
+    """Seule l'empreinte de la clé d'API est stockée en base."""
+    return hashlib.sha384(cle.encode()).hexdigest()
