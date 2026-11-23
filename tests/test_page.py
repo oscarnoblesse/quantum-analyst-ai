@@ -27,6 +27,6 @@ def test_page_sans_script_ni_ressource_externe():
 
 def test_sections_presentes_meme_sans_donnees():
     html_page = page.construire(_metriques("aucun"))
-    for titre in ("Vérification du laboratoire", "Latence du handshake", "Signatures", "Agent Démonstrateur", "Ce qui n'est pas encore mesuré"):
+    for titre in ("Inventaire sur la variante non vue", "Vérification du laboratoire", "Latence du handshake", "Signatures", "Agent Démonstrateur", "Ce qui n'est pas encore mesuré"):
         assert titre in html_page
     assert "Pas de mesure de latence" in html_page

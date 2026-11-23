@@ -20,9 +20,12 @@ a { color:var(--accent); }
 </head>
 <body>
 <main>
-<h1>Quantum-Ready : résultats du laboratoire post-quantique</h1>
-<p class="discret">Généré le 2026-11-07T19:16:38+00:00 à partir de <code>results/metrics.json</code>, version 1.
-Aucune valeur n'est saisie à la main ; les fichiers sources sont : bench_pqc.json, bench_signatures.json, demonstrateur_agent.json, demonstrateur_verification.json.</p>
+<h1>Quantum-Ready : résultats</h1>
+<p class="discret">Généré le 2026-11-23T15:14:57+00:00 à partir de <code>results/metrics.json</code>, version 1.
+Aucune valeur n'est saisie à la main ; les fichiers sources sont : bench_pqc.json, bench_signatures.json, demonstrateur_agent.json, demonstrateur_verification.json, evaluation_v2.json.</p>
+
+<h2>Inventaire sur la variante non vue du SI</h2>
+<p>SI v2 (« Fret Lab »), jamais vu pendant le développement : 100 actifs, dont 80 sur des technologies connues et 20 hors périmètre ; vérité terrain <code>data/ground_truth/si_v2.json</code>, leurres <code>data/ground_truth/leurres_v2.csv</code>. Rappel et précision en %, moyenne ± écart type sur les répétitions.</p><table><thead><tr><th>Configuration</th><th>Exécutions</th><th>Rappel</th><th>Connus</th><th>Hors périmètre</th><th>Précision stricte</th><th>F1</th><th>Leurres touchés</th><th>Arrêt de l&#x27;Inventoriste</th></tr></thead><tbody><tr><td>Outils seuls, sans modèle (ablation a)</td><td>1</td><td>79 (une seule mesure)</td><td>70/80</td><td>9/20</td><td>69.3 (une seule mesure)</td><td>0.738 (une seule mesure)</td><td>L2-01, L2-04, L2-05</td><td>—</td></tr><tr><td>Agents à règles fixes, sans modèle (ablation a)</td><td>1</td><td>33 (une seule mesure)</td><td>28/80</td><td>5/20</td><td>71.74 (une seule mesure)</td><td>0.452 (une seule mesure)</td><td>aucun</td><td>limite_etapes</td></tr><tr><td>Système avec qwen3:4b, budget de 90 étapes (ablation b)</td><td>3</td><td>57 ± 0</td><td>51/80</td><td>6/20</td><td>73.08 ± 0</td><td>0.64 ± 0</td><td>aucun</td><td>limite_etapes</td></tr><tr><td><strong>Idem, budget de 162 étapes (expérience a posteriori)</strong></td><td>1</td><td>79 (une seule mesure)</td><td>70/80</td><td>9/20</td><td>68.7 (une seule mesure)</td><td>0.735 (une seule mesure)</td><td>L2-01, L2-04, L2-05</td><td>limite_etapes</td></tr></tbody></table><p>Comparaison aux outils seuls :</p><ul><li>Agents à règles fixes, sans modèle (ablation a) : 0 actif(s) trouvé(s) en plus des outils seuls, 46 perdu(s).</li><li>Système avec qwen3:4b, budget de 90 étapes (ablation b) : 0 actif(s) trouvé(s) en plus des outils seuls, 22 perdu(s).</li><li>Idem, budget de 162 étapes (expérience a posteriori) : 0 actif(s) trouvé(s) en plus des outils seuls, 0 perdu(s).</li></ul>
 
 <h2>Vérification du laboratoire</h2>
 <p>Laboratoire TLS et SSH : <strong>conforme</strong> (vérifié le 2026-11-07T18:22:58+00:00). Groupe TLS négocié : X25519MLKEM768 ; échange SSH négocié : mlkem768x25519-sha256. Client classique refusé : TLS True, SSH True.</p>
@@ -43,7 +46,7 @@ Aucune valeur n'est saisie à la main ; les fichiers sources sont : bench_pqc.js
 <ul><li>latence : une seule série de mesures par configuration ; le sujet exige 3 répétitions (moyenne, écart type)</li></ul>
 
 <h2>Ce qui n'est pas encore mesuré</h2>
-<ul><li>débit des connexions (sujet, métriques)</li><li>discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)</li><li>tailles des clés publiques et privées (sujet, métriques)</li><li>rappel et précision de l&#x27;évaluation par catégorie, validité du CBOM sur 3 répétitions</li><li>performance sur la variante non vue du SI (sujet §4)</li></ul>
+<ul><li>débit des connexions (sujet, métriques)</li><li>discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)</li><li>tailles des clés publiques et privées (sujet, métriques)</li><li>rappel et précision de l&#x27;inventaire sur le SI v1 : une seule exécution par version, pas de répétitions</li><li>ablation (c) : système avec un second modèle de taille différente (sujet §6.2)</li></ul>
 </main>
 </body>
 </html>

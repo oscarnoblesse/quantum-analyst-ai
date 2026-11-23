@@ -107,6 +107,48 @@ def _agilite(a: dict | None) -> str:
             f"<p>Par niveau :</p><ul>{niveaux}</ul><p>Par catégorie d'emplacement :</p><ul>{categories}</ul>")
 
 
+NOMS_V2 = {
+    "outils_seuls": "Outils seuls, sans modèle (ablation a)",
+    "agents_a_regles": "Agents à règles fixes, sans modèle (ablation a)",
+    "modele_8go": "Système avec qwen3:4b, budget de 90 étapes (ablation b)",
+    "modele_8go_budget_162": "Idem, budget de 162 étapes (expérience a posteriori)",
+}
+
+
+def _inventaire_v2(inv: dict | None) -> str:
+    if not inv:
+        return "<p>Pas d'évaluation sur la variante non vue.</p>"
+    lignes = []
+    for nom, c in inv["configurations"].items():
+        r = c["repetitions"]
+        premiere = next(iter(c["sessions"].values()))
+        perimetres = premiere.get("rappel_par_perimetre", {})
+
+        def groupe(cle):
+            g = perimetres.get(cle)
+            return _e(f"{g['trouves']}/{g['attendus']}") if g else "—"
+        lignes.append([
+            _e(NOMS_V2.get(nom, nom)) if not c["a_posteriori"] else f"<strong>{_e(NOMS_V2.get(nom, nom))}</strong>",
+            _e(r["rappel"]["n"]),
+            _cellule_ecart(r["rappel"]["moyenne"], r["rappel"]["ecart_type"]),
+            groupe("connu"), groupe("hors périmètre"),
+            _cellule_ecart(r["precision_stricte"]["moyenne"], r["precision_stricte"]["ecart_type"]),
+            _cellule_ecart(r["f1"]["moyenne"], r["f1"]["ecart_type"]),
+            _e(", ".join(premiere["leurres_touches"] or []) or "aucun"),
+            _e(premiere["arret_inventoriste"]),
+        ])
+    comparaison = "".join(
+        f"<li>{_e(NOMS_V2.get(n, n))} : {_e(len(v['trouves_en_plus_des_outils']))} actif(s) trouvé(s) en plus des outils seuls, "
+        f"{_e(len(v['perdus_par_rapport_aux_outils']))} perdu(s).</li>"
+        for n, v in inv["comparaison_aux_outils_seuls"].items())
+    return (f"<p>SI v2 (« Fret Lab »), jamais vu pendant le développement : 100 actifs, dont 80 sur des technologies connues "
+            f"et 20 hors périmètre ; vérité terrain <code>{_e(inv['verite_terrain'])}</code>, leurres "
+            f"<code>{_e(inv['leurres'])}</code>. Rappel et précision en %, moyenne ± écart type sur les répétitions.</p>"
+            + _tableau(["Configuration", "Exécutions", "Rappel", "Connus", "Hors périmètre", "Précision stricte", "F1",
+                        "Leurres touchés", "Arrêt de l'Inventoriste"], lignes)
+            + f"<p>Comparaison aux outils seuls :</p><ul>{comparaison}</ul>")
+
+
 def construire(metriques: dict) -> str:
     d = metriques["demonstrateur"]
     avertissements = "".join(f"<li>{_e(a)}</li>" for a in metriques["avertissements"])
@@ -133,9 +175,12 @@ a {{ color:var(--accent); }}
 </head>
 <body>
 <main>
-<h1>Quantum-Ready : résultats du laboratoire post-quantique</h1>
+<h1>Quantum-Ready : résultats</h1>
 <p class="discret">Généré le {_e(metriques['genere_le'])} à partir de <code>results/metrics.json</code>, version {_e(metriques['version'])}.
 Aucune valeur n'est saisie à la main ; les fichiers sources sont : {_e(', '.join(metriques['sources']))}.</p>
+
+<h2>Inventaire sur la variante non vue du SI</h2>
+{_inventaire_v2(metriques.get('inventaire_v2'))}
 
 <h2>Vérification du laboratoire</h2>
 {_verification(d['verification'])}
