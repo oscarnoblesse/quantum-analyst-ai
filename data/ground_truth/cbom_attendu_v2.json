@@ -870,7 +870,7 @@
         },
         {
           "name": "quantum-ready:vulnerabilite_quantique",
-          "value": "Non"
+          "value": "Oui (Shor)"
         },
         {
           "name": "quantum-ready:visibilite",

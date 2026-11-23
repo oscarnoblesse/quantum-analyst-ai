@@ -27,10 +27,10 @@
       "Postfix": 1
     },
     "par_vulnerabilite": {
-      "Oui (Shor)": 54,
+      "Oui (Shor)": 55,
       "Indirect": 11,
-      "Non": 15,
-      "Partiellement (Grover)": 20
+      "Partiellement (Grover)": 20,
+      "Non": 14
     },
     "par_type_cyclonedx": {
       "related-crypto-material": 30,
@@ -326,9 +326,9 @@
       "actif": "Groupes d’échange de clés (ssl_ecdh_curve)",
       "algorithme": "X25519MLKEM768:X25519:prime256v1",
       "visibilite": "Visible",
-      "vulnerabilite": "Non",
-      "type_risque": "Résistant pour les clients qui négocient X25519MLKEM768 ; X25519 et P-256 restent proposés aux clients anciens (Shor, HNDL sur ces connexions)",
-      "notes": "Usage post-quantique hybride (ML-KEM-768). Exige OpenSSL ≥ 3.5",
+      "vulnerabilite": "Oui (Shor)",
+      "type_risque": "Confidentialité : un client sans groupe hybride négocie X25519 ou P-256, exposés à Shor (HNDL) ; les clients compatibles négocient X25519MLKEM768, résistant",
+      "notes": "Usage post-quantique hybride (ML-KEM-768), exige OpenSSL ≥ 3.5. La vulnérabilité vient des groupes de repli X25519 et prime256v1, négociés par un client sans hybride",
       "type_cyclonedx": "algorithm",
       "perimetre": "connu",
       "categorie_cachee": null

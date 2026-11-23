@@ -168,7 +168,7 @@ Le système évalué est **gelé** pendant la construction de la v2 :
 | Hors périmètre (20) | Java (JKS, `.properties`, code), Go, Node.js, HAProxy, configuration OpenSSL, strongSwan, WireGuard, OpenVPN, Terraform, SAML, DNSSEC, Postfix (12 technologies) | 20 | 7 |
 | **Total** | | **100** | **27** |
 
-Vulnérabilité : 54 actifs exposés à Shor, 20 affaiblis par Grover, 15 sans risque quantique, 11 indirects. Les actifs cassés en classique (MD5, SHA-1, RC4, 3DES, RSA-1024, DSA, CAST5, AES-ECB, TLS 1.0) et les actifs résistants (AES-256, SHA-384, PBKDF2-SHA256) sont mélangés. Deux usages sont post-quantiques hybrides : `X25519MLKEM768` dans nginx (V2-020) et `mlkem768x25519-sha256` dans `sshd_config` (V2-031).
+Vulnérabilité : 55 actifs exposés à Shor, 20 affaiblis par Grover, 14 sans risque quantique, 11 indirects. Les actifs cassés en classique (MD5, SHA-1, RC4, 3DES, RSA-1024, DSA, CAST5, AES-ECB, TLS 1.0) et les actifs résistants (AES-256, SHA-384, PBKDF2-SHA256) sont mélangés. Deux usages sont post-quantiques hybrides : `X25519MLKEM768` dans nginx (V2-020) et `mlkem768x25519-sha256` dans `sshd_config` (V2-031). V2-031 est classé « Non » : il ne propose que des échanges hybrides. V2-020 est classé « Oui (Shor) » : nginx garde X25519 et prime256v1 comme groupes de repli, négociés par un client sans hybride.
 
 ### Critère « caché »
 

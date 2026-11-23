@@ -228,8 +228,9 @@ def test_hors_perimetre_au_moins_six_technologies(actifs):
 
 
 def test_au_moins_deux_usages_post_quantiques(actifs):
-    hybrides = [a for a in actifs if "mlkem" in a.algorithme.lower()]
-    assert len(hybrides) >= 2 and all(a.vulnerabilite == "Non" for a in hybrides)
+    hybrides = {a.id: a.vulnerabilite for a in actifs if "mlkem" in a.algorithme.lower()}
+    # SSH : hybrides seuls → Non ; nginx : groupes de repli classiques → Shor.
+    assert hybrides == {"V2-020": "Oui (Shor)", "V2-031": "Non"}
 
 
 def test_melange_de_vulnerabilites(actifs):
