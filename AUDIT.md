@@ -97,6 +97,32 @@ par `SHA256SUMS` (section 10) ; de nouvelles traces se produisent avec `make age
 - `make evaluer` écrit un `evaluation.json` dans chaque session évaluée : ces fichiers apparaissent
   ensuite comme « non listés » à la section 10 (avertissement, pas une erreur).
 
+## 3 bis. Inventaire sur la variante non vue (SI v2)
+
+Protocole et lecture : `docs/evaluation_v2.md`. Comme pour la section 3, cette étape se vérifie
+sur les traces publiées, sans relancer le modèle.
+
+```bash
+make si-v2 && make verifier-si-v2      # attendu (exact) : « 100/100 actifs conformes, 0 fichier(s) en trop »
+make evaluer-v2                         # régénère results/raw/evaluation_v2.json depuis les six sessions
+```
+
+**Attendu (exact, à la quatrième décimale)** :
+
+| Session | Rappel | Rappel cachés | Préc. stricte | Préc. hors doublons | F1 | Connus | Hors périmètre | Composants / appariés / doublons / en trop | Shor bien classés | Leurres touchés |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `v2_reference_outils_seuls` | 0,79 | 0,7037 | 0,6930 | 0,7745 | 0,7383 | 70/80 | 9/20 | 114 / 79 / 12 / 23 | 42/55 | L2-01, L2-04, L2-05 |
+| `v2_regles` | 0,33 | 0,3333 | 0,7174 | 0,7674 | 0,4521 | 28/80 | 5/20 | 46 / 33 / 3 / 10 | 23/55 | aucun |
+| `v2_ollama_run1`, `run2`, `run3` | 0,57 | 0,4074 | 0,7308 | 0,7917 | 0,6404 | 51/80 | 6/20 | 78 / 57 / 6 / 15 | 39/55 | aucun |
+| `v2_posthoc_budget_run1` (a posteriori) | 0,79 | 0,7037 | 0,6870 | 0,7670 | 0,7349 | 70/80 | 9/20 | 115 / 79 / 12 / 24 | 42/55 | L2-01, L2-04, L2-05 |
+
+- Les CBOM des six sessions sont valides (CycloneDX 1.6).
+- `make evaluer-v2` doit redonner `results/raw/evaluation_v2.json` à l'identique ; `make metriques`
+  reconstruit ensuite la section `inventaire_v2` de `results/metrics.json`.
+- Le SI régénéré par l'auditeur a de nouvelles clés aléatoires : les contrôles et l'évaluation
+  portent sur les métadonnées (algorithme, taille, emplacement), identiques d'une génération à
+  l'autre. L'évaluation lit les CBOM enregistrés dans les traces, pas le SI.
+
 ## 4. Démonstrateur : vérification du laboratoire
 
 ```bash
@@ -209,18 +235,20 @@ docker run --rm quantum-ready
 
 ## Écarts connus
 
-- **Variante 2 du SI** : pas encore produite. La performance sur un SI non vu n'est pas mesurée.
-- **Ablation** : faite pour « outils seuls, sans modèle » (F1 0,9600 contre 0,9605 avec qwen3 4B :
-  le modèle n'apporte qu'un actif, QR-020) et pour un très petit modèle (qwen3:0.6b : aucun CBOM
-  produit). Pas encore faite avec un second modèle de taille comparable.
+- **Variante 2 du SI** : faite (section 3 bis). Une seule exécution de l'expérience a posteriori
+  à 162 étapes ; le SI v2 a été conçu par le même assistant que les outils (`docs/evaluation_v2.md`).
+- **Ablation** : faite pour « outils seuls, sans modèle » sur la v1 (F1 0,9600 contre 0,9605 avec
+  qwen3 4B : le modèle n'apporte qu'un actif, QR-020) et sur la v2 (le modèle n'apporte aucun
+  actif), pour des agents à règles fixes (v1 et v2) et pour un très petit modèle (qwen3:0.6b :
+  aucun CBOM produit). Pas encore faite avec un second modèle de taille comparable.
 - **Répétitions de l'évaluation d'inventaire** : trois exécutions v6 sur la même machine (macOS),
   identiques sur toutes les mesures de qualité (écart type nul) ; seules les durées varient
   (1 807 à 4 064 s). Sur Windows, deux exécutions donnent le même rappel et le même F1 mais un
   chemin différent (5 doublons et 1 composant en trop au lieu de 4 et 2) : à température 0, la
   sortie du modèle reste propre à la machine.
-- **`results/metrics.json`** ne reprend pas encore les mesures d'inventaire : la liste
-  `non_mesure` le déclare (rappel et précision par catégorie, validité du CBOM sur 3 répétitions).
-  Les valeurs se recalculent depuis les traces (section 3).
+- **`results/metrics.json`** reprend l'inventaire du SI v2 (section `inventaire_v2`) mais pas encore
+  celui du SI v1 : la liste `non_mesure` le déclare. Les valeurs v1 se recalculent depuis les
+  traces (section 3).
 - **QR-049** (`clients/admin/admin.key`, clé ECDSA P-256 chiffrée par phrase de passe) : classée
   d'exposition « inconnue » faute de pouvoir lire la clé, d'où 42/43 actifs Shor bien classés.
 - **Rejeu dépendant d'OpenSSL** : voir section 3 (14 ou 16 suites RSA selon la branche d'OpenSSL).

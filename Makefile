@@ -1,4 +1,4 @@
-.PHONY: help install test verite-terrain si verifier-si verite-terrain-v2 cbom-attendu-v2 si-v2 verifier-si-v2 reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer installer-modele metriques rejeu sommes verifier-sommes signer verifier-signature
+.PHONY: help install test verite-terrain si verifier-si verite-terrain-v2 cbom-attendu-v2 si-v2 verifier-si-v2 reproduce reproduce-complet reproduce-small reproduce-small-modele demonstrateur demonstrateur-agent reference agents agents-regles evaluer evaluer-v2 installer-modele metriques rejeu sommes verifier-sommes signer verifier-signature
 
 GT_CSV  := data/ground_truth/verite_terrain_v1.csv
 GT_JSON := data/ground_truth/si_v1.json
@@ -88,6 +88,10 @@ rejeu: ## Affiche une session et rejoue ses appels purs : make rejeu SESSION=tra
 
 evaluer: ## Évalue et compare des sessions : make evaluer SESSIONS="traces/a traces/b"
 	uv run python -m quantum_ready.evaluation $(SESSIONS)
+
+SESSIONS_V2 := traces/v2_reference_outils_seuls traces/v2_regles traces/v2_ollama_run1 traces/v2_ollama_run2 traces/v2_ollama_run3 traces/v2_posthoc_budget_run1
+evaluer-v2: ## Réévalue les six sessions du SI v2 depuis leurs traces et régénère results/raw/evaluation_v2.json (docs/evaluation_v2.md)
+	uv run python -m quantum_ready.evaluation $(SESSIONS_V2) --verite $(GT_JSON_V2) --leurres $(LEURRES_V2) --sortie results/raw/evaluation_v2.json
 
 
 sommes: ## Écrit SHA256SUMS : empreintes des artefacts publiés (results/, traces/, data/ground_truth/)

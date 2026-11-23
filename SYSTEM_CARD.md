@@ -54,6 +54,20 @@ rappel 100 % (visibles et cachés, dans chaque catégorie), précision stricte 0
 doublons), F1 0,967 ; 78 actifs évalués sur 78, 7 actifs critiques.
 Une seule exécution : pas encore de répétitions ni d'écart type pour cette évaluation.
 
+**Évaluation sur la variante non vue du SI (v2)** (`docs/evaluation_v2.md`, section `inventaire_v2`
+de `results/metrics.json`) : 100 actifs, dont 80 sur des technologies connues et 20 hors périmètre,
+27 cachés, 8 leurres.
+
+| Configuration | Rappel | Connus | Hors périmètre | Précision stricte | F1 |
+| --- | --- | --- | --- | --- | --- |
+| Outils seuls, sans modèle | 79,0 % | 70/80 | 9/20 | 69,3 % | 0,738 |
+| Agents à règles fixes, sans modèle | 33,0 % | 28/80 | 5/20 | 71,7 % | 0,452 |
+| qwen3:4b, budget de 90 étapes (3 exécutions identiques) | 57,0 % ± 0 | 51/80 | 6/20 | 73,1 % ± 0 | 0,640 ± 0 |
+| qwen3:4b, budget de 162 étapes (expérience a posteriori) | 79,0 % | 70/80 | 9/20 | 68,7 % | 0,735 |
+
+Avec le budget réglé sur la v1, l'Inventoriste s'arrête avant d'avoir ouvert 35 fichiers sur 95.
+Avec un budget suffisant, il retrouve exactement les actifs des outils seuls, sans en ajouter.
+
 **Latence du handshake TLS 1.3** (`bench_pqc`, 3 répétitions de 1000 mesures après 100
 d'échauffement, sur un ordinateur portable, dans une VM Docker) :
 
@@ -77,20 +91,24 @@ chacune, aucun appel refusé ni en double, aucune erreur d'outil.
 
 ## 7. Limites connues
 
-- **Une seule évaluation de l'inventaire** : pas de répétitions ni d'écart type sur le rappel et
-  la précision. Les seuils de critique sont un choix de méthode (« en danger de Mosca ET cassé
-  par Shor »), argumenté mais pas validé sur un second SI.
-- **Un seul SI d'évaluation** : aucune variante non vue pendant le développement n'a encore été
-  produite ; la robustesse à un SI nouveau n'est pas mesurée.
+- **Apport des agents à l'inventaire** : sur le SI non vu (v2), le système avec modèle ne trouve
+  aucun actif que les outils seuls ne trouvent pas ; avec le budget d'étapes réglé sur la v1, il en
+  perd 22. Le budget de l'Inventoriste dépend de la taille du SI et n'est pas adapté
+  automatiquement (`docs/evaluation_v2.md`). Les seuils de critique sont un choix de méthode
+  (« en danger de Mosca ET cassé par Shor »), argumenté mais pas comparé à d'autres règles.
+- **Détection par nom de fichier** : un fichier d'une technologie connue au nom inhabituel
+  (`sshd_config.d/*.conf`) ou une directive absente de la v1 (`ssl_dhparam`, `proxy_ssl_ciphers`)
+  peut échapper aux outils.
+- **Variante v2 conçue par le même assistant que les outils** : la conception « à l'aveugle »
+  réduit ce biais sans l'éliminer.
 - **Un seul modèle** : les résultats sont ceux d'un modèle de 4 milliards de paramètres. Une
   comparaison avec un second modèle est prévue mais pas faite.
 - **Temps mesurés sur une seule machine** : les valeurs de latence varient d'environ 20 % d'une
   exécution à l'autre ; elles ne valent pas comme constantes.
 - **Laboratoire** : les mesures sont faites en boucle locale, sans latence réseau ni charge.
   Le certificat du laboratoire est auto-signé ou issu d'une chaîne de test.
-- **Sécurité du système multi-agents** : les garde-fous existent (listes fermées, vérifications
-  de fin, journal), mais l'analyse de menace STRIDE et les tests d'injection de consignes
-  piégées ne sont pas encore écrits.
+- **Sécurité du système multi-agents** : menaces, contre-mesures et tests associés dans
+  `docs/menace_stride.md` ; une contre-mesure sans test y est signalée comme telle.
 - **Modèle de langage** : il peut écrire un résumé inexact. Les défauts connus sont listés dans
   `CLAUDE.md` et dans `docs/journal_des_prompts.md`.
 

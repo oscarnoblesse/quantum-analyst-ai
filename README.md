@@ -42,6 +42,7 @@ Le Démonstrateur se lance avec `make demonstrateur-agent` (modèle local et Doc
 - [Périmètre technologique et validation des outils d'inventaire](docs/perimetre_et_validation_des_outils.md)
 - [Comparer deux implémentations des agents](docs/comparaison_des_agents.md)
 - [Journal des prompts et de la boucle agentique](docs/journal_des_prompts.md)
+- [Évaluation sur la variante non vue du SI (v2) et apport mesuré des agents](docs/evaluation_v2.md)
 - [Publier la version v1.0.0 : signature, release, Zenodo](docs/publication.md)
 
 ## Installation

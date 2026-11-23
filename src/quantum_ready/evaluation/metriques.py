@@ -23,7 +23,7 @@ NON_MESURE = [
     "débit des connexions (sujet, métriques)",
     "discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)",
     "tailles des clés publiques et privées (sujet, métriques)",
-    "rappel et précision de l'inventaire sur le SI v1 : une seule exécution par version, pas de répétitions",
+    "inventaire sur le SI v1 : non repris ici ; valeurs exactes recalculables depuis les traces (AUDIT.md, section 3)",
     "ablation (c) : système avec un second modèle de taille différente (sujet §6.2)",
 ]
 
