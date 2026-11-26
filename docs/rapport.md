@@ -305,8 +305,8 @@ Des fautes sont injectées dans des tests automatisés (`tests/test_pannes.py`, 
 - **Paramètres déclarés** : `config/experiment.yaml` (modèle et empreinte, température 0, graine 42, contexte 4 096, version d'Ollama) ; environnement capturé dans `results/ENVIRONMENT.json`.
 - **Résultats** : données brutes dans `results/raw/`, agrégats générés dans `results/metrics.json` (aucune valeur saisie à la main), figures régénérées par script, page de résultats générée et publiée sur GitHub Pages, traces de toutes les exécutions publiées, échecs compris.
 - **Vérification** : rejeu des appels d'outils d'une session (`make rejeu`), réévaluation à l'identique depuis les traces (`make evaluer-v2`), procédure d'audit avec valeurs attendues et tolérances (`AUDIT.md`).
-- **CI** (GitHub Actions) : reproduction sous Ubuntu, macOS et Windows, image Docker, laboratoire TLS, mesure hybride, chaîne complète avec qwen3:0.6b, intégrité des artefacts, gitleaks. Couverture mesurée par la CI : \[À COMPLÉTER : pourcentage affiché par la CI\].
-- **Intégrité** : `SHA256SUMS` des artefacts publiés, signé avec minisign ; clé publique dans le dépôt. Version v1.0.0 archivée sur Zenodo : \[À COMPLÉTER : DOI\].
+- **CI** (GitHub Actions) : reproduction sous Ubuntu, macOS et Windows, image Docker, laboratoire TLS, mesure hybride, chaîne complète avec qwen3:0.6b, intégrité des artefacts, gitleaks. Couverture mesurée par la CI : 93,4 % (582 tests réussis, mesure de `make reproduce` sur un clone vierge sous Linux).
+- **Intégrité** : `SHA256SUMS` des artefacts publiés, signé avec minisign ; clé publique dans le dépôt. La version v1.0.0 est archivée sur Zenodo par l'intégration GitHub–Zenodo ; son DOI, attribué à la publication de la release, figure sur la fiche de dépôt et sur la page de la release.
 
 # 13. Limites et travaux futurs
 
