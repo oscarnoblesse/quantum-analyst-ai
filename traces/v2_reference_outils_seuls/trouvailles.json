@@ -1,0 +1,3431 @@
+[
+ {
+  "id": "T0001",
+  "agent": "outils_seuls",
+  "empreinte": "5ba22e0a24437791",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/authorized_keys.d/exploitation",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-1024",
+   "description": "Clé publique SSH RSA-1024 (« exploitation@poste-nuit »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-rsa",
+    "empreinte": "SHA256:u7aGorA4d0inTZN4kk+zeZfa6fjZNFuQUl+Zcnes3J0",
+    "algorithme": "RSA",
+    "taille": 1024,
+    "faiblesse_classique": "taille insuffisante aujourd'hui (1024 bits)",
+    "commentaire": "exploitation@poste-nuit"
+   },
+   "preuve": "ssh-rsa AAAAB3NzaC1yc2EAAAAD... exploitation@poste-nuit"
+  }
+ },
+ {
+  "id": "T0002",
+  "agent": "outils_seuls",
+  "empreinte": "4b3e044ed8442fe0",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/ssh_host_ecdsa_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé privée SSH ECDSA P-256, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp256",
+    "empreinte": "SHA256:kHxNjG6bGghwvGR0zhVKQeidvKIaX6J4z46zCLzBN50",
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0003",
+  "agent": "outils_seuls",
+  "empreinte": "d7f68225a6fb5214",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/ssh_host_ecdsa_key.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique SSH ECDSA P-256 (« root@bastion.fret.lab.local »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp256",
+    "empreinte": "SHA256:kHxNjG6bGghwvGR0zhVKQeidvKIaX6J4z46zCLzBN50",
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "commentaire": "root@bastion.fret.lab.local"
+   },
+   "preuve": "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTIt... root@bastion.fret.lab.local"
+  }
+ },
+ {
+  "id": "T0004",
+  "agent": "outils_seuls",
+  "empreinte": "a2d417d9bacb7a8e",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/ssh_host_ed25519_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé privée SSH Ed25519, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:ttDMXfKI1iDrEGbDi+4TbEJBXI6HFol8CnLUD1i4ODU",
+    "algorithme": "Ed25519",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0005",
+  "agent": "outils_seuls",
+  "empreinte": "f1dccd7acf4c014b",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/ssh_host_ed25519_key.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé publique SSH Ed25519 (« root@bastion.fret.lab.local »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-ed25519",
+    "empreinte": "SHA256:ttDMXfKI1iDrEGbDi+4TbEJBXI6HFol8CnLUD1i4ODU",
+    "algorithme": "Ed25519",
+    "commentaire": "root@bastion.fret.lab.local"
+   },
+   "preuve": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5... root@bastion.fret.lab.local"
+  }
+ },
+ {
+  "id": "T0006",
+  "agent": "outils_seuls",
+  "empreinte": "b2b4d53b6993fc7e",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/ssh_host_rsa_key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé privée SSH RSA-3072, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-rsa",
+    "empreinte": "SHA256:TCL2oABEpAMGxwpg4Lxjkt4F12O9Lw+7Tztj3LqsEYc",
+    "algorithme": "RSA",
+    "taille": 3072,
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0007",
+  "agent": "outils_seuls",
+  "empreinte": "81db8f0b8e7d74b8",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "bastion/ssh/ssh_host_rsa_key.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique SSH RSA-3072 (« root@bastion.fret.lab.local »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ssh-rsa",
+    "empreinte": "SHA256:TCL2oABEpAMGxwpg4Lxjkt4F12O9Lw+7Tztj3LqsEYc",
+    "algorithme": "RSA",
+    "taille": 3072,
+    "commentaire": "root@bastion.fret.lab.local"
+   },
+   "preuve": "ssh-rsa AAAAB3NzaC1yc2EAAAAD... root@bastion.fret.lab.local"
+  }
+ },
+ {
+  "id": "T0008",
+  "agent": "outils_seuls",
+  "empreinte": "b59eafa3da2fa2f0",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "bastion/ssh/sshd_config",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "mlkem768x25519-sha256,sntrup761x25519-sha512",
+   "description": "Échange de clés (KexAlgorithms) du serveur SSH",
+   "exposition": "resistant",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "mlkem768x25519-sha256",
+     "sntrup761x25519-sha512"
+    ],
+    "ecriture": "liste explicite",
+    "post_quantique_retire": [
+     "sntrup761x25519-sha512@openssh.com"
+    ],
+    "regression": "la liste écrite retire l'échange post-quantique hybride proposé par défaut par OpenSSH",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "KexAlgorithms mlkem768x25519-sha256,sntrup761x25519-sha512"
+  }
+ },
+ {
+  "id": "T0009",
+  "agent": "outils_seuls",
+  "empreinte": "7a0435f66be2bcb4",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "bastion/ssh/sshd_config",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "aes128-ctr,aes256-gcm@openssh.com,3des-cbc",
+   "description": "Chiffrement de la session (Ciphers) du serveur SSH",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "aes128-ctr",
+     "aes256-gcm@openssh.com",
+     "3des-cbc"
+    ],
+    "ecriture": "liste explicite",
+    "faiblesse_classique": "algorithmes obsolètes dans la liste",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "Ciphers aes128-ctr,aes256-gcm@openssh.com,3des-cbc"
+  }
+ },
+ {
+  "id": "T0010",
+  "agent": "outils_seuls",
+  "empreinte": "561c67bc0281ec60",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "bastion/ssh/sshd_config",
+   "ligne": 13,
+   "type_actif": "algorithm",
+   "nom": "hmac-sha1,hmac-sha2-256",
+   "description": "Intégrité des messages (MACs) du serveur SSH",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "hmac-sha1",
+     "hmac-sha2-256"
+    ],
+    "ecriture": "liste explicite",
+    "faiblesse_classique": "algorithmes obsolètes dans la liste",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "MACs hmac-sha1,hmac-sha2-256"
+  }
+ },
+ {
+  "id": "T0011",
+  "agent": "outils_seuls",
+  "empreinte": "c97b91c57727118b",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "bastion/ssh/sshd_config",
+   "ligne": 14,
+   "type_actif": "algorithm",
+   "nom": "ssh-rsa,ecdsa-sha2-nistp256,ssh-ed25519",
+   "description": "Algorithmes de signature des clés d'hôte (HostKeyAlgorithms) du serveur SSH",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "ssh-rsa",
+     "ecdsa-sha2-nistp256",
+     "ssh-ed25519"
+    ],
+    "ecriture": "liste explicite",
+    "faiblesse_classique": "algorithmes obsolètes dans la liste",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "HostKeyAlgorithms ssh-rsa,ecdsa-sha2-nistp256,ssh-ed25519"
+  }
+ },
+ {
+  "id": "T0012",
+  "agent": "outils_seuls",
+  "empreinte": "93bc63e4c4cdfd27",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256",
+   "description": "Algorithmes acceptés pour les clés des utilisateurs (PubkeyAcceptedAlgorithms) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "ssh-ed25519-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp521-cert-v01@openssh.com",
+     "sk-ssh-ed25519-cert-v01@openssh.com",
+     "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "rsa-sha2-512-cert-v01@openssh.com",
+     "rsa-sha2-256-cert-v01@openssh.com",
+     "ssh-ed25519",
+     "ecdsa-sha2-nistp256",
+     "ecdsa-sha2-nistp384",
+     "ecdsa-sha2-nistp521",
+     "sk-ssh-ed25519@openssh.com",
+     "sk-ecdsa-sha2-nistp256@openssh.com",
+     "rsa-sha2-512",
+     "rsa-sha2-256"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "PubkeyAcceptedAlgorithms absente de bastion/ssh/sshd_config"
+  }
+ },
+ {
+  "id": "T0013",
+  "agent": "outils_seuls",
+  "empreinte": "1c6450ddaab64238",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "bastion/ssh/sshd_config.d/10-cles.conf",
+   "ligne": 2,
+   "type_actif": "algorithm",
+   "nom": "RSA",
+   "description": "Mention de RSA dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "PubkeyAcceptedAlgorithms +ssh-rsa"
+  }
+ },
+ {
+  "id": "T0014",
+  "agent": "outils_seuls",
+  "empreinte": "aaf616d1ca50d0bf",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256",
+   "description": "Échange de clés (KexAlgorithms) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "sntrup761x25519-sha512@openssh.com",
+     "curve25519-sha256",
+     "curve25519-sha256@libssh.org",
+     "ecdh-sha2-nistp256",
+     "ecdh-sha2-nistp384",
+     "ecdh-sha2-nistp521",
+     "diffie-hellman-group-exchange-sha256",
+     "diffie-hellman-group16-sha512",
+     "diffie-hellman-group18-sha512",
+     "diffie-hellman-group14-sha256"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "KexAlgorithms absente de bastion/ssh/sshd_config.d/50-prestataires.conf"
+  }
+ },
+ {
+  "id": "T0015",
+  "agent": "outils_seuls",
+  "empreinte": "6ec809449dc9230c",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com",
+   "description": "Chiffrement de la session (Ciphers) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "chacha20-poly1305@openssh.com",
+     "aes128-ctr",
+     "aes192-ctr",
+     "aes256-ctr",
+     "aes128-gcm@openssh.com",
+     "aes256-gcm@openssh.com"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "Ciphers absente de bastion/ssh/sshd_config.d/50-prestataires.conf"
+  }
+ },
+ {
+  "id": "T0016",
+  "agent": "outils_seuls",
+  "empreinte": "e63f3a747655235f",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1",
+   "description": "Intégrité des messages (MACs) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "umac-64-etm@openssh.com",
+     "umac-128-etm@openssh.com",
+     "hmac-sha2-256-etm@openssh.com",
+     "hmac-sha2-512-etm@openssh.com",
+     "hmac-sha1-etm@openssh.com",
+     "umac-64@openssh.com",
+     "umac-128@openssh.com",
+     "hmac-sha2-256",
+     "hmac-sha2-512",
+     "hmac-sha1"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "MACs absente de bastion/ssh/sshd_config.d/50-prestataires.conf"
+  }
+ },
+ {
+  "id": "T0017",
+  "agent": "outils_seuls",
+  "empreinte": "ce5bffdc658c4e38",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256",
+   "description": "Algorithmes de signature des clés d'hôte (HostKeyAlgorithms) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "ssh-ed25519-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp521-cert-v01@openssh.com",
+     "sk-ssh-ed25519-cert-v01@openssh.com",
+     "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "rsa-sha2-512-cert-v01@openssh.com",
+     "rsa-sha2-256-cert-v01@openssh.com",
+     "ssh-ed25519",
+     "ecdsa-sha2-nistp256",
+     "ecdsa-sha2-nistp384",
+     "ecdsa-sha2-nistp521",
+     "sk-ssh-ed25519@openssh.com",
+     "sk-ecdsa-sha2-nistp256@openssh.com",
+     "rsa-sha2-512",
+     "rsa-sha2-256"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "HostKeyAlgorithms absente de bastion/ssh/sshd_config.d/50-prestataires.conf"
+  }
+ },
+ {
+  "id": "T0018",
+  "agent": "outils_seuls",
+  "empreinte": "9116d95182ed9d44",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256",
+   "description": "Algorithmes acceptés pour les clés des utilisateurs (PubkeyAcceptedAlgorithms) : directive absente, OpenSSH applique sa liste par défaut",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "algorithmes": [
+     "ssh-ed25519-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp384-cert-v01@openssh.com",
+     "ecdsa-sha2-nistp521-cert-v01@openssh.com",
+     "sk-ssh-ed25519-cert-v01@openssh.com",
+     "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com",
+     "rsa-sha2-512-cert-v01@openssh.com",
+     "rsa-sha2-256-cert-v01@openssh.com",
+     "ssh-ed25519",
+     "ecdsa-sha2-nistp256",
+     "ecdsa-sha2-nistp384",
+     "ecdsa-sha2-nistp521",
+     "sk-ssh-ed25519@openssh.com",
+     "sk-ecdsa-sha2-nistp256@openssh.com",
+     "rsa-sha2-512",
+     "rsa-sha2-256"
+    ],
+    "source": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)"
+   },
+   "preuve": "PubkeyAcceptedAlgorithms absente de bastion/ssh/sshd_config.d/50-prestataires.conf"
+  }
+ },
+ {
+  "id": "T0019",
+  "agent": "outils_seuls",
+  "empreinte": "adc040cf72d7a847",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "deploiement/terraform/modules/vpn/main.tf",
+   "ligne": 3,
+   "type_actif": "algorithm",
+   "nom": "RSA",
+   "description": "Mention de RSA dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "rsa_bits  = var.taille_cle"
+  }
+ },
+ {
+  "id": "T0020",
+  "agent": "outils_seuls",
+  "empreinte": "f862fdcf37384bae",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "deploiement/terraform/modules/vpn/variables.tf",
+   "ligne": 4,
+   "type_actif": "algorithm",
+   "nom": "RSA",
+   "description": "Mention de RSA dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "default     = \"RSA\""
+  }
+ },
+ {
+  "id": "T0021",
+  "agent": "outils_seuls",
+  "empreinte": "2b4f86ec762670a2",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "depot/ssh/id_dsa_routeur",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "DSA-1024",
+   "description": "Clé privée DSA-1024, NON chiffrée (PEM traditionnel)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "DSA",
+    "taille": 1024,
+    "faiblesse_classique": "DSA est obsolète",
+    "format": "PEM traditionnel",
+    "chiffree": false,
+    "empreinte_spki_sha256": "3dc2c671eecb475d9cb388011b686221af346dc69cc53e59e262642421119cef",
+    "empreinte": "SHA256:JtitiCVijaZ05Pz0lPRxbTUKu37elNLxDq46nJhhMS0",
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN DSA PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0022",
+  "agent": "outils_seuls",
+  "empreinte": "33a581dc274d75a6",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "depot/ssh/ssh_config",
+   "ligne": 6,
+   "type_actif": "algorithm",
+   "nom": "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,diffie-hellman-group1-sha1",
+   "description": "Échange de clés (KexAlgorithms) du client SSH pour « routeur-quai »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithmes": [
+     "sntrup761x25519-sha512@openssh.com",
+     "curve25519-sha256",
+     "curve25519-sha256@libssh.org",
+     "ecdh-sha2-nistp256",
+     "ecdh-sha2-nistp384",
+     "ecdh-sha2-nistp521",
+     "diffie-hellman-group-exchange-sha256",
+     "diffie-hellman-group16-sha512",
+     "diffie-hellman-group18-sha512",
+     "diffie-hellman-group14-sha256",
+     "diffie-hellman-group1-sha1"
+    ],
+    "hotes": [
+     "routeur-quai"
+    ],
+    "role": "client",
+    "source_des_valeurs_par_defaut": "valeur par défaut d'OpenSSH 9.6 (HYPOTHÈSE : version d'OpenSSH inconnue)",
+    "version_openssh": "inconnue (aucune version trouvée dans le SI)",
+    "faiblesse_classique": "algorithmes obsolètes réactivés pour ce client : diffie-hellman-group1-sha1"
+   },
+   "preuve": "KexAlgorithms +diffie-hellman-group1-sha1"
+  }
+ },
+ {
+  "id": "T0023",
+  "agent": "outils_seuls",
+  "empreinte": "35cdf02b1b602510",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "edi/.env",
+   "ligne": 4,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret en clair (EDI_CONTENEUR_SECRET)",
+   "description": "Secret EDI_CONTENEUR_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "20 caractères (minuscules, majuscules, chiffres)",
+    "variable": "EDI_CONTENEUR_SECRET"
+   },
+   "preuve": "EDI_CONTENEUR_SECRET=<masqué>"
+  }
+ },
+ {
+  "id": "T0024",
+  "agent": "outils_seuls",
+  "empreinte": "62eaf83d226d1be4",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/ca.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « AC Racine Fret Lab »",
+   "description": "Certificat d'autorité « AC Racine Fret Lab », émis par « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "4adea23f7184d455",
+    "debut_validite": "2023-11-24",
+    "fin_validite": "2043-11-19",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677",
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-3072",
+    "algorithme_signature": "sha384WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=AC Racine Fret Lab,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0025",
+  "agent": "outils_seuls",
+  "empreinte": "8f7b6b27e3e26373",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/ca.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique du certificat « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 3072,
+    "empreinte_spki_sha256": "5ad6ca829beafcd9bccd45df9c5c697708fcec999bb6e17617141d24bedfdccd",
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677"
+   },
+   "preuve": "Public Key Algorithm: RSA-3072"
+  }
+ },
+ {
+  "id": "T0026",
+  "agent": "outils_seuls",
+  "empreinte": "1d139c235e8d06c8",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/ca.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha384WithRSAEncryption",
+   "description": "Signature du certificat « AC Racine Fret Lab » par « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Racine Fret Lab",
+    "auto_signature": true,
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677"
+   },
+   "preuve": "Signature Algorithm: sha384WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0027",
+  "agent": "outils_seuls",
+  "empreinte": "6756fa0c4d4a85ec",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/edi-douane.der",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « edi.fret.lab.local »",
+   "description": "Certificat d'entité finale « edi.fret.lab.local », émis par « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=edi.fret.lab.local,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "5b0f35d236824dd7",
+    "debut_validite": "2026-10-24",
+    "fin_validite": "2027-11-26",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "serverAuth"
+    ],
+    "empreinte_sha256": "4e7ef2f0afaa2cbfa54309844f8dee19dac989d2dd6292cbba167c3b48bca1b4",
+    "certificat_sha256": "4e7ef2f0afaa2cbfa54309844f8dee19dac989d2dd6292cbba167c3b48bca1b4",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-384",
+    "algorithme_signature": "ecdsa-with-SHA256",
+    "noms_alternatifs": [
+     "edi.fret.lab.local"
+    ]
+   },
+   "preuve": "Subject: CN=edi.fret.lab.local,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0028",
+  "agent": "outils_seuls",
+  "empreinte": "7637a62905a186a4",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/edi-douane.der",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé publique du certificat « edi.fret.lab.local »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "taille": 384,
+    "empreinte_spki_sha256": "efec0108ddb76626c57fbf810961dfc5c73fba551526db56d580d4fdf01ff02b",
+    "certificat_sha256": "4e7ef2f0afaa2cbfa54309844f8dee19dac989d2dd6292cbba167c3b48bca1b4"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-384"
+  }
+ },
+ {
+  "id": "T0029",
+  "agent": "outils_seuls",
+  "empreinte": "ba0c1bd6b8467060",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/edi-douane.der",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA256",
+   "description": "Signature du certificat « edi.fret.lab.local » par « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Exploitation Fret Lab",
+    "auto_signature": false,
+    "certificat_sha256": "4e7ef2f0afaa2cbfa54309844f8dee19dac989d2dd6292cbba167c3b48bca1b4"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA256"
+  }
+ },
+ {
+  "id": "T0030",
+  "agent": "outils_seuls",
+  "empreinte": "ea81628b28189a4d",
+  "trouvaille": {
+   "outil": "analyser_pkcs12",
+   "fichier": "edi/certs/edi-douane.p12",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "PBES2 (PBKDF2-sha256, AES-256-CBC) ; MAC SHA-256",
+   "description": "Chiffrement par mot de passe du conteneur PKCS#12 (clé et certificats) et son MAC d'intégrité",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "chiffrement_cle": [
+     "PBES2 (PBKDF2-sha256, AES-256-CBC)"
+    ],
+    "chiffrement_certificats": [
+     "PBES2 (PBKDF2-sha256, AES-256-CBC)"
+    ],
+    "mac": "SHA-256",
+    "iterations_mac": 2048
+   },
+   "preuve": "PFX : clé ['PBES2 (PBKDF2-sha256, AES-256-CBC)'], certificats ['PBES2 (PBKDF2-sha256, AES-256-CBC)'], MAC SHA-256"
+  }
+ },
+ {
+  "id": "T0031",
+  "agent": "outils_seuls",
+  "empreinte": "55b0a918156b25d4",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/procedure_douane.txt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « AC Douane EDI 2012 »",
+   "description": "Certificat d'autorité « AC Douane EDI 2012 », émis par « AC Douane EDI 2012 »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=AC Douane EDI 2012,O=Prestataire EDI,C=FR",
+    "emetteur": "CN=AC Douane EDI 2012,O=Prestataire EDI,C=FR",
+    "version": "v3",
+    "numero_serie": "763d64561b2ba06c",
+    "debut_validite": "2012-11-26",
+    "fin_validite": "2032-11-21",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "88468b599bf2fd1f7e138619d739a8756f8b71200413a409ba567eea821eab31",
+    "certificat_sha256": "88468b599bf2fd1f7e138619d739a8756f8b71200413a409ba567eea821eab31",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-1024",
+    "algorithme_signature": "sha1WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=AC Douane EDI 2012,O=Prestataire EDI,C=FR"
+  }
+ },
+ {
+  "id": "T0032",
+  "agent": "outils_seuls",
+  "empreinte": "f2be94fe93503c8e",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/procedure_douane.txt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-1024",
+   "description": "Clé publique du certificat « AC Douane EDI 2012 »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 1024,
+    "faiblesse_classique": "taille insuffisante aujourd'hui (1024 bits)",
+    "empreinte_spki_sha256": "41e662bc5e54a62349834630d7210a19842da468923fffede88b6532e7e15d63",
+    "certificat_sha256": "88468b599bf2fd1f7e138619d739a8756f8b71200413a409ba567eea821eab31"
+   },
+   "preuve": "Public Key Algorithm: RSA-1024"
+  }
+ },
+ {
+  "id": "T0033",
+  "agent": "outils_seuls",
+  "empreinte": "ba88274560810230",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "edi/certs/procedure_douane.txt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha1WithRSAEncryption",
+   "description": "Signature du certificat « AC Douane EDI 2012 » par « AC Douane EDI 2012 »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Douane EDI 2012",
+    "auto_signature": true,
+    "certificat_sha256": "88468b599bf2fd1f7e138619d739a8756f8b71200413a409ba567eea821eab31",
+    "faiblesse_classique": "fonction de hachage cassée (collisions)"
+   },
+   "preuve": "Signature Algorithm: sha1WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0034",
+  "agent": "outils_seuls",
+  "empreinte": "3d249f98d52ba163",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "exploitation/gpg/partenaires/douane.asc",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "EdDSA",
+   "description": "Clé publique OpenPGP EdDSA de « Douane EDI <edi@douane.example> »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "format": "OpenPGP v4",
+    "algorithme": "EdDSA",
+    "sous_cle": false,
+    "identites": [
+     "Douane EDI <edi@douane.example>"
+    ]
+   },
+   "preuve": "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+  }
+ },
+ {
+  "id": "T0035",
+  "agent": "outils_seuls",
+  "empreinte": "9acffbab8640adef",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "exploitation/gpg/sauvegarde_pub.asc",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique OpenPGP RSA-3072 de « Sauvegardes Fret Lab <sauvegardes@fret.lab.local> »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "format": "OpenPGP v4",
+    "algorithme": "RSA",
+    "sous_cle": false,
+    "taille": 3072,
+    "identites": [
+     "Sauvegardes Fret Lab <sauvegardes@fret.lab.local>"
+    ]
+   },
+   "preuve": "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+  }
+ },
+ {
+  "id": "T0036",
+  "agent": "outils_seuls",
+  "empreinte": "42a580d65c3483d2",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "exploitation/scripts/export_partenaires.sh",
+   "ligne": 4,
+   "type_actif": "algorithm",
+   "nom": "openssl enc (aes-128-cbc)",
+   "description": "Commande openssl enc dans un script",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "sous_commande": "enc",
+    "algorithmes": [
+     "aes-128-cbc"
+    ]
+   },
+   "preuve": "openssl enc -aes-128-cbc -md md5 -salt -in /srv/exports/tournees.csv -out /srv/exports/tournees.csv.enc -pass env:EXPORT"
+  }
+ },
+ {
+  "id": "T0037",
+  "agent": "outils_seuls",
+  "empreinte": "54cedb311399996d",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "exploitation/scripts/renouveler_certs.sh",
+   "ligne": 5,
+   "type_actif": "algorithm",
+   "nom": "openssl req (rsa:2048, sha1)",
+   "description": "Commande openssl req dans un script",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sous_commande": "req",
+    "algorithmes": [
+     "rsa:2048",
+     "sha1"
+    ]
+   },
+   "preuve": "openssl req -new -newkey rsa:2048 -nodes -${DIGEST:-sha1} -keyout /etc/fretlab/tls/$NOM.key -out /etc/fretlab/tls/$NOM.c"
+  }
+ },
+ {
+  "id": "T0038",
+  "agent": "outils_seuls",
+  "empreinte": "6c8db89c8df4312f",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "exploitation/scripts/rotation_cles_ssh.sh",
+   "ligne": 5,
+   "type_actif": "related-crypto-material",
+   "nom": "Génération de clé SSH ECDSA-256",
+   "description": "Clé SSH générée par un script",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type": "ecdsa",
+    "taille": 256
+   },
+   "preuve": "ssh-keygen -q -t ecdsa -b 256 -N  -f /srv/terminaux/$terminal/id_ecdsa -C $terminal"
+  }
+ },
+ {
+  "id": "T0039",
+  "agent": "outils_seuls",
+  "empreinte": "f0da3393a1bf1b09",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "exploitation/scripts/sauvegarde.sh",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "Chiffrement OpenPGP symétrique (CAST5)",
+   "description": "Données chiffrées par gpg avec une phrase de passe",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {},
+   "preuve": "gpg --batch --symmetric --cipher-algo CAST5 --passphrase-file /root/.sauvegarde_phrase -o /srv/sauvegardes/expeditions-$"
+  }
+ },
+ {
+  "id": "T0040",
+  "agent": "outils_seuls",
+  "empreinte": "a6bcfa3d49602bfd",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "flotte/certs/camion-0427.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « camion-0427 »",
+   "description": "Certificat d'entité finale « camion-0427 », émis par « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=camion-0427,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "3570964b2399d29e",
+    "debut_validite": "2026-10-24",
+    "fin_validite": "2028-10-23",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "clientAuth"
+    ],
+    "empreinte_sha256": "cb1754d7ab99c92f23f83e336095cf047ca2979a22ed8b73a3d28b1a3cb97153",
+    "certificat_sha256": "cb1754d7ab99c92f23f83e336095cf047ca2979a22ed8b73a3d28b1a3cb97153",
+    "rang_dans_fichier": 1,
+    "cle_publique": "Ed25519",
+    "algorithme_signature": "ecdsa-with-SHA256"
+   },
+   "preuve": "Subject: CN=camion-0427,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0041",
+  "agent": "outils_seuls",
+  "empreinte": "621a09729ad38c38",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "flotte/certs/camion-0427.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé publique du certificat « camion-0427 »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "Ed25519",
+    "taille": 256,
+    "empreinte_spki_sha256": "3bcbd62813db6beec79355818d2e452d534004c90736bbfdcfecf45ae96f3bc9",
+    "certificat_sha256": "cb1754d7ab99c92f23f83e336095cf047ca2979a22ed8b73a3d28b1a3cb97153"
+   },
+   "preuve": "Public Key Algorithm: Ed25519"
+  }
+ },
+ {
+  "id": "T0042",
+  "agent": "outils_seuls",
+  "empreinte": "81c00103d1f43921",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "flotte/certs/camion-0427.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA256",
+   "description": "Signature du certificat « camion-0427 » par « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Exploitation Fret Lab",
+    "auto_signature": false,
+    "certificat_sha256": "cb1754d7ab99c92f23f83e336095cf047ca2979a22ed8b73a3d28b1a3cb97153"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA256"
+  }
+ },
+ {
+  "id": "T0043",
+  "agent": "outils_seuls",
+  "empreinte": "854d6102b19b4e5f",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "flotte/certs/camion-0427.key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Ed25519",
+   "description": "Clé privée Ed25519, NON chiffrée (PKCS#8)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "Ed25519",
+    "taille": 256,
+    "format": "PKCS#8",
+    "chiffree": false,
+    "empreinte_spki_sha256": "3bcbd62813db6beec79355818d2e452d534004c90736bbfdcfecf45ae96f3bc9",
+    "empreinte": "SHA256:1yuWEYpGoC643+SNrl7K4yR59EjDcQLn3b6Va20lQLg",
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0044",
+  "agent": "outils_seuls",
+  "empreinte": "cbb41781b0edcce2",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "flotte/collecteur-go/signature.go",
+   "ligne": 6,
+   "type_actif": "algorithm",
+   "nom": "RSA",
+   "description": "Mention de RSA dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "lignes": [
+     "6",
+     "11",
+     "15"
+    ]
+   },
+   "preuve": "\"crypto/rsa\""
+  }
+ },
+ {
+  "id": "T0045",
+  "agent": "outils_seuls",
+  "empreinte": "aa9c1f3259fd9c37",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "flotte/collecteur-go/signature.go",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "SHA-256",
+   "description": "Mention de SHA-256 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "lignes": [
+     "7",
+     "14",
+     "15"
+    ]
+   },
+   "preuve": "\"crypto/sha256\""
+  }
+ },
+ {
+  "id": "T0046",
+  "agent": "outils_seuls",
+  "empreinte": "ae78f03f259dba5e",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "flotte/passerelle-java/src/main/java/lab/fret/passerelle/Chiffrement.java",
+   "ligne": 14,
+   "type_actif": "algorithm",
+   "nom": "AES-ECB",
+   "description": "Mention de AES-ECB dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "Cipher chiffreur = Cipher.getInstance(\"AES/ECB/PKCS5Padding\");"
+  }
+ },
+ {
+  "id": "T0047",
+  "agent": "outils_seuls",
+  "empreinte": "0703ec805401a032",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "flotte/passerelle-java/src/main/java/lab/fret/passerelle/Chiffrement.java",
+   "ligne": 15,
+   "type_actif": "algorithm",
+   "nom": "AES",
+   "description": "Mention de AES dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "chiffreur.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cle, \"AES\"));"
+  }
+ },
+ {
+  "id": "T0048",
+  "agent": "outils_seuls",
+  "empreinte": "4f087d3b379e7e73",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "flotte/passerelle-java/src/main/java/lab/fret/passerelle/Empreinte.java",
+   "ligne": 10,
+   "type_actif": "algorithm",
+   "nom": "SHA-1",
+   "description": "Mention de SHA-1 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "return MessageDigest.getInstance(\"SHA-1\").digest(trame);"
+  }
+ },
+ {
+  "id": "T0049",
+  "agent": "outils_seuls",
+  "empreinte": "b790efd1bb05ea42",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "lb/haproxy/haproxy.cfg",
+   "ligne": 4,
+   "type_actif": "protocol",
+   "nom": "ECDHE-RSA-AES256-GCM-SHA384",
+   "description": "Mention de ECDHE-RSA-AES256-GCM-SHA384 dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "ssl-default-bind-ciphers ECDHE-RSA-AES256-GCM-SHA384:AES128-SHA"
+  }
+ },
+ {
+  "id": "T0050",
+  "agent": "outils_seuls",
+  "empreinte": "c5499f962970918f",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "lb/haproxy/haproxy.cfg",
+   "ligne": 4,
+   "type_actif": "protocol",
+   "nom": "AES128-SHA",
+   "description": "Mention de AES128-SHA dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "ssl-default-bind-ciphers ECDHE-RSA-AES256-GCM-SHA384:AES128-SHA"
+  }
+ },
+ {
+  "id": "T0051",
+  "agent": "outils_seuls",
+  "empreinte": "6b6e44e64383d619",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "lettres/archivage.py",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "os.urandom",
+   "description": "Aléa du système d'exploitation dans chiffrer_archive()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "chiffrer_archive",
+    "parametres": [
+     "cle",
+     "donnees"
+    ],
+    "contexte": "Archivage chiffré des lettres de voiture (10 ans)."
+   },
+   "preuve": "os.urandom(16)"
+  }
+ },
+ {
+  "id": "T0052",
+  "agent": "outils_seuls",
+  "empreinte": "939254e7ead237b1",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "lettres/archivage.py",
+   "ligne": 15,
+   "type_actif": "algorithm",
+   "nom": "AES-CBC",
+   "description": "Chiffrement AES-CBC (cryptography) dans chiffrer_archive()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "chiffrer_archive",
+    "parametres": [
+     "cle",
+     "donnees"
+    ],
+    "contexte": "Archivage chiffré des lettres de voiture (10 ans)."
+   },
+   "preuve": "Cipher(algorithms.AES(cle), modes.CBC(iv))"
+  }
+ },
+ {
+  "id": "T0053",
+  "agent": "outils_seuls",
+  "empreinte": "e4c1ea426fd5501d",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "lettres/cles/signature-cmr.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé privée (type masqué)",
+   "description": "Clé privée chiffrée par phrase de passe : son algorithme n'est pas lisible sans elle",
+   "exposition": "inconnue",
+   "implicite": false,
+   "proprietes": {
+    "format": "PKCS#8 chiffré",
+    "chiffree": true,
+    "chiffrement": "PBKDF2 (2048 itérations), AES-256"
+   },
+   "preuve": "-----BEGIN ENCRYPTED PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0054",
+  "agent": "outils_seuls",
+  "empreinte": "50414c39a83ae3ad",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "lettres/requirements.txt",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "cryptography 41.0.7",
+   "description": "Bibliothèque cryptography (primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels",
+    "declaree": true,
+    "module": "cryptography",
+    "importee_dans": [
+     "lettres/archivage.py",
+     "lettres/signature/signer_cmr.py",
+     "lettres/signature/verifier_partenaire.py",
+     "suivi/app/anciens/export_v1.py",
+     "suivi/app/chiffrement.py",
+     "suivi/app/client_tms.py"
+    ],
+    "contrainte": "==41.0.7",
+    "version_verrouillee": "41.0.7",
+    "faiblesse_classique": "version 41.0.7 antérieure à 42.0.4 — CVE-2024-26130 : déréférencement nul lors de la lecture d'un PKCS#12"
+   },
+   "preuve": "cryptography==41.0.7 ; uv.lock : 41.0.7"
+  }
+ },
+ {
+  "id": "T0055",
+  "agent": "outils_seuls",
+  "empreinte": "4da5e41e36b77cef",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "lettres/requirements.txt",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pycryptodome 3.9.9",
+   "description": "Bibliothèque pycryptodome (primitives cryptographiques (successeur de PyCrypto)), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "primitives cryptographiques (successeur de PyCrypto)",
+    "declaree": true,
+    "module": "Crypto",
+    "importee_dans": [],
+    "contrainte": "==3.9.9",
+    "version_verrouillee": "3.9.9",
+    "faiblesse_classique": "déclarée mais importée nulle part : dépendance morte ; version 3.9.9 antérieure à 3.19.1 — CVE-2023-52323 : fuite par canal auxiliaire dans le déchiffrement OAEP"
+   },
+   "preuve": "pycryptodome==3.9.9 ; uv.lock : 3.9.9"
+  }
+ },
+ {
+  "id": "T0056",
+  "agent": "outils_seuls",
+  "empreinte": "5c07cfa47efd8217",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "lettres/requirements.txt",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "python-gnupg 0.4.9",
+   "description": "Bibliothèque python-gnupg (pilotage de GnuPG), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "pilotage de GnuPG",
+    "declaree": true,
+    "module": "gnupg",
+    "importee_dans": [],
+    "contrainte": "==0.4.9",
+    "version_verrouillee": "0.4.9",
+    "faiblesse_classique": "déclarée mais importée nulle part : dépendance morte"
+   },
+   "preuve": "python-gnupg==0.4.9 ; uv.lock : 0.4.9"
+  }
+ },
+ {
+  "id": "T0057",
+  "agent": "outils_seuls",
+  "empreinte": "b9dec963d98d03bd",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "lettres/signature/horodatage.py",
+   "ligne": 10,
+   "type_actif": "algorithm",
+   "nom": "?",
+   "description": "Empreinte ? (hashlib.new) dans jeton_horodatage()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "jeton_horodatage",
+    "parametres": [
+     "document"
+    ],
+    "contexte": "Horodatage interne des lettres de voiture."
+   },
+   "preuve": "hashlib.new(ALGOS['horodatage'], document)"
+  }
+ },
+ {
+  "id": "T0058",
+  "agent": "outils_seuls",
+  "empreinte": "45269f42e17ec035",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "lettres/signature/signer_cmr.py",
+   "ligne": 17,
+   "type_actif": "algorithm",
+   "nom": "ECDSA avec SHA-256",
+   "description": "Signature ECDSA avec SHA-256 dans signer()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "signer",
+    "parametres": [
+     "document"
+    ],
+    "contexte": "Signature électronique des lettres de voiture (e-CMR), conservées 10 ans.",
+    "courbe": "celle de la clé chargée (voir le certificat ou le conteneur)"
+   },
+   "preuve": "ec.ECDSA(hashes.SHA256())"
+  }
+ },
+ {
+  "id": "T0059",
+  "agent": "outils_seuls",
+  "empreinte": "4f0de079770f2053",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "lettres/signature/verifier_partenaire.py",
+   "ligne": 9,
+   "type_actif": "algorithm",
+   "nom": "RSA PKCS#1 v1.5",
+   "description": "Bourrage RSA PKCS#1 v1.5 dans verifier()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "verifier",
+    "parametres": [
+     "cle_publique_pem",
+     "document",
+     "signature"
+    ],
+    "contexte": "Vérification des e-CMR signées par les transporteurs sous-traitants."
+   },
+   "preuve": "padding.PKCS1v15()"
+  }
+ },
+ {
+  "id": "T0060",
+  "agent": "outils_seuls",
+  "empreinte": "c00e96e75e4794f3",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "messagerie/postfix/main.cf",
+   "ligne": 7,
+   "type_actif": "protocol",
+   "nom": "SSLv2",
+   "description": "Mention de SSLv2 dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3"
+  }
+ },
+ {
+  "id": "T0061",
+  "agent": "outils_seuls",
+  "empreinte": "1cf0a143b3408927",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "messagerie/postfix/main.cf",
+   "ligne": 7,
+   "type_actif": "protocol",
+   "nom": "SSLv3",
+   "description": "Mention de SSLv3 dans le fichier (détection textuelle)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3"
+  }
+ },
+ {
+  "id": "T0062",
+  "agent": "outils_seuls",
+  "empreinte": "bdf69e25109641ed",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "pki/exploitation/ac-exploitation.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « AC Exploitation Fret Lab »",
+   "description": "Certificat d'autorité « AC Exploitation Fret Lab », émis par « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "317ba35a84e61cec",
+    "debut_validite": "2024-11-23",
+    "fin_validite": "2032-11-21",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be",
+    "certificat_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-256",
+    "algorithme_signature": "sha384WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0063",
+  "agent": "outils_seuls",
+  "empreinte": "8ef119c6eac5bb78",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "pki/exploitation/ac-exploitation.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique du certificat « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "empreinte_spki_sha256": "44f9035ac7c87decc9e55121373737433ed37ce482c201a324f95f7a0ba2769a",
+    "certificat_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-256"
+  }
+ },
+ {
+  "id": "T0064",
+  "agent": "outils_seuls",
+  "empreinte": "31986db9640512ae",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "pki/exploitation/ac-exploitation.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha384WithRSAEncryption",
+   "description": "Signature du certificat « AC Exploitation Fret Lab » par « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Racine Fret Lab",
+    "auto_signature": false,
+    "certificat_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be"
+   },
+   "preuve": "Signature Algorithm: sha384WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0065",
+  "agent": "outils_seuls",
+  "empreinte": "d13e472ede6daf2d",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "pki/racine/ac-racine.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « AC Racine Fret Lab »",
+   "description": "Certificat d'autorité « AC Racine Fret Lab », émis par « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "4adea23f7184d455",
+    "debut_validite": "2023-11-24",
+    "fin_validite": "2043-11-19",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677",
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-3072",
+    "algorithme_signature": "sha384WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=AC Racine Fret Lab,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0066",
+  "agent": "outils_seuls",
+  "empreinte": "768fb9347330933b",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "pki/racine/ac-racine.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique du certificat « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 3072,
+    "empreinte_spki_sha256": "5ad6ca829beafcd9bccd45df9c5c697708fcec999bb6e17617141d24bedfdccd",
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677"
+   },
+   "preuve": "Public Key Algorithm: RSA-3072"
+  }
+ },
+ {
+  "id": "T0067",
+  "agent": "outils_seuls",
+  "empreinte": "0d11137b06ef4be0",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "pki/racine/ac-racine.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha384WithRSAEncryption",
+   "description": "Signature du certificat « AC Racine Fret Lab » par « AC Racine Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Racine Fret Lab",
+    "auto_signature": true,
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677"
+   },
+   "preuve": "Signature Algorithm: sha384WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0068",
+  "agent": "outils_seuls",
+  "empreinte": "68e1fdc0225b5343",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/conf.d/edi.conf",
+   "ligne": 10,
+   "type_actif": "protocol",
+   "nom": "TLSv1 TLSv1.1 TLSv1.2",
+   "description": "Versions de TLS acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "versions": [
+     "TLSv1",
+     "TLSv1.1",
+     "TLSv1.2"
+    ],
+    "faiblesse_classique": "versions obsolètes : TLSv1, TLSv1.1",
+    "serveurs": [
+     "edi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;"
+  }
+ },
+ {
+  "id": "T0069",
+  "agent": "outils_seuls",
+  "empreinte": "47e9229b5d9470a0",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/conf.d/edi.conf",
+   "ligne": 11,
+   "type_actif": "protocol",
+   "nom": "ECDHE-ECDSA-AES128-SHA:ECDHE-ECDSA-RC4-SHA",
+   "description": "Suites de chiffrement TLS 1.2 acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "nombre_de_suites_tls12": 1,
+    "echanges_de_cles": [
+     "ECDH"
+    ],
+    "developpe_avec": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+    "serveurs": [
+     "edi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_ciphers ECDHE-ECDSA-AES128-SHA:ECDHE-ECDSA-RC4-SHA;"
+  }
+ },
+ {
+  "id": "T0070",
+  "agent": "outils_seuls",
+  "empreinte": "f7132fcaddac34ea",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/conf.d/edi.conf",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "secp384r1",
+   "description": "Groupes d'échange de clés (ECDHE) proposés par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "groupes": [
+     "secp384r1"
+    ],
+    "hybride_post_quantique": false,
+    "serveurs": [
+     "edi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_ecdh_curve secp384r1;"
+  }
+ },
+ {
+  "id": "T0071",
+  "agent": "outils_seuls",
+  "empreinte": "e753fd61bbbfffe7",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé des tickets de session TLS",
+   "description": "Clé symétrique générée par nginx pour chiffrer les tickets de reprise de session",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "rotation": "au redémarrage de nginx",
+    "source": "valeur par défaut de nginx (ngx_http_ssl_module)",
+    "serveurs": [
+     "edi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_session_tickets absente (serveur edi.fret.lab.local)"
+  }
+ },
+ {
+  "id": "T0072",
+  "agent": "outils_seuls",
+  "empreinte": "5a3a1892c7a2eb45",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/conf.d/suivi.conf",
+   "ligne": 10,
+   "type_actif": "protocol",
+   "nom": "TLSv1.2 TLSv1.3",
+   "description": "Versions de TLS acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "versions": [
+     "TLSv1.2",
+     "TLSv1.3"
+    ],
+    "serveurs": [
+     "suivi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_protocols TLSv1.2 TLSv1.3;"
+  }
+ },
+ {
+  "id": "T0073",
+  "agent": "outils_seuls",
+  "empreinte": "ccd728bfef65cbea",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/snippets/tls-commun.conf",
+   "ligne": 2,
+   "type_actif": "protocol",
+   "nom": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DES-CBC3-SHA",
+   "description": "Suites de chiffrement TLS 1.2 acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "nombre_de_suites_tls12": 2,
+    "echanges_de_cles": [
+     "ECDH"
+    ],
+    "developpe_avec": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+    "serveurs": [
+     "suivi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DES-CBC3-SHA;"
+  }
+ },
+ {
+  "id": "T0074",
+  "agent": "outils_seuls",
+  "empreinte": "376a1313a72115a6",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/conf.d/suivi.conf",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "X25519MLKEM768:X25519:prime256v1",
+   "description": "Groupes d'échange de clés (ECDHE) proposés par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "groupes": [
+     "X25519MLKEM768",
+     "X25519",
+     "prime256v1"
+    ],
+    "hybride_post_quantique": true,
+    "serveurs": [
+     "suivi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_ecdh_curve X25519MLKEM768:X25519:prime256v1;"
+  }
+ },
+ {
+  "id": "T0075",
+  "agent": "outils_seuls",
+  "empreinte": "6612dd12450b0676",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/snippets/tls-tickets.conf",
+   "ligne": 2,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé des tickets de session TLS",
+   "description": "Clé symétrique générée par nginx pour chiffrer les tickets de reprise de session",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "rotation": "fichier de clé fixe",
+    "serveurs": [
+     "suivi.fret.lab.local"
+    ]
+   },
+   "preuve": "ssl_session_tickets on;"
+  }
+ },
+ {
+  "id": "T0076",
+  "agent": "outils_seuls",
+  "empreinte": "afaff55dfbee40ac",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3",
+   "description": "Versions de TLS acceptées par nginx",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "versions": [
+     "TLSv1",
+     "TLSv1.1",
+     "TLSv1.2",
+     "TLSv1.3"
+    ],
+    "faiblesse_classique": "versions obsolètes : TLSv1, TLSv1.1",
+    "source": "valeur par défaut de nginx depuis 1.23.4 (TLSv1 TLSv1.1 TLSv1.2 avant) ; OpenSSL 3 peut refuser TLS 1.0/1.1 à son niveau de sécurité par défaut",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-commun.conf"
+    ]
+   },
+   "preuve": "ssl_protocols absente (serveur fragment portail/nginx/snippets/tls-commun.conf)"
+  }
+ },
+ {
+  "id": "T0077",
+  "agent": "outils_seuls",
+  "empreinte": "0f1b404c924d8cf2",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/snippets/tls-commun.conf",
+   "ligne": 2,
+   "type_actif": "protocol",
+   "nom": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DES-CBC3-SHA",
+   "description": "Suites de chiffrement TLS 1.2 acceptées par nginx",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "nombre_de_suites_tls12": 2,
+    "echanges_de_cles": [
+     "ECDH"
+    ],
+    "developpe_avec": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-commun.conf"
+    ]
+   },
+   "preuve": "ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DES-CBC3-SHA;"
+  }
+ },
+ {
+  "id": "T0078",
+  "agent": "outils_seuls",
+  "empreinte": "c3dad0bc7580fa2b",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
+   "description": "Suites de chiffrement TLS 1.3 : aucune directive ne les fixe, nginx applique celles d'OpenSSL",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "suites": [
+     "TLS_AES_256_GCM_SHA384",
+     "TLS_CHACHA20_POLY1305_SHA256",
+     "TLS_AES_128_GCM_SHA256"
+    ],
+    "source": "valeur par défaut d'OpenSSL 3 (SSL_CTX_set_ciphersuites)",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-commun.conf"
+    ]
+   },
+   "preuve": "ssl_conf_command absente (serveur fragment portail/nginx/snippets/tls-commun.conf)"
+  }
+ },
+ {
+  "id": "T0079",
+  "agent": "outils_seuls",
+  "empreinte": "74efb5582e17d4b4",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "auto",
+   "description": "Groupes d'échange de clés : liste par défaut d'OpenSSL (dépend de sa version)",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "groupes": [
+     "X25519",
+     "secp256r1",
+     "X448",
+     "secp521r1",
+     "secp384r1",
+     "ffdhe2048",
+     "ffdhe3072",
+     "ffdhe4096",
+     "ffdhe6144",
+     "ffdhe8192"
+    ],
+    "source": "valeur par défaut d'OpenSSL 3.0 à 3.4 ; OpenSSL 3.5 et plus propose X25519MLKEM768 en tête",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-commun.conf"
+    ]
+   },
+   "preuve": "ssl_ecdh_curve absente (serveur fragment portail/nginx/snippets/tls-commun.conf)"
+  }
+ },
+ {
+  "id": "T0080",
+  "agent": "outils_seuls",
+  "empreinte": "204fc51b98a51efe",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé des tickets de session TLS",
+   "description": "Clé symétrique générée par nginx pour chiffrer les tickets de reprise de session",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "rotation": "au redémarrage de nginx",
+    "source": "valeur par défaut de nginx (ngx_http_ssl_module)",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-commun.conf"
+    ]
+   },
+   "preuve": "ssl_session_tickets absente (serveur fragment portail/nginx/snippets/tls-commun.conf)"
+  }
+ },
+ {
+  "id": "T0081",
+  "agent": "outils_seuls",
+  "empreinte": "65e815aeeb89f585",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3",
+   "description": "Versions de TLS acceptées par nginx",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "versions": [
+     "TLSv1",
+     "TLSv1.1",
+     "TLSv1.2",
+     "TLSv1.3"
+    ],
+    "faiblesse_classique": "versions obsolètes : TLSv1, TLSv1.1",
+    "source": "valeur par défaut de nginx depuis 1.23.4 (TLSv1 TLSv1.1 TLSv1.2 avant) ; OpenSSL 3 peut refuser TLS 1.0/1.1 à son niveau de sécurité par défaut",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-tickets.conf"
+    ]
+   },
+   "preuve": "ssl_protocols absente (serveur fragment portail/nginx/snippets/tls-tickets.conf)"
+  }
+ },
+ {
+  "id": "T0082",
+  "agent": "outils_seuls",
+  "empreinte": "f8b8744f3530c9d8",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "HIGH:!aNULL:!MD5",
+   "description": "Suites de chiffrement TLS 1.2 acceptées par nginx",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "nombre_de_suites_tls12": 115,
+    "echanges_de_cles": [
+     "DH",
+     "DHEPSK",
+     "ECDH",
+     "ECDHEPSK",
+     "PSK",
+     "RSA",
+     "RSAPSK",
+     "SRP"
+    ],
+    "developpe_avec": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)",
+    "suites_echange_rsa": [
+     "AES256-GCM-SHA384",
+     "AES256-CCM",
+     "ARIA256-GCM-SHA384",
+     "AES128-GCM-SHA256",
+     "AES128-CCM",
+     "ARIA128-GCM-SHA256",
+     "AES256-SHA256",
+     "CAMELLIA256-SHA256",
+     "AES128-SHA256",
+     "CAMELLIA128-SHA256",
+     "AES256-SHA",
+     "CAMELLIA256-SHA",
+     "AES128-SHA",
+     "CAMELLIA128-SHA"
+    ],
+    "source": "valeur par défaut de nginx (ngx_http_ssl_module)",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-tickets.conf"
+    ]
+   },
+   "preuve": "ssl_ciphers absente (serveur fragment portail/nginx/snippets/tls-tickets.conf)"
+  }
+ },
+ {
+  "id": "T0083",
+  "agent": "outils_seuls",
+  "empreinte": "03fb00680abebda8",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "Échange de clés RSA (Kx=RSA) : 14 suites",
+   "description": "Suites TLS 1.2 sans confidentialité persistante activées par la chaîne ssl_ciphers : la clé RSA du certificat chiffre directement le secret de session",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "suites": [
+     "AES256-GCM-SHA384",
+     "AES256-CCM",
+     "ARIA256-GCM-SHA384",
+     "AES128-GCM-SHA256",
+     "AES128-CCM",
+     "ARIA128-GCM-SHA256",
+     "AES256-SHA256",
+     "CAMELLIA256-SHA256",
+     "AES128-SHA256",
+     "CAMELLIA128-SHA256",
+     "AES256-SHA",
+     "CAMELLIA256-SHA",
+     "AES128-SHA",
+     "CAMELLIA128-SHA"
+    ],
+    "faiblesse_classique": "pas de confidentialité persistante",
+    "source": "valeur par défaut de nginx (ngx_http_ssl_module)",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-tickets.conf"
+    ]
+   },
+   "preuve": "ssl_ciphers absente (serveur fragment portail/nginx/snippets/tls-tickets.conf)"
+  }
+ },
+ {
+  "id": "T0084",
+  "agent": "outils_seuls",
+  "empreinte": "3f25f9e662d41531",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "protocol",
+   "nom": "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256",
+   "description": "Suites de chiffrement TLS 1.3 : aucune directive ne les fixe, nginx applique celles d'OpenSSL",
+   "exposition": "grover",
+   "implicite": true,
+   "proprietes": {
+    "suites": [
+     "TLS_AES_256_GCM_SHA384",
+     "TLS_CHACHA20_POLY1305_SHA256",
+     "TLS_AES_128_GCM_SHA256"
+    ],
+    "source": "valeur par défaut d'OpenSSL 3 (SSL_CTX_set_ciphersuites)",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-tickets.conf"
+    ]
+   },
+   "preuve": "ssl_conf_command absente (serveur fragment portail/nginx/snippets/tls-tickets.conf)"
+  }
+ },
+ {
+  "id": "T0085",
+  "agent": "outils_seuls",
+  "empreinte": "1552484291cb400e",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "auto",
+   "description": "Groupes d'échange de clés : liste par défaut d'OpenSSL (dépend de sa version)",
+   "exposition": "shor",
+   "implicite": true,
+   "proprietes": {
+    "groupes": [
+     "X25519",
+     "secp256r1",
+     "X448",
+     "secp521r1",
+     "secp384r1",
+     "ffdhe2048",
+     "ffdhe3072",
+     "ffdhe4096",
+     "ffdhe6144",
+     "ffdhe8192"
+    ],
+    "source": "valeur par défaut d'OpenSSL 3.0 à 3.4 ; OpenSSL 3.5 et plus propose X25519MLKEM768 en tête",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-tickets.conf"
+    ]
+   },
+   "preuve": "ssl_ecdh_curve absente (serveur fragment portail/nginx/snippets/tls-tickets.conf)"
+  }
+ },
+ {
+  "id": "T0086",
+  "agent": "outils_seuls",
+  "empreinte": "53237d87bd9745f0",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail/nginx/snippets/tls-tickets.conf",
+   "ligne": 2,
+   "type_actif": "related-crypto-material",
+   "nom": "Clé des tickets de session TLS",
+   "description": "Clé symétrique générée par nginx pour chiffrer les tickets de reprise de session",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "rotation": "fichier de clé fixe",
+    "serveurs": [
+     "fragment portail/nginx/snippets/tls-tickets.conf"
+    ]
+   },
+   "preuve": "ssl_session_tickets on;"
+  }
+ },
+ {
+  "id": "T0087",
+  "agent": "outils_seuls",
+  "empreinte": "f4ad9813d0df2abc",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "portail/openssl/openssl.cnf",
+   "ligne": 11,
+   "type_actif": "protocol",
+   "nom": "TLS_AES_128_GCM_SHA256",
+   "description": "Mention de TLS_AES_128_GCM_SHA256 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "Ciphersuites = TLS_AES_128_GCM_SHA256"
+  }
+ },
+ {
+  "id": "T0088",
+  "agent": "outils_seuls",
+  "empreinte": "6af23481d2eecd17",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/chaine.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « AC Exploitation Fret Lab »",
+   "description": "Certificat d'autorité « AC Exploitation Fret Lab », émis par « AC Racine Fret Lab » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "317ba35a84e61cec",
+    "debut_validite": "2024-11-23",
+    "fin_validite": "2032-11-21",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be",
+    "certificat_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be",
+    "rang_dans_fichier": 1,
+    "cle_publique": "ECDSA P-256",
+    "algorithme_signature": "sha384WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0089",
+  "agent": "outils_seuls",
+  "empreinte": "dd6f558abafa8907",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/chaine.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique du certificat « AC Exploitation Fret Lab » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "empreinte_spki_sha256": "44f9035ac7c87decc9e55121373737433ed37ce482c201a324f95f7a0ba2769a",
+    "certificat_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be"
+   },
+   "preuve": "Public Key Algorithm: ECDSA P-256"
+  }
+ },
+ {
+  "id": "T0090",
+  "agent": "outils_seuls",
+  "empreinte": "10ee632c82f57a5c",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/chaine.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha384WithRSAEncryption",
+   "description": "Signature du certificat « AC Exploitation Fret Lab » par « AC Racine Fret Lab » (certificat 1/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Racine Fret Lab",
+    "auto_signature": false,
+    "certificat_sha256": "09cc608ee3e16b7a198e0f3b0256c7f2ff00f5e2c9b13fb1de80427c84a873be"
+   },
+   "preuve": "Signature Algorithm: sha384WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0091",
+  "agent": "outils_seuls",
+  "empreinte": "3aa80c596da364e4",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/chaine.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « AC Racine Fret Lab »",
+   "description": "Certificat d'autorité « AC Racine Fret Lab », émis par « AC Racine Fret Lab » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Racine Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "4adea23f7184d455",
+    "debut_validite": "2023-11-24",
+    "fin_validite": "2043-11-19",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": true,
+    "usages": [
+     "key_cert_sign",
+     "crl_sign"
+    ],
+    "empreinte_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677",
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677",
+    "rang_dans_fichier": 2,
+    "cle_publique": "RSA-3072",
+    "algorithme_signature": "sha384WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=AC Racine Fret Lab,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0092",
+  "agent": "outils_seuls",
+  "empreinte": "482d7529c4477994",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/chaine.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-3072",
+   "description": "Clé publique du certificat « AC Racine Fret Lab » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 3072,
+    "empreinte_spki_sha256": "5ad6ca829beafcd9bccd45df9c5c697708fcec999bb6e17617141d24bedfdccd",
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677"
+   },
+   "preuve": "Public Key Algorithm: RSA-3072"
+  }
+ },
+ {
+  "id": "T0093",
+  "agent": "outils_seuls",
+  "empreinte": "63892ffb96bacb0f",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/chaine.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha384WithRSAEncryption",
+   "description": "Signature du certificat « AC Racine Fret Lab » par « AC Racine Fret Lab » (certificat 2/2 du fichier)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Racine Fret Lab",
+    "auto_signature": true,
+    "certificat_sha256": "389100567fc7f8bdf7fe6d151e5158ecb8f443a05f8c1a91d8712870f101a677"
+   },
+   "preuve": "Signature Algorithm: sha384WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0094",
+  "agent": "outils_seuls",
+  "empreinte": "e85010187865db1b",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/suivi.crt",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « suivi.fret.lab.local »",
+   "description": "Certificat d'entité finale « suivi.fret.lab.local », émis par « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=suivi.fret.lab.local,O=Fret Lab,C=FR",
+    "emetteur": "CN=AC Exploitation Fret Lab,O=Fret Lab,C=FR",
+    "version": "v3",
+    "numero_serie": "5c0234dc4b2d451d",
+    "debut_validite": "2026-10-24",
+    "fin_validite": "2027-11-26",
+    "expire": false,
+    "auto_signe": false,
+    "autorite": false,
+    "usages": [
+     "digital_signature",
+     "serverAuth"
+    ],
+    "empreinte_sha256": "94bd660f6d09c051bbd0083ebd59a57ba2a738ef8cac26822f221bc370659914",
+    "certificat_sha256": "94bd660f6d09c051bbd0083ebd59a57ba2a738ef8cac26822f221bc370659914",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-2048",
+    "algorithme_signature": "ecdsa-with-SHA256",
+    "noms_alternatifs": [
+     "suivi.fret.lab.local"
+    ]
+   },
+   "preuve": "Subject: CN=suivi.fret.lab.local,O=Fret Lab,C=FR"
+  }
+ },
+ {
+  "id": "T0095",
+  "agent": "outils_seuls",
+  "empreinte": "0a429482616a7440",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/suivi.crt",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-2048",
+   "description": "Clé publique du certificat « suivi.fret.lab.local »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 2048,
+    "empreinte_spki_sha256": "ee637355a0d0b73a77127a996cf8aafc3fd3cde203a38c611810532d94023aa6",
+    "certificat_sha256": "94bd660f6d09c051bbd0083ebd59a57ba2a738ef8cac26822f221bc370659914"
+   },
+   "preuve": "Public Key Algorithm: RSA-2048"
+  }
+ },
+ {
+  "id": "T0096",
+  "agent": "outils_seuls",
+  "empreinte": "b3b6e8bdaedcf730",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "portail/tls/suivi.crt",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "ecdsa-with-SHA256",
+   "description": "Signature du certificat « suivi.fret.lab.local » par « AC Exploitation Fret Lab »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "AC Exploitation Fret Lab",
+    "auto_signature": false,
+    "certificat_sha256": "94bd660f6d09c051bbd0083ebd59a57ba2a738ef8cac26822f221bc370659914"
+   },
+   "preuve": "Signature Algorithm: ecdsa-with-SHA256"
+  }
+ },
+ {
+  "id": "T0097",
+  "agent": "outils_seuls",
+  "empreinte": "e2dc164e72e6f57f",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "portail/tls/suivi.key",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-2048",
+   "description": "Clé privée RSA-2048, NON chiffrée (PEM traditionnel)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 2048,
+    "format": "PEM traditionnel",
+    "chiffree": false,
+    "empreinte_spki_sha256": "ee637355a0d0b73a77127a996cf8aafc3fd3cde203a38c611810532d94023aa6",
+    "empreinte": "SHA256:CbpqIBmq37oRScfQW9IEN2aVgCaky8LZ2iGwXEAOaGc",
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN RSA PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0098",
+  "agent": "outils_seuls",
+  "empreinte": "af02df5401f6b1e2",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "portail-client/package.json",
+   "ligne": 4,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret faible (private)",
+   "description": "Secret private stocké en clair dans un fichier JSON",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "4 caractères (minuscules)",
+    "faiblesse_classique": "secret court ou prévisible (mot du dictionnaire, année...)",
+    "variable": "private"
+   },
+   "preuve": "private=<masqué>"
+  }
+ },
+ {
+  "id": "T0099",
+  "agent": "outils_seuls",
+  "empreinte": "7a249c656a2befce",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "portail-client/serveur/chiffrer.js",
+   "ligne": 8,
+   "type_actif": "algorithm",
+   "nom": "AES-128-CBC",
+   "description": "Mention de AES-128-CBC dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "const chiffreur = crypto.createCipheriv('aes-128-cbc', cle, IV);"
+  }
+ },
+ {
+  "id": "T0100",
+  "agent": "outils_seuls",
+  "empreinte": "55b3620571bcadf9",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "portail-client/serveur/jeton.js",
+   "ligne": 5,
+   "type_actif": "algorithm",
+   "nom": "MD5",
+   "description": "Mention de MD5 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "return crypto.createHash('md5').update(utilisateur + Date.now()).digest('hex');"
+  }
+ },
+ {
+  "id": "T0101",
+  "agent": "outils_seuls",
+  "empreinte": "f25cf8d455cb3211",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "postes/chef-quai/.ssh/id_ecdsa",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé privée SSH ECDSA P-384, NON chiffrée",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp384",
+    "empreinte": "SHA256:HeD5Gl2LL0smyU21Av+5NPo0UO4O/WkPy7cG3nBKnJY",
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "format": "OpenSSH",
+    "chiffree": false,
+    "droits": "600"
+   },
+   "preuve": "-----BEGIN OPENSSH PRIVATE KEY----- (chiffrement : none)"
+  }
+ },
+ {
+  "id": "T0102",
+  "agent": "outils_seuls",
+  "empreinte": "e44656c44aae5137",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "postes/chef-quai/.ssh/id_ecdsa.pub",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-384",
+   "description": "Clé publique SSH ECDSA P-384 (« chef-quai@poste-quai »)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp384",
+    "empreinte": "SHA256:HeD5Gl2LL0smyU21Av+5NPo0UO4O/WkPy7cG3nBKnJY",
+    "algorithme": "ECDSA",
+    "courbe": "P-384",
+    "commentaire": "chef-quai@poste-quai"
+   },
+   "preuve": "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTIt... chef-quai@poste-quai"
+  }
+ },
+ {
+  "id": "T0103",
+  "agent": "outils_seuls",
+  "empreinte": "edb826868e460b95",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "postes/chef-quai/.ssh/known_hosts",
+   "ligne": 1,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé publique SSH ECDSA P-256 mémorisée pour l'hôte « bastion.fret.lab.local,10.20.0.5 »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "type_ssh": "ecdsa-sha2-nistp256",
+    "empreinte": "SHA256:kHxNjG6bGghwvGR0zhVKQeidvKIaX6J4z46zCLzBN50",
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "hotes": [
+     "bastion.fret.lab.local",
+     "10.20.0.5"
+    ]
+   },
+   "preuve": "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTIt..."
+  }
+ },
+ {
+  "id": "T0104",
+  "agent": "outils_seuls",
+  "empreinte": "753ef726f9014fc0",
+  "trouvaille": {
+   "outil": "analyser_cle",
+   "fichier": "sauvegardes/2021/exploitation.bak",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "ECDSA P-256",
+   "description": "Clé privée ECDSA P-256, NON chiffrée (PEM traditionnel)",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "ECDSA",
+    "courbe": "P-256",
+    "taille": 256,
+    "format": "PEM traditionnel",
+    "chiffree": false,
+    "empreinte_spki_sha256": "44f9035ac7c87decc9e55121373737433ed37ce482c201a324f95f7a0ba2769a",
+    "empreinte": "SHA256:+YZMUy8ctPCFjNo6GGuTvkyPCSGHD+/tTmSpz5HCZik",
+    "droits": "644"
+   },
+   "preuve": "-----BEGIN EC PRIVATE KEY-----"
+  }
+ },
+ {
+  "id": "T0105",
+  "agent": "outils_seuls",
+  "empreinte": "85bdb60b0518fc7e",
+  "trouvaille": {
+   "outil": "analyser_configuration",
+   "fichier": "suivi/.env",
+   "ligne": 4,
+   "type_actif": "related-crypto-material",
+   "nom": "Secret en clair (JWT_SECRET)",
+   "description": "Secret JWT_SECRET stocké en clair dans un fichier de variables d'environnement",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "forme": "16 caractères (minuscules, majuscules, chiffres, symboles)",
+    "variable": "JWT_SECRET"
+   },
+   "preuve": "JWT_SECRET=<masqué>"
+  }
+ },
+ {
+  "id": "T0106",
+  "agent": "outils_seuls",
+  "empreinte": "baede4335d7f3780",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/affichage.py",
+   "ligne": 10,
+   "type_actif": "algorithm",
+   "nom": "Mersenne Twister (module random)",
+   "description": "Aléa du module random (shuffle) dans bannieres_du_jour()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "bannieres_du_jour",
+    "parametres": [],
+    "contexte": "Bannières d'information affichées sur la page d'accueil.",
+    "faiblesse_classique": "générateur NON cryptographique : ses sorties sont prévisibles"
+   },
+   "preuve": "random.shuffle(ordre)"
+  }
+ },
+ {
+  "id": "T0107",
+  "agent": "outils_seuls",
+  "empreinte": "c5486b13a5acae1b",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/anciens/export_v1.py",
+   "ligne": 10,
+   "type_actif": "algorithm",
+   "nom": "os.urandom",
+   "description": "Aléa du système d'exploitation dans chiffrer_export()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "chiffrer_export",
+    "parametres": [
+     "cle",
+     "donnees"
+    ],
+    "contexte": "Ancien export chiffré vers le transitaire (remplacé en 2022 par lettres/archivage.py)."
+   },
+   "preuve": "os.urandom(8)"
+  }
+ },
+ {
+  "id": "T0108",
+  "agent": "outils_seuls",
+  "empreinte": "fbe2e4fa96468eed",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/anciens/export_v1.py",
+   "ligne": 13,
+   "type_actif": "algorithm",
+   "nom": "3DES-CBC",
+   "description": "Chiffrement 3DES-CBC (cryptography) dans chiffrer_export()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "chiffrer_export",
+    "parametres": [
+     "cle",
+     "donnees"
+    ],
+    "contexte": "Ancien export chiffré vers le transitaire (remplacé en 2022 par lettres/archivage.py).",
+    "faiblesse_classique": "3DES : blocs de 64 bits (attaque Sweet32), retiré par le NIST"
+   },
+   "preuve": "Cipher(algorithms.TripleDES(cle), modes.CBC(iv))"
+  }
+ },
+ {
+  "id": "T0109",
+  "agent": "outils_seuls",
+  "empreinte": "9db90a9233248153",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/cache.py",
+   "ligne": 9,
+   "type_actif": "algorithm",
+   "nom": "MD5",
+   "description": "Empreinte MD5 (hashlib) dans cle_cache()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "cle_cache",
+    "parametres": [
+     "numero_colis",
+     "langue"
+    ],
+    "contexte": "Cache des pages de suivi (évite de recalculer l'itinéraire).",
+    "faiblesse_classique": "MD5 est cassé (collisions)"
+   },
+   "preuve": "hashlib.md5(f'{numero_colis}:{langue}'.encode(), usedforsecurity=False)"
+  }
+ },
+ {
+  "id": "T0110",
+  "agent": "outils_seuls",
+  "empreinte": "62374ea106d4e432",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/chiffrement.py",
+   "ligne": 7,
+   "type_actif": "algorithm",
+   "nom": "Fernet (AES-128-CBC + HMAC-SHA256)",
+   "description": "Chiffrement symétrique authentifié Fernet",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "contexte": "Chiffrement des adresses de livraison en base.",
+    "cle_lue_dans": "variable d'environnement CLE_ADRESSES"
+   },
+   "preuve": "Fernet(os.environ['CLE_ADRESSES'])"
+  }
+ },
+ {
+  "id": "T0111",
+  "agent": "outils_seuls",
+  "empreinte": "1371c0723d7efbf2",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/client_tms.py",
+   "ligne": 13,
+   "type_actif": "protocol",
+   "nom": "TLS (module ssl)",
+   "description": "Contexte TLS créé par le code dans contexte_tms()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "contexte_tms",
+    "parametres": [],
+    "contexte": "Le TMS est un logiciel ancien : il ne parle que TLS 1.0."
+   },
+   "preuve": "ssl.create_default_context()"
+  }
+ },
+ {
+  "id": "T0112",
+  "agent": "outils_seuls",
+  "empreinte": "66c5b5789f9ec707",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/client_tms.py",
+   "ligne": 14,
+   "type_actif": "protocol",
+   "nom": "TLSv1.0",
+   "description": "Version de protocole imposée par le code (ssl.TLSVersion.TLSv1) dans contexte_tms()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "contexte_tms",
+    "parametres": [],
+    "contexte": "Le TMS est un logiciel ancien : il ne parle que TLS 1.0.",
+    "faiblesse_classique": "version de TLS/SSL obsolète"
+   },
+   "preuve": "ssl.TLSVersion.TLSv1"
+  }
+ },
+ {
+  "id": "T0113",
+  "agent": "outils_seuls",
+  "empreinte": "88df2c6b00e44fa0",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/client_tms.py",
+   "ligne": 26,
+   "type_actif": "related-crypto-material",
+   "nom": "X25519",
+   "description": "Génération d'une clé X25519 dans secret_session_camion()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "secret_session_camion",
+    "parametres": [
+     "cle_publique_camion"
+    ],
+    "contexte": "Échange de clés avec le boîtier télématique : (clé publique éphémère, secret partagé)."
+   },
+   "preuve": "X25519PrivateKey.generate()"
+  }
+ },
+ {
+  "id": "T0114",
+  "agent": "outils_seuls",
+  "empreinte": "e9a84196fe587a35",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/integrite.py",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "MD5",
+   "description": "Empreinte MD5 (hashlib) dans empreinte_scan()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "empreinte_scan",
+    "parametres": [
+     "contenu"
+    ],
+    "contexte": "Empreinte d'un scan de lettre de voiture, stockée avec le document.",
+    "faiblesse_classique": "MD5 est cassé (collisions)"
+   },
+   "preuve": "hashlib.md5(contenu)"
+  }
+ },
+ {
+  "id": "T0115",
+  "agent": "outils_seuls",
+  "empreinte": "efac63665e1c8e06",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/integrite.py",
+   "ligne": 16,
+   "type_actif": "algorithm",
+   "nom": "HMAC-GETATTR()",
+   "description": "Code d'authentification HMAC-GETATTR() dans verifier_webhook()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "verifier_webhook",
+    "parametres": [
+     "secret",
+     "corps",
+     "signature"
+    ],
+    "contexte": "Intégrité des documents déposés et des notifications des partenaires.",
+    "comparaison": "hmac.compare_digest (temps constant)"
+   },
+   "preuve": "hmac.new(secret, corps, fonction)"
+  }
+ },
+ {
+  "id": "T0116",
+  "agent": "outils_seuls",
+  "empreinte": "0a1409423acfd846",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/securite/jetons.py",
+   "ligne": 15,
+   "type_actif": "algorithm",
+   "nom": "JWT HS256",
+   "description": "Signature des jetons JWT (pyjwt) dans emettre()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "emettre",
+    "parametres": [
+     "client_id"
+    ],
+    "contexte": "Jetons d'accès du portail (clients) et jetons émis par les partenaires.",
+    "algorithme": "HS256",
+    "secret_lu_dans": "variable d'environnement JWT_SECRET",
+    "lignes": [
+     "15",
+     "19"
+    ],
+    "fonctions": [
+     "emettre",
+     "lire"
+    ]
+   },
+   "preuve": "jwt.encode(charge, SECRET, algorithm='HS256')"
+  }
+ },
+ {
+  "id": "T0117",
+  "agent": "outils_seuls",
+  "empreinte": "034e0211f920fe93",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/securite/jetons.py",
+   "ligne": 24,
+   "type_actif": "algorithm",
+   "nom": "JWT RS256",
+   "description": "Signature des jetons JWT (pyjwt) dans lire_jeton_partenaire()",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "lire_jeton_partenaire",
+    "parametres": [
+     "jeton"
+    ],
+    "contexte": "Jeton signé par le transitaire partenaire, présenté lors d'un transfert de colis.",
+    "algorithme": "RS256"
+   },
+   "preuve": "jwt.decode(jeton, CLE_PARTENAIRE_TRANSIT, algorithms=['RS256'], audience='fret-lab')"
+  }
+ },
+ {
+  "id": "T0118",
+  "agent": "outils_seuls",
+  "empreinte": "ba34d4dde4a3de2a",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/securite/mots_de_passe.py",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "os.urandom",
+   "description": "Aléa du système d'exploitation dans hacher()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "hacher",
+    "parametres": [
+     "mot_de_passe"
+    ],
+    "contexte": "Mots de passe des comptes clients du portail de suivi."
+   },
+   "preuve": "os.urandom(16)"
+  }
+ },
+ {
+  "id": "T0119",
+  "agent": "outils_seuls",
+  "empreinte": "038fbdf2eefef415",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/securite/mots_de_passe.py",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "PBKDF2-HMAC-SHA256",
+   "description": "Dérivation de clé PBKDF2 dans hacher()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "hacher",
+    "parametres": [
+     "mot_de_passe"
+    ],
+    "contexte": "Mots de passe des comptes clients du portail de suivi.",
+    "iterations": 100000,
+    "faiblesse_classique": "trop peu d'itérations",
+    "lignes": [
+     "12",
+     "18"
+    ],
+    "fonctions": [
+     "hacher",
+     "verifier"
+    ]
+   },
+   "preuve": "hashlib.pbkdf2_hmac('sha256', mot_de_passe.encode(), sel, ITERATIONS)"
+  }
+ },
+ {
+  "id": "T0120",
+  "agent": "outils_seuls",
+  "empreinte": "cb6c8375848168cb",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/securite/session.py",
+   "ligne": 8,
+   "type_actif": "algorithm",
+   "nom": "secrets (os.urandom)",
+   "description": "Aléa cryptographique du module secrets dans nouveau_jeton_session()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "nouveau_jeton_session",
+    "parametres": [],
+    "contexte": "Sessions du portail et clés d'API des partenaires."
+   },
+   "preuve": "secrets.token_urlsafe(32)"
+  }
+ },
+ {
+  "id": "T0121",
+  "agent": "outils_seuls",
+  "empreinte": "482aba1d0c491a7f",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/securite/session.py",
+   "ligne": 13,
+   "type_actif": "algorithm",
+   "nom": "SHA-384",
+   "description": "Empreinte SHA-384 (hashlib) dans empreinte_cle_api()",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "empreinte_cle_api",
+    "parametres": [
+     "cle"
+    ],
+    "contexte": "Seule l'empreinte de la clé d'API est stockée en base."
+   },
+   "preuve": "hashlib.sha384(cle.encode())"
+  }
+ },
+ {
+  "id": "T0122",
+  "agent": "outils_seuls",
+  "empreinte": "8ffdf8d65ae78028",
+  "trouvaille": {
+   "outil": "scanner_code_crypto",
+   "fichier": "suivi/app/suivi_colis.py",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "Mersenne Twister (module random)",
+   "description": "Aléa du module random (choices) dans nouveau_code_suivi()",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "fonction": "nouveau_code_suivi",
+    "parametres": [],
+    "contexte": "Code remis au destinataire : il suffit pour consulter l'adresse de livraison.",
+    "faiblesse_classique": "générateur NON cryptographique : ses sorties sont prévisibles"
+   },
+   "preuve": "generer_code(ALPHABET, k=8)"
+  }
+ },
+ {
+  "id": "T0123",
+  "agent": "outils_seuls",
+  "empreinte": "5ce36cde80596072",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "bcrypt 4.0.1",
+   "description": "Bibliothèque bcrypt (hachage de mots de passe bcrypt), transitive, tirée par paramiko",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "hachage de mots de passe bcrypt",
+    "declaree": false,
+    "module": "bcrypt",
+    "importee_dans": [],
+    "version_verrouillee": "4.0.1",
+    "tiree_par": [
+     "paramiko"
+    ]
+   },
+   "preuve": "bcrypt ; uv.lock : 4.0.1"
+  }
+ },
+ {
+  "id": "T0124",
+  "agent": "outils_seuls",
+  "empreinte": "a55cd1ef333102e5",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "cryptography 41.0.7",
+   "description": "Bibliothèque cryptography (primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "primitives et X.509 ; embarque sa propre copie d'OpenSSL dans les wheels",
+    "declaree": true,
+    "module": "cryptography",
+    "importee_dans": [
+     "lettres/archivage.py",
+     "lettres/signature/signer_cmr.py",
+     "lettres/signature/verifier_partenaire.py",
+     "suivi/app/anciens/export_v1.py",
+     "suivi/app/chiffrement.py",
+     "suivi/app/client_tms.py"
+    ],
+    "contrainte": "==41.0.7",
+    "version_verrouillee": "41.0.7",
+    "faiblesse_classique": "version 41.0.7 antérieure à 42.0.4 — CVE-2024-26130 : déréférencement nul lors de la lecture d'un PKCS#12"
+   },
+   "preuve": "cryptography==41.0.7 ; uv.lock : 41.0.7"
+  }
+ },
+ {
+  "id": "T0125",
+  "agent": "outils_seuls",
+  "empreinte": "547c84d17d622101",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "itsdangerous 2.1.2",
+   "description": "Bibliothèque itsdangerous (signature HMAC de données), transitive, tirée par flask",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "signature HMAC de données",
+    "declaree": false,
+    "module": "itsdangerous",
+    "importee_dans": [],
+    "version_verrouillee": "2.1.2",
+    "tiree_par": [
+     "flask"
+    ]
+   },
+   "preuve": "itsdangerous ; uv.lock : 2.1.2"
+  }
+ },
+ {
+  "id": "T0126",
+  "agent": "outils_seuls",
+  "empreinte": "a64a0060eaf78d3a",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "paramiko 2.12.0",
+   "description": "Bibliothèque paramiko (client et serveur SSH en Python pur), transitive, tirée par fabric",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "client et serveur SSH en Python pur",
+    "declaree": false,
+    "module": "paramiko",
+    "importee_dans": [],
+    "version_verrouillee": "2.12.0",
+    "tiree_par": [
+     "fabric"
+    ],
+    "faiblesse_classique": "version 2.12.0 antérieure à 3.4.0 — CVE-2023-48795 (Terrapin) : troncature de la négociation SSH"
+   },
+   "preuve": "paramiko ; uv.lock : 2.12.0"
+  }
+ },
+ {
+  "id": "T0127",
+  "agent": "outils_seuls",
+  "empreinte": "1c6471ceca72d053",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pyjwt 2.8.0",
+   "description": "Bibliothèque pyjwt (signature et vérification des jetons JWT), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "signature et vérification des jetons JWT",
+    "declaree": true,
+    "module": "jwt",
+    "importee_dans": [
+     "suivi/app/securite/jetons.py"
+    ],
+    "contrainte": "==2.8.0",
+    "version_verrouillee": "2.8.0"
+   },
+   "preuve": "pyjwt==2.8.0 ; uv.lock : 2.8.0"
+  }
+ },
+ {
+  "id": "T0128",
+  "agent": "outils_seuls",
+  "empreinte": "67e8f954a6b37b5c",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/uv.lock",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pynacl 1.5.0",
+   "description": "Bibliothèque pynacl (liaison de libsodium (Curve25519, Ed25519, XSalsa20)), transitive, tirée par paramiko",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "liaison de libsodium (Curve25519, Ed25519, XSalsa20)",
+    "declaree": false,
+    "module": "nacl",
+    "importee_dans": [],
+    "version_verrouillee": "1.5.0",
+    "tiree_par": [
+     "paramiko"
+    ]
+   },
+   "preuve": "pynacl ; uv.lock : 1.5.0"
+  }
+ },
+ {
+  "id": "T0129",
+  "agent": "outils_seuls",
+  "empreinte": "ef99beaec1ae9d33",
+  "trouvaille": {
+   "outil": "analyser_dependances",
+   "fichier": "suivi/pyproject.toml",
+   "ligne": null,
+   "type_actif": "library",
+   "nom": "pyopenssl 23.2.0",
+   "description": "Bibliothèque pyopenssl (liaison d'OpenSSL), déclarée",
+   "exposition": "aucune",
+   "implicite": false,
+   "proprietes": {
+    "role": "liaison d'OpenSSL",
+    "declaree": true,
+    "module": "OpenSSL",
+    "importee_dans": [],
+    "contrainte": "toute version",
+    "version_verrouillee": "23.2.0",
+    "faiblesse_classique": "déclarée mais importée nulle part : dépendance morte"
+   },
+   "preuve": "pyopenssltoute version ; uv.lock : 23.2.0"
+  }
+ },
+ {
+  "id": "T0130",
+  "agent": "outils_seuls",
+  "empreinte": "ee469397dab60346",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "suivi/tests/donnees/certificat_test.pem",
+   "ligne": null,
+   "type_actif": "certificate",
+   "nom": "Certificat « test.example »",
+   "description": "Certificat d'entité finale « test.example », émis par « test.example »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "sujet": "CN=test.example,O=Tests,C=FR",
+    "emetteur": "CN=test.example,O=Tests,C=FR",
+    "version": "v3",
+    "numero_serie": "2787a61e2052e52c",
+    "debut_validite": "2026-11-22",
+    "fin_validite": "2026-12-22",
+    "expire": false,
+    "auto_signe": true,
+    "autorite": false,
+    "usages": [],
+    "empreinte_sha256": "24871647c66eedd2f464ed58da9ca442c2fc68b3490f454b5d78e0dae0ac3ab4",
+    "certificat_sha256": "24871647c66eedd2f464ed58da9ca442c2fc68b3490f454b5d78e0dae0ac3ab4",
+    "rang_dans_fichier": 1,
+    "cle_publique": "RSA-2048",
+    "algorithme_signature": "sha256WithRSAEncryption"
+   },
+   "preuve": "Subject: CN=test.example,O=Tests,C=FR"
+  }
+ },
+ {
+  "id": "T0131",
+  "agent": "outils_seuls",
+  "empreinte": "2cb5076046102c30",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "suivi/tests/donnees/certificat_test.pem",
+   "ligne": null,
+   "type_actif": "related-crypto-material",
+   "nom": "RSA-2048",
+   "description": "Clé publique du certificat « test.example »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "algorithme": "RSA",
+    "taille": 2048,
+    "empreinte_spki_sha256": "9269431b6e99f50935276fc478949c7d90d7740bfdc6b8cd98651663c63e61f2",
+    "certificat_sha256": "24871647c66eedd2f464ed58da9ca442c2fc68b3490f454b5d78e0dae0ac3ab4"
+   },
+   "preuve": "Public Key Algorithm: RSA-2048"
+  }
+ },
+ {
+  "id": "T0132",
+  "agent": "outils_seuls",
+  "empreinte": "295fc6731428bf97",
+  "trouvaille": {
+   "outil": "analyser_x509",
+   "fichier": "suivi/tests/donnees/certificat_test.pem",
+   "ligne": null,
+   "type_actif": "algorithm",
+   "nom": "sha256WithRSAEncryption",
+   "description": "Signature du certificat « test.example » par « test.example »",
+   "exposition": "shor",
+   "implicite": false,
+   "proprietes": {
+    "signe_par": "test.example",
+    "auto_signature": true,
+    "certificat_sha256": "24871647c66eedd2f464ed58da9ca442c2fc68b3490f454b5d78e0dae0ac3ab4"
+   },
+   "preuve": "Signature Algorithm: sha256WithRSAEncryption"
+  }
+ },
+ {
+  "id": "T0133",
+  "agent": "outils_seuls",
+  "empreinte": "bf5eec3b805bb973",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "vpn/ipsec.conf",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "AES-128",
+   "description": "Mention de AES-128 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)"
+   },
+   "preuve": "ike=aes128-sha1-modp1024!"
+  }
+ },
+ {
+  "id": "T0134",
+  "agent": "outils_seuls",
+  "empreinte": "fdc094638d3ba80c",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "vpn/ipsec.conf",
+   "ligne": 11,
+   "type_actif": "algorithm",
+   "nom": "SHA-1",
+   "description": "Mention de SHA-1 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "ike=aes128-sha1-modp1024!"
+  }
+ },
+ {
+  "id": "T0135",
+  "agent": "outils_seuls",
+  "empreinte": "c05fc06b277e2a6b",
+  "trouvaille": {
+   "outil": "rechercher_algorithmes",
+   "fichier": "vpn/ipsec.conf",
+   "ligne": 12,
+   "type_actif": "algorithm",
+   "nom": "MD5",
+   "description": "Mention de MD5 dans le fichier (détection textuelle)",
+   "exposition": "grover",
+   "implicite": false,
+   "proprietes": {
+    "confiance": "indice : détection textuelle, à confirmer (un nom dans un commentaire n'est pas un usage)",
+    "faiblesse_classique": "algorithme ou protocole considéré comme faible aujourd'hui"
+   },
+   "preuve": "esp=3des-md5!"
+  }
+ }
+]

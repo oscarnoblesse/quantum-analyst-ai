@@ -1,0 +1,80 @@
+{
+ "etapes": [
+  {
+   "ordre": 1,
+   "actifs": [
+    "crypto-3d7bbc3f74d9",
+    "crypto-4cd35883856e",
+    "crypto-5777fee50342",
+    "crypto-71228e176394",
+    "crypto-93a2a3072cc2",
+    "crypto-941f3ba4b240",
+    "crypto-998f924ad040",
+    "crypto-b3fcaa665d5d",
+    "crypto-c208e3b3633e",
+    "crypto-cf76a8efa531",
+    "crypto-f5037857b08f",
+    "crypto-ffef973cf955"
+   ],
+   "action": "Migrer les signatures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204",
+   "cible": "ML-DSA-65",
+   "echeance": "2027-12-31",
+   "references": [
+    "NIST-FIPS-204"
+   ]
+  },
+  {
+   "ordre": 2,
+   "actifs": [
+    "crypto-00b225057b98",
+    "crypto-0e22fe8cd725",
+    "crypto-1994f01df4de",
+    "crypto-1b7097d382d7",
+    "crypto-2fb5e8827315"
+   ],
+   "action": "Migrer les échanges de clés TLS et SSH vers un échange hybride avec X25519MLKEM768",
+   "cible": "X25519MLKEM768",
+   "echeance": "2027-12-31",
+   "references": [
+    "IETF-TLS-HYBRIDE"
+   ]
+  },
+  {
+   "ordre": 3,
+   "actifs": [
+    "crypto-3d7bbc3f74d9",
+    "crypto-93a2a3072cc2",
+    "crypto-c208e3b3633e"
+   ],
+   "action": "Rechiffrer les sauvegardes chiffrées pour une clé publique en utilisant une clé hybride post-quantique",
+   "cible": "GNUPG-PQ",
+   "echeance": "2028-12-31",
+   "references": [
+    "GNUPG-PQ"
+   ]
+  }
+ ],
+ "resume": "Le plan priorise d'abord la migration des signatures et certificats vers des algorithmes post-quantiques conformes à NIST-FIPS-204. Ensuite, il met à jour les échanges de clés TLS et SSH avec X25519MLKEM768. Enfin, il traite les sauvegardes sensibles en les rechiffrant avec GNUPG-PQ, en tenant compte de l'urgence d'« enregistrer maintenant, déchiffrer plus tard ».",
+ "verification": "plan conforme",
+ "demonstration": [
+  {
+   "ordre": 1,
+   "cible": "ML-DSA-65",
+   "statut": "démontrée",
+   "motif": ""
+  },
+  {
+   "ordre": 2,
+   "cible": "X25519MLKEM768",
+   "statut": "démontrée",
+   "motif": ""
+  },
+  {
+   "ordre": 3,
+   "cible": "GNUPG-PQ",
+   "statut": "non vérifiée",
+   "motif": "cible non démontrable au laboratoire (GnuPG, PKI hors laboratoire, etc.)"
+  }
+ ],
+ "date_verification": "2026-11-23"
+}

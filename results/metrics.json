@@ -1,11 +1,12 @@
 {
   "version": 1,
-  "genere_le": "2026-11-08T14:31:42+00:00",
+  "genere_le": "2026-11-23T15:17:06+00:00",
   "sources": [
     "bench_pqc.json",
     "bench_signatures.json",
     "demonstrateur_agent.json",
-    "demonstrateur_verification.json"
+    "demonstrateur_verification.json",
+    "evaluation_v2.json"
   ],
   "demonstrateur": {
     "verification": {
@@ -647,6 +648,668 @@
       "matériel": 29
     }
   },
+  "inventaire_v2": {
+    "verite_terrain": "data/ground_truth/si_v2.json",
+    "leurres": "data/ground_truth/leurres_v2.csv",
+    "configurations": {
+      "outils_seuls": {
+        "ablation": "a",
+        "a_posteriori": false,
+        "sessions": {
+          "v2_reference_outils_seuls": {
+            "rappel": 0.79,
+            "rappel_caches": 0.7037,
+            "precision_stricte": 0.693,
+            "precision_hors_doublons": 0.7745,
+            "f1": 0.7383,
+            "rappel_par_perimetre": {
+              "connu": {
+                "trouves": 70,
+                "attendus": 80,
+                "rappel": 0.875
+              },
+              "hors périmètre": {
+                "trouves": 9,
+                "attendus": 20,
+                "rappel": 0.45
+              }
+            },
+            "shor_bien_classes": "42/55",
+            "leurres_touches": [
+              "L2-01",
+              "L2-04",
+              "L2-05"
+            ],
+            "cbom_valide": true,
+            "plan_conforme": null,
+            "plan_etapes": null,
+            "arret_inventoriste": null,
+            "appels_outils": 91,
+            "erreurs_outils": 1,
+            "tours_de_modele": 0,
+            "duree_totale_s": 0.0,
+            "manques": [
+              "V2-023",
+              "V2-027",
+              "V2-029",
+              "V2-030",
+              "V2-039",
+              "V2-046",
+              "V2-051",
+              "V2-060",
+              "V2-078",
+              "V2-080",
+              "V2-081",
+              "V2-082",
+              "V2-086",
+              "V2-091",
+              "V2-092",
+              "V2-093",
+              "V2-094",
+              "V2-095",
+              "V2-096",
+              "V2-098",
+              "V2-099"
+            ]
+          }
+        },
+        "repetitions": {
+          "rappel": {
+            "n": 1,
+            "moyenne": 79.0,
+            "ecart_type": null
+          },
+          "rappel_caches": {
+            "n": 1,
+            "moyenne": 70.37,
+            "ecart_type": null
+          },
+          "precision_stricte": {
+            "n": 1,
+            "moyenne": 69.3,
+            "ecart_type": null
+          },
+          "precision_hors_doublons": {
+            "n": 1,
+            "moyenne": 77.45,
+            "ecart_type": null
+          },
+          "f1": {
+            "n": 1,
+            "moyenne": 0.738,
+            "ecart_type": null
+          },
+          "unite": "pourcentage (F1 : sans unité)",
+          "executions_identiques": true
+        }
+      },
+      "agents_a_regles": {
+        "ablation": "a",
+        "a_posteriori": false,
+        "sessions": {
+          "v2_regles": {
+            "rappel": 0.33,
+            "rappel_caches": 0.3333,
+            "precision_stricte": 0.7174,
+            "precision_hors_doublons": 0.7674,
+            "f1": 0.4521,
+            "rappel_par_perimetre": {
+              "connu": {
+                "trouves": 28,
+                "attendus": 80,
+                "rappel": 0.35
+              },
+              "hors périmètre": {
+                "trouves": 5,
+                "attendus": 20,
+                "rappel": 0.25
+              }
+            },
+            "shor_bien_classes": "23/55",
+            "leurres_touches": [],
+            "cbom_valide": true,
+            "plan_conforme": false,
+            "plan_etapes": 0,
+            "arret_inventoriste": "limite_etapes",
+            "appels_outils": 65,
+            "erreurs_outils": 1,
+            "tours_de_modele": 118,
+            "duree_totale_s": 2.7,
+            "manques": [
+              "V2-001",
+              "V2-002",
+              "V2-003",
+              "V2-004",
+              "V2-005",
+              "V2-006",
+              "V2-007",
+              "V2-008",
+              "V2-009",
+              "V2-019",
+              "V2-020",
+              "V2-021",
+              "V2-022",
+              "V2-023",
+              "V2-024",
+              "V2-025",
+              "V2-027",
+              "V2-028",
+              "V2-029",
+              "V2-030",
+              "V2-039",
+              "V2-040",
+              "V2-041",
+              "V2-044",
+              "V2-045",
+              "V2-046",
+              "V2-047",
+              "V2-048",
+              "V2-049",
+              "V2-050",
+              "V2-051",
+              "V2-052",
+              "V2-053",
+              "V2-054",
+              "V2-055",
+              "V2-056",
+              "V2-057",
+              "V2-058",
+              "V2-059",
+              "V2-060",
+              "V2-061",
+              "V2-062",
+              "V2-063",
+              "V2-064",
+              "V2-065",
+              "V2-066",
+              "V2-067",
+              "V2-071",
+              "V2-072",
+              "V2-078",
+              "V2-079",
+              "V2-080",
+              "V2-081",
+              "V2-082",
+              "V2-086",
+              "V2-087",
+              "V2-088",
+              "V2-090",
+              "V2-091",
+              "V2-092",
+              "V2-093",
+              "V2-094",
+              "V2-095",
+              "V2-096",
+              "V2-098",
+              "V2-099",
+              "V2-100"
+            ]
+          }
+        },
+        "repetitions": {
+          "rappel": {
+            "n": 1,
+            "moyenne": 33.0,
+            "ecart_type": null
+          },
+          "rappel_caches": {
+            "n": 1,
+            "moyenne": 33.33,
+            "ecart_type": null
+          },
+          "precision_stricte": {
+            "n": 1,
+            "moyenne": 71.74,
+            "ecart_type": null
+          },
+          "precision_hors_doublons": {
+            "n": 1,
+            "moyenne": 76.74,
+            "ecart_type": null
+          },
+          "f1": {
+            "n": 1,
+            "moyenne": 0.452,
+            "ecart_type": null
+          },
+          "unite": "pourcentage (F1 : sans unité)",
+          "executions_identiques": true
+        }
+      },
+      "modele_8go": {
+        "ablation": "b",
+        "a_posteriori": false,
+        "sessions": {
+          "v2_ollama_run1": {
+            "rappel": 0.57,
+            "rappel_caches": 0.4074,
+            "precision_stricte": 0.7308,
+            "precision_hors_doublons": 0.7917,
+            "f1": 0.6404,
+            "rappel_par_perimetre": {
+              "connu": {
+                "trouves": 51,
+                "attendus": 80,
+                "rappel": 0.6375
+              },
+              "hors périmètre": {
+                "trouves": 6,
+                "attendus": 20,
+                "rappel": 0.3
+              }
+            },
+            "shor_bien_classes": "39/55",
+            "leurres_touches": [],
+            "cbom_valide": true,
+            "plan_conforme": true,
+            "plan_etapes": 3,
+            "arret_inventoriste": "limite_etapes",
+            "appels_outils": 103,
+            "erreurs_outils": 13,
+            "tours_de_modele": 121,
+            "duree_totale_s": 1279.0,
+            "manques": [
+              "V2-023",
+              "V2-027",
+              "V2-029",
+              "V2-030",
+              "V2-039",
+              "V2-044",
+              "V2-045",
+              "V2-046",
+              "V2-047",
+              "V2-048",
+              "V2-049",
+              "V2-050",
+              "V2-051",
+              "V2-052",
+              "V2-053",
+              "V2-054",
+              "V2-055",
+              "V2-056",
+              "V2-057",
+              "V2-058",
+              "V2-060",
+              "V2-061",
+              "V2-062",
+              "V2-065",
+              "V2-066",
+              "V2-072",
+              "V2-078",
+              "V2-079",
+              "V2-080",
+              "V2-081",
+              "V2-082",
+              "V2-086",
+              "V2-087",
+              "V2-088",
+              "V2-090",
+              "V2-091",
+              "V2-092",
+              "V2-093",
+              "V2-094",
+              "V2-095",
+              "V2-096",
+              "V2-098",
+              "V2-099"
+            ]
+          },
+          "v2_ollama_run2": {
+            "rappel": 0.57,
+            "rappel_caches": 0.4074,
+            "precision_stricte": 0.7308,
+            "precision_hors_doublons": 0.7917,
+            "f1": 0.6404,
+            "rappel_par_perimetre": {
+              "connu": {
+                "trouves": 51,
+                "attendus": 80,
+                "rappel": 0.6375
+              },
+              "hors périmètre": {
+                "trouves": 6,
+                "attendus": 20,
+                "rappel": 0.3
+              }
+            },
+            "shor_bien_classes": "39/55",
+            "leurres_touches": [],
+            "cbom_valide": true,
+            "plan_conforme": true,
+            "plan_etapes": 3,
+            "arret_inventoriste": "limite_etapes",
+            "appels_outils": 103,
+            "erreurs_outils": 13,
+            "tours_de_modele": 121,
+            "duree_totale_s": 1294.3,
+            "manques": [
+              "V2-023",
+              "V2-027",
+              "V2-029",
+              "V2-030",
+              "V2-039",
+              "V2-044",
+              "V2-045",
+              "V2-046",
+              "V2-047",
+              "V2-048",
+              "V2-049",
+              "V2-050",
+              "V2-051",
+              "V2-052",
+              "V2-053",
+              "V2-054",
+              "V2-055",
+              "V2-056",
+              "V2-057",
+              "V2-058",
+              "V2-060",
+              "V2-061",
+              "V2-062",
+              "V2-065",
+              "V2-066",
+              "V2-072",
+              "V2-078",
+              "V2-079",
+              "V2-080",
+              "V2-081",
+              "V2-082",
+              "V2-086",
+              "V2-087",
+              "V2-088",
+              "V2-090",
+              "V2-091",
+              "V2-092",
+              "V2-093",
+              "V2-094",
+              "V2-095",
+              "V2-096",
+              "V2-098",
+              "V2-099"
+            ]
+          },
+          "v2_ollama_run3": {
+            "rappel": 0.57,
+            "rappel_caches": 0.4074,
+            "precision_stricte": 0.7308,
+            "precision_hors_doublons": 0.7917,
+            "f1": 0.6404,
+            "rappel_par_perimetre": {
+              "connu": {
+                "trouves": 51,
+                "attendus": 80,
+                "rappel": 0.6375
+              },
+              "hors périmètre": {
+                "trouves": 6,
+                "attendus": 20,
+                "rappel": 0.3
+              }
+            },
+            "shor_bien_classes": "39/55",
+            "leurres_touches": [],
+            "cbom_valide": true,
+            "plan_conforme": true,
+            "plan_etapes": 3,
+            "arret_inventoriste": "limite_etapes",
+            "appels_outils": 103,
+            "erreurs_outils": 13,
+            "tours_de_modele": 121,
+            "duree_totale_s": 2208.9,
+            "manques": [
+              "V2-023",
+              "V2-027",
+              "V2-029",
+              "V2-030",
+              "V2-039",
+              "V2-044",
+              "V2-045",
+              "V2-046",
+              "V2-047",
+              "V2-048",
+              "V2-049",
+              "V2-050",
+              "V2-051",
+              "V2-052",
+              "V2-053",
+              "V2-054",
+              "V2-055",
+              "V2-056",
+              "V2-057",
+              "V2-058",
+              "V2-060",
+              "V2-061",
+              "V2-062",
+              "V2-065",
+              "V2-066",
+              "V2-072",
+              "V2-078",
+              "V2-079",
+              "V2-080",
+              "V2-081",
+              "V2-082",
+              "V2-086",
+              "V2-087",
+              "V2-088",
+              "V2-090",
+              "V2-091",
+              "V2-092",
+              "V2-093",
+              "V2-094",
+              "V2-095",
+              "V2-096",
+              "V2-098",
+              "V2-099"
+            ]
+          }
+        },
+        "repetitions": {
+          "rappel": {
+            "n": 3,
+            "moyenne": 57.0,
+            "ecart_type": 0.0
+          },
+          "rappel_caches": {
+            "n": 3,
+            "moyenne": 40.74,
+            "ecart_type": 0.0
+          },
+          "precision_stricte": {
+            "n": 3,
+            "moyenne": 73.08,
+            "ecart_type": 0.0
+          },
+          "precision_hors_doublons": {
+            "n": 3,
+            "moyenne": 79.17,
+            "ecart_type": 0.0
+          },
+          "f1": {
+            "n": 3,
+            "moyenne": 0.64,
+            "ecart_type": 0.0
+          },
+          "unite": "pourcentage (F1 : sans unité)",
+          "executions_identiques": true
+        }
+      },
+      "modele_8go_budget_162": {
+        "ablation": "b",
+        "a_posteriori": true,
+        "sessions": {
+          "v2_posthoc_budget_run1": {
+            "rappel": 0.79,
+            "rappel_caches": 0.7037,
+            "precision_stricte": 0.687,
+            "precision_hors_doublons": 0.767,
+            "f1": 0.7349,
+            "rappel_par_perimetre": {
+              "connu": {
+                "trouves": 70,
+                "attendus": 80,
+                "rappel": 0.875
+              },
+              "hors périmètre": {
+                "trouves": 9,
+                "attendus": 20,
+                "rappel": 0.45
+              }
+            },
+            "shor_bien_classes": "42/55",
+            "leurres_touches": [
+              "L2-01",
+              "L2-04",
+              "L2-05"
+            ],
+            "cbom_valide": true,
+            "plan_conforme": true,
+            "plan_etapes": 3,
+            "arret_inventoriste": "limite_etapes",
+            "appels_outils": 159,
+            "erreurs_outils": 31,
+            "tours_de_modele": 197,
+            "duree_totale_s": 4915.1,
+            "manques": [
+              "V2-023",
+              "V2-027",
+              "V2-029",
+              "V2-030",
+              "V2-039",
+              "V2-046",
+              "V2-051",
+              "V2-060",
+              "V2-078",
+              "V2-080",
+              "V2-081",
+              "V2-082",
+              "V2-086",
+              "V2-091",
+              "V2-092",
+              "V2-093",
+              "V2-094",
+              "V2-095",
+              "V2-096",
+              "V2-098",
+              "V2-099"
+            ]
+          }
+        },
+        "repetitions": {
+          "rappel": {
+            "n": 1,
+            "moyenne": 79.0,
+            "ecart_type": null
+          },
+          "rappel_caches": {
+            "n": 1,
+            "moyenne": 70.37,
+            "ecart_type": null
+          },
+          "precision_stricte": {
+            "n": 1,
+            "moyenne": 68.7,
+            "ecart_type": null
+          },
+          "precision_hors_doublons": {
+            "n": 1,
+            "moyenne": 76.7,
+            "ecart_type": null
+          },
+          "f1": {
+            "n": 1,
+            "moyenne": 0.735,
+            "ecart_type": null
+          },
+          "unite": "pourcentage (F1 : sans unité)",
+          "executions_identiques": true
+        }
+      }
+    },
+    "comparaison_aux_outils_seuls": {
+      "agents_a_regles": {
+        "trouves_en_plus_des_outils": [],
+        "perdus_par_rapport_aux_outils": [
+          "V2-001",
+          "V2-002",
+          "V2-003",
+          "V2-004",
+          "V2-005",
+          "V2-006",
+          "V2-007",
+          "V2-008",
+          "V2-009",
+          "V2-019",
+          "V2-020",
+          "V2-021",
+          "V2-022",
+          "V2-024",
+          "V2-025",
+          "V2-028",
+          "V2-040",
+          "V2-041",
+          "V2-044",
+          "V2-045",
+          "V2-047",
+          "V2-048",
+          "V2-049",
+          "V2-050",
+          "V2-052",
+          "V2-053",
+          "V2-054",
+          "V2-055",
+          "V2-056",
+          "V2-057",
+          "V2-058",
+          "V2-059",
+          "V2-061",
+          "V2-062",
+          "V2-063",
+          "V2-064",
+          "V2-065",
+          "V2-066",
+          "V2-067",
+          "V2-071",
+          "V2-072",
+          "V2-079",
+          "V2-087",
+          "V2-088",
+          "V2-090",
+          "V2-100"
+        ]
+      },
+      "modele_8go": {
+        "trouves_en_plus_des_outils": [],
+        "perdus_par_rapport_aux_outils": [
+          "V2-044",
+          "V2-045",
+          "V2-047",
+          "V2-048",
+          "V2-049",
+          "V2-050",
+          "V2-052",
+          "V2-053",
+          "V2-054",
+          "V2-055",
+          "V2-056",
+          "V2-057",
+          "V2-058",
+          "V2-061",
+          "V2-062",
+          "V2-065",
+          "V2-066",
+          "V2-072",
+          "V2-079",
+          "V2-087",
+          "V2-088",
+          "V2-090"
+        ]
+      },
+      "modele_8go_budget_162": {
+        "trouves_en_plus_des_outils": [],
+        "perdus_par_rapport_aux_outils": []
+      }
+    }
+  },
   "avertissements": [
     "latence : une seule série de mesures par configuration ; le sujet exige 3 répétitions (moyenne, écart type)"
   ],
@@ -654,7 +1317,7 @@
     "débit des connexions (sujet, métriques)",
     "discussion des hypothèses de sécurité ML-DSA (réseaux euclidiens) et SLH-DSA (hachage) : texte du rapport, pas une mesure (sujet §5.1)",
     "tailles des clés publiques et privées (sujet, métriques)",
-    "rappel et précision de l'évaluation par catégorie, validité du CBOM sur 3 répétitions",
-    "performance sur la variante non vue du SI (sujet §4)"
+    "inventaire sur le SI v1 : non repris ici ; valeurs exactes recalculables depuis les traces (AUDIT.md, section 3)",
+    "ablation (c) : système avec un second modèle de taille différente (sujet §6.2)"
   ]
 }
