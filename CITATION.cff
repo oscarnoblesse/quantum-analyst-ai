@@ -1,4 +1,5 @@
 cff-version: 1.2.0
+date-released: 2026-11-26
 message: "Si vous utilisez ce logiciel ou ses résultats, merci de le citer comme indiqué ci-dessous."
 type: software
 title: "Quantum-Ready : copilote multi-agents de migration post-quantique"
